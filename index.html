@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandala Maker</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="panel-header">
+                <h1>Mandala Maker</h1>
+            </div>
+            
+            <div class="z-order-panel">
+                <h2>Layers</h2>
+                <button id="addLayerBtn" class="add-layer-btn">+ Add Layer</button>
+                <div id="zOrderList" class="z-order-list"></div>
+            </div>
+        </div>
+        
+        <canvas id="mandalaCanvas"></canvas>
+        
+        <div class="right-panel">
+            <div class="panel-header">
+                <div class="export-buttons-group">
+                    <button id="exportPngBtn" class="export-btn">📥 PNG (16x)</button>
+                    <button id="exportSvgBtn" class="export-btn">📥 SVG</button>
+                    <button id="debugModeBtn" class="export-btn debug-btn">🐛 Debug</button>
+                </div>
+            </div>
+            <div id="debugPanel" class="debug-panel" style="display: none;">
+                <div class="debug-output"></div>
+            </div>
+            <div id="layerControlsContainer" class="layer-controls-container"></div>
+        </div>
+    </div>
+
+    <script src="js/layer.js"></script>
+    <script src="js/mandala-renderer.js"></script>
+    <script src="js/ui-controls.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
