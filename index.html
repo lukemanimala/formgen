@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mandala Maker</title>
+  <title>FormGen</title>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -67,6 +67,21 @@
     .panel-header p {
       font-size: 13px;
       color: var(--text-tertiary);
+    }
+
+    .roadmap-link {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--accent);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.15s ease;
+    }
+
+    .roadmap-link:hover {
+      opacity: 1;
+      text-decoration: underline;
     }
 
     .control-section {
@@ -381,6 +396,18 @@
       color: var(--text-primary);
     }
 
+    .export-btn.recording {
+      background: rgba(255, 80, 80, 0.2);
+      border-color: rgba(255, 80, 80, 0.5);
+      color: rgba(255, 80, 80, 0.9);
+      animation: pulse-recording 1s infinite;
+    }
+
+    @keyframes pulse-recording {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
     /* Canvas Area */
     .canvas-area {
       flex: 1;
@@ -601,8 +628,9 @@
   <div class="container">
     <div class="control-panel">
       <div class="panel-header">
-        <h1>Mandala Maker</h1>
-        <p>Generative patterns</p>
+        <h1>FormGen</h1>
+        <p>Procedural geometry for creators</p>
+        <a href="roadmap.html" target="_blank" class="roadmap-link">Roadmap</a>
       </div>
 
       <!-- Pattern Selection -->
@@ -622,10 +650,10 @@
       <div class="control-section">
         <div class="section-label">Macros</div>
         <div class="knob-row">
-          <div class="knob-control" data-param="complexity" data-min="0" data-max="1" data-value="0.5">
+          <div class="knob-control" data-param="complexity" data-min="2" data-max="24" data-value="12" data-step="1" data-format="int">
             <div class="knob-container"></div>
             <div class="knob-name">Layers</div>
-            <div class="knob-value">0.50</div>
+            <div class="knob-value">12</div>
           </div>
           <div class="knob-control" data-param="evolution" data-min="0" data-max="1" data-value="0.3">
             <div class="knob-container"></div>
@@ -641,6 +669,11 @@
             <div class="knob-container"></div>
             <div class="knob-name">Energy</div>
             <div class="knob-value">0.60</div>
+          </div>
+          <div class="knob-control" data-param="energyShift" data-min="-1" data-max="1" data-value="0" data-bipolar="true">
+            <div class="knob-container"></div>
+            <div class="knob-name">E.Shift</div>
+            <div class="knob-value">0.00</div>
           </div>
         </div>
       </div>
@@ -676,6 +709,11 @@
             <div class="knob-name">Petal Chg</div>
             <div class="knob-value">0.00</div>
           </div>
+          <div class="knob-control" data-param="mandalaAlign" data-min="0" data-max="180" data-value="0" data-step="15" data-format="deg">
+            <div class="knob-container"></div>
+            <div class="knob-name">Align</div>
+            <div class="knob-value">0°</div>
+          </div>
         </div>
         <div class="knob-row" style="margin-top: 12px;">
           <div class="knob-control" data-param="rotation" data-min="0" data-max="360" data-value="0" data-step="1" data-format="deg" data-wrap="true">
@@ -688,6 +726,21 @@
             <div class="knob-name">Height</div>
             <div class="knob-value">2.00</div>
           </div>
+          <div class="knob-control" data-param="opacity" data-min="0" data-max="1" data-value="1">
+            <div class="knob-container"></div>
+            <div class="knob-name">Opacity</div>
+            <div class="knob-value">1.00</div>
+          </div>
+          <div class="knob-control" data-param="shadow" data-min="0" data-max="1" data-value="0">
+            <div class="knob-container"></div>
+            <div class="knob-name">Shadow</div>
+            <div class="knob-value">0.00</div>
+          </div>
+          <div class="knob-control" data-param="thickness" data-min="0" data-max="0.5" data-value="0">
+            <div class="knob-container"></div>
+            <div class="knob-name">Thickness</div>
+            <div class="knob-value">0.00</div>
+          </div>
         </div>
       </div>
 
@@ -698,6 +751,13 @@
           <div class="color-preview" id="color-preview"></div>
           <input type="range" class="hue-slider" id="hue" min="0" max="360" value="15">
         </div>
+        <div class="knob-row" style="margin-top: 12px;">
+          <div class="knob-control" data-param="colorShift" data-min="-180" data-max="180" data-value="0" data-step="5" data-format="deg" data-bipolar="true">
+            <div class="knob-container"></div>
+            <div class="knob-name">Shift</div>
+            <div class="knob-value">0°</div>
+          </div>
+        </div>
       </div>
 
       <!-- Animation -->
@@ -706,32 +766,18 @@
         <div class="animation-row">
           <button class="anim-btn" id="play-btn">Play</button>
           <button class="anim-btn" id="stop-btn">Stop</button>
-          <button class="anim-btn" id="twist-btn">Twist</button>
         </div>
-        <div class="knob-row" style="margin: 12px 0;">
-          <div class="knob-control" data-param="animSpeed" data-min="0.1" data-max="3" data-value="1">
-            <div class="knob-container"></div>
-            <div class="knob-name">Speed</div>
-            <div class="knob-value">1.00</div>
-          </div>
-          <div class="knob-control" data-param="twistSpins" data-min="1" data-max="10" data-value="3" data-step="1" data-format="int">
-            <div class="knob-container"></div>
-            <div class="knob-name">Spins</div>
-            <div class="knob-value">3</div>
-          </div>
-          <div class="knob-control" data-param="twistStagger" data-min="5" data-max="200" data-value="20" data-step="1" data-format="int">
-            <div class="knob-container"></div>
-            <div class="knob-name">Stagger</div>
-            <div class="knob-value">20</div>
-          </div>
-        </div>
+
+        <!-- LFO 1 -->
+        <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 1</div>
         <div class="lfo-control">
           <select class="lfo-select" id="lfo-target">
-            <option value="none">No LFO</option>
+            <option value="none">Off</option>
             <option value="complexity">Layers</option>
             <option value="evolution">Twist</option>
             <option value="dimension">Dimension</option>
             <option value="energy">Energy</option>
+            <option value="energyShift">Energy Shift</option>
             <option value="hue">Hue</option>
             <option value="petals">Petals</option>
             <option value="concavity">Concavity</option>
@@ -740,6 +786,11 @@
             <option value="innerRadius">Inner Radius</option>
             <option value="rotation">Rotation</option>
             <option value="height">Height</option>
+            <option value="opacity">Opacity</option>
+            <option value="shadow">Shadow</option>
+            <option value="thickness">Thickness</option>
+            <option value="mandalaAlign">Mandala Align</option>
+            <option value="colorShift">Color Shift</option>
           </select>
           <select class="lfo-select" id="lfo-shape">
             <option value="sine">Sine</option>
@@ -747,8 +798,86 @@
             <option value="saw">Saw</option>
           </select>
         </div>
-        <div class="lfo-viz-container">
-          <canvas id="lfo-viz" width="200" height="40"></canvas>
+        <div class="knob-row" style="margin-top: 8px;">
+          <div class="knob-control" data-param="lfo1Speed" data-min="0.05" data-max="2" data-value="0.3">
+            <div class="knob-container"></div>
+            <div class="knob-name">Speed</div>
+            <div class="knob-value">0.30</div>
+          </div>
+          <div class="knob-control" data-param="lfo1Amp" data-min="0" data-max="1" data-value="1">
+            <div class="knob-container"></div>
+            <div class="knob-name">Amp</div>
+            <div class="knob-value">1.00</div>
+          </div>
+        </div>
+        <div class="lfo-viz-container" id="lfo1-viz-container">
+          <canvas id="lfo1-viz" width="200" height="32"></canvas>
+        </div>
+
+        <!-- LFO 2 -->
+        <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 2</div>
+        <div class="lfo-control">
+          <select class="lfo-select" id="lfo2-target">
+            <option value="none">Off</option>
+            <option value="complexity">Layers</option>
+            <option value="evolution">Twist</option>
+            <option value="dimension">Dimension</option>
+            <option value="energy">Energy</option>
+            <option value="energyShift">Energy Shift</option>
+            <option value="hue">Hue</option>
+            <option value="petals">Petals</option>
+            <option value="concavity">Concavity</option>
+            <option value="pointiness">Pointiness</option>
+            <option value="petalChange">Petal Change</option>
+            <option value="innerRadius">Inner Radius</option>
+            <option value="rotation">Rotation</option>
+            <option value="height">Height</option>
+            <option value="opacity">Opacity</option>
+            <option value="shadow">Shadow</option>
+            <option value="thickness">Thickness</option>
+            <option value="mandalaAlign">Mandala Align</option>
+            <option value="colorShift">Color Shift</option>
+          </select>
+          <select class="lfo-select" id="lfo2-shape">
+            <option value="sine">Sine</option>
+            <option value="triangle">Triangle</option>
+            <option value="saw">Saw</option>
+          </select>
+        </div>
+        <div class="knob-row" style="margin-top: 8px;">
+          <div class="knob-control" data-param="lfo2Speed" data-min="0.05" data-max="2" data-value="0.2">
+            <div class="knob-container"></div>
+            <div class="knob-name">Speed</div>
+            <div class="knob-value">0.20</div>
+          </div>
+          <div class="knob-control" data-param="lfo2Amp" data-min="0" data-max="1" data-value="1">
+            <div class="knob-container"></div>
+            <div class="knob-name">Amp</div>
+            <div class="knob-value">1.00</div>
+          </div>
+        </div>
+        <div class="lfo-viz-container" id="lfo2-viz-container">
+          <canvas id="lfo2-viz" width="200" height="32"></canvas>
+        </div>
+
+        <!-- Camera Path -->
+        <div class="section-label" style="margin-top: 12px; font-size: 9px;">Camera</div>
+        <div class="lfo-control">
+          <select class="lfo-select" id="camera-path">
+            <option value="none">Off</option>
+            <option value="orbit">Orbit</option>
+            <option value="flyover">Flyover</option>
+            <option value="spiral">Spiral</option>
+            <option value="zoom">Zoom</option>
+            <option value="tilt">Tilt</option>
+          </select>
+        </div>
+        <div class="knob-row" style="margin-top: 8px;">
+          <div class="knob-control" data-param="cameraSpeed" data-min="0.05" data-max="1" data-value="0.3">
+            <div class="knob-container"></div>
+            <div class="knob-name">Speed</div>
+            <div class="knob-value">0.30</div>
+          </div>
         </div>
       </div>
 
@@ -757,11 +886,15 @@
         <div class="section-label">Export</div>
         <div class="export-row">
           <button class="export-btn" id="export-png">PNG</button>
-          <button class="export-btn" id="export-svg">SVG</button>
+          <button class="export-btn" id="record-btn">Record</button>
         </div>
         <div class="export-row" style="margin-top: 8px;">
           <button class="export-btn" id="copy-config">Copy Config</button>
           <button class="export-btn" id="load-config">Load Config</button>
+        </div>
+        <div class="section-label" style="margin-top: 12px; font-size: 9px;">3D Model</div>
+        <div class="export-row">
+          <button class="export-btn" id="export-obj">OBJ</button>
         </div>
       </div>
     </div>
@@ -806,38 +939,46 @@
     import { Line2 } from 'three/addons/lines/Line2.js';
     import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
     import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+    import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
     // ===================
     // MACRO CONFIGURATION
     // ===================
 
     const macros = {
-      complexity: 0.5,   // Layer count, segment count
+      complexity: 12,    // Layer count (2-24)
       evolution: 0.3,    // Twist, rotation variation
       dimension: 0.4,    // Z-spacing, perspective
       energy: 0.6,       // Color saturation, line thickness
+      energyShift: 0,    // -1 to 1, energy change from outer to inner
     };
 
     let currentHue = 15;
     let currentPattern = 'mandala';
     let isAnimating = false;
+
+    // LFO 1 state
     let lfoTarget = 'none';
     let lfoShape = 'sine';
+    let lfo1Speed = 0.3;
+    let lfo1Amp = 1.0;
 
-    // Animation state
-    let animSpeed = 1.0;    // 0.1 to 3.0
-    let twistSpins = 3;     // number of full rotations per layer
-    let twistStagger = 20;  // milliseconds between each layer starting
-    let twistAnimating = false;
-    let twistStartTime = 0;
-    const twistBaseDuration = 2.5;  // base duration for each layer's animation
+    // LFO 2 state
+    let lfo2Target = 'none';
+    let lfo2Shape = 'sine';
+    let lfo2Speed = 0.2;
+    let lfo2Amp = 1.0;
 
-    // Ease-in-out cubic
-    function easeInOutCubic(t) {
-      return t < 0.5
-        ? 4 * t * t * t
-        : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    }
+    // Recording state
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let isRecording = false;
+    let recordingStartTime = 0;
+
+    // Camera path automation state
+    let cameraPath = 'none';  // none, orbit, flyover, spiral, zoom
+    let cameraSpeed = 0.3;
+    let cameraPathTime = 0;
 
     // Geometry controls
     const geometry = {
@@ -848,25 +989,30 @@
       innerRadius: 0.3,
       rotation: 0,  // degrees, 0-360 with wrap
       height: 2,    // total Z-height of the stack
+      opacity: 1,   // 0-1, overall layer opacity
+      shadow: 0,    // 0-1, shadow/glow intensity
+      mandalaAlign: 0,  // 0-180 degrees, layer-to-layer offset for mandala (0 = use Evolution twist)
+      colorShift: 0,  // -180 to 180 degrees, hue shift from outer to inner layers
+      thickness: 0,  // 0-0.5, extrusion depth for 3D layers
     };
 
     // Expand macros to full configuration
     function expandMacros() {
-      const c = macros.complexity;
+      const c = macros.complexity;  // Now raw layer count (2-24)
       const ev = macros.evolution;
       const d = macros.dimension;
       const en = macros.energy;
 
-      // Calculate layers and spacing
-      const layers = Math.floor(6 + c * 18);      // 6-24 layers
+      // Layers is now a direct count from the knob
+      const layers = Math.floor(c);
       const totalHeight = geometry.height;         // From height knob
       const layerSpacing = layers > 1 ? totalHeight / (layers - 1) : 0;
 
       return {
         // From Complexity (Layers)
         layers,
-        segments: Math.floor(3 + c * 9),          // 3-12 segments (for rosette/flower)
-        pointsPerCorner: Math.floor(4 + c * 8),   // Smoothness
+        segments: geometry.petals,                // Use petals for segment count
+        pointsPerCorner: Math.floor(8 + layers / 3),  // Smoothness based on layer count
 
         // From Evolution (Twist)
         totalTwist: -0.3 - ev * 1.2,              // -0.3 to -1.5 radians
@@ -877,6 +1023,8 @@
         perspectiveTilt: d * 0.8,                 // Y-axis tilt
 
         // From Energy
+        energy: en,
+        energyShift: macros.energyShift,          // -1 to 1
         saturation: 60 + en * 35,                 // 60-95%
         lineWidthOuter: 2 + en * 3,               // 2-5
         lineWidthInner: 0.5 + en * 1.5,           // 0.5-2
@@ -895,6 +1043,12 @@
         rotationDeg: geometry.rotation,  // degrees
         rotationRad: geometry.rotation * Math.PI / 180,  // radians
         totalHeight: geometry.height,
+        opacity: geometry.opacity,  // 0-1, layer opacity multiplier
+        shadow: geometry.shadow,    // 0-1, shadow/glow intensity
+        mandalaAlign: geometry.mandalaAlign,  // 0-180, mandala layer alignment
+        mandalaAlignRad: geometry.mandalaAlign * Math.PI / 180,  // in radians
+        colorShift: geometry.colorShift,  // -180 to 180, hue shift across layers
+        thickness: geometry.thickness,  // 0-0.5, extrusion depth
       };
     }
 
@@ -1063,9 +1217,22 @@
       // Concavity controls how much the sides bulge (-1 = concave, 0 = straight, 1 = convex)
       const curve = petalWidth * (0.5 + concavity * 0.5);
 
-      // Alternating rotation for interlocking layers
-      const baseRotation = config.rotationRad + progress * config.totalTwist;
-      const alternateOffset = (layerIndex % 2) * (Math.PI / numPetals);
+      // Layer rotation: use mandalaAlign if set, otherwise use Evolution twist
+      let layerTwist;
+      let alternateOffset = 0;
+
+      if (config.mandalaAlign > 0) {
+        // Clean alignment: each layer offset by mandalaAlign degrees (no interlocking)
+        layerTwist = layerIndex * config.mandalaAlignRad;
+      } else if (Math.abs(config.totalTwist) > 0.01) {
+        // Use Evolution macro twist with interlocking pattern
+        layerTwist = progress * config.totalTwist;
+        alternateOffset = (layerIndex % 2) * (Math.PI / numPetals);
+      } else {
+        // No twist at all - perfect alignment
+        layerTwist = 0;
+      }
+      const baseRotation = config.rotationRad + layerTwist;
 
       const vertices = [];
       const samplesPerCurve = 10;
@@ -1133,7 +1300,66 @@
         vertices.push(vertices[0].clone());
       }
 
-      return { vertices, z };
+      // Create individual petal fill shapes using same Bezier curves as strokes
+      const petalShapes = [];
+      for (let p = 0; p < numPetals; p++) {
+        const petalAngle = baseRotation + alternateOffset + (p / numPetals) * Math.PI * 2;
+        const cos = Math.cos(petalAngle);
+        const sin = Math.sin(petalAngle);
+
+        const petalShape = new THREE.Shape();
+
+        // Use same Bezier control points as stroke
+        const leftSeg1 = [
+          { x: 0, y: 0 },
+          { x: -curve * 0.7, y: petalHeight * 0.15 },
+          { x: -curve, y: petalHeight * 0.35 },
+          { x: -curve, y: petalHeight * 0.5 }
+        ];
+        const leftSeg2 = [
+          { x: -curve, y: petalHeight * 0.5 },
+          { x: -curve, y: petalHeight * 0.65 },
+          { x: -curve * 0.7, y: petalHeight * 0.85 },
+          { x: 0, y: petalHeight }
+        ];
+        const rightSeg1 = [
+          { x: 0, y: petalHeight },
+          { x: curve * 0.7, y: petalHeight * 0.85 },
+          { x: curve, y: petalHeight * 0.65 },
+          { x: curve, y: petalHeight * 0.5 }
+        ];
+        const rightSeg2 = [
+          { x: curve, y: petalHeight * 0.5 },
+          { x: curve, y: petalHeight * 0.35 },
+          { x: curve * 0.7, y: petalHeight * 0.15 },
+          { x: 0, y: 0 }
+        ];
+
+        // Sample and transform each segment
+        const segments = [leftSeg1, leftSeg2, rightSeg1, rightSeg2];
+        let isFirst = true;
+
+        for (const seg of segments) {
+          for (let i = 0; i <= samplesPerCurve; i++) {
+            const t = i / samplesPerCurve;
+            const pt = sampleBezier(seg[0], seg[1], seg[2], seg[3], t);
+            const rx = pt.x * cos - pt.y * sin;
+            const ry = pt.x * sin + pt.y * cos;
+
+            if (isFirst) {
+              petalShape.moveTo(rx, ry);
+              isFirst = false;
+            } else {
+              petalShape.lineTo(rx, ry);
+            }
+          }
+        }
+
+        petalShape.closePath();
+        petalShapes.push(petalShape);
+      }
+
+      return { vertices, z, petalShapes };
     }
 
     function generateStarGeometry(config, layerIndex, totalLayers) {
@@ -1294,9 +1520,14 @@
       return color;
     }
 
-    function getLayerColors(progress, config) {
-      const h = currentHue;
-      const s = config.saturation;
+    function getLayerColors(progress, config, effectiveEnergy = null) {
+      // Apply color shift: outer layers = base hue, inner layers = shifted hue
+      const hueShift = config.colorShift * progress;
+      const h = (currentHue + hueShift + 360) % 360;  // Wrap around 0-360
+
+      // Use effective energy if provided, otherwise use base
+      const en = effectiveEnergy !== null ? effectiveEnergy : config.energy;
+      const s = 60 + en * 35;  // Saturation based on energy
 
       // Line colors: dark outer, bright inner
       const lineL = 22 + progress * 38;
@@ -1519,6 +1750,10 @@
           layer.lineMaterial.dispose();
           layer.fillGeometry.dispose();
           layer.fillMaterial.dispose();
+          if (layer.shadowMesh) {
+            layer.shadowMesh.geometry.dispose();
+            layer.shadowMaterial.dispose();
+          }
         });
         this.layers = [];
       }
@@ -1538,8 +1773,9 @@
 
         for (let i = 0; i < config.layers; i++) {
           const progress = i / (config.layers - 1);
-          const { vertices, z } = generator(config, i, config.layers);
-          const layer = this.createLayer(vertices, z, progress, config);
+          const result = generator(config, i, config.layers);
+          const { vertices, z, petalShapes } = result;
+          const layer = this.createLayer(vertices, z, progress, config, petalShapes || null);
           this.layers.push(layer);
           this.container.add(layer.group);
         }
@@ -1549,40 +1785,119 @@
         this.container.position.z = -totalDepth / 2;
       }
 
-      createLayer(vertices, z, progress, config) {
+      createLayer(vertices, z, progress, config, petalShapes = null) {
         const positions = [];
         vertices.forEach(v => positions.push(v.x, v.y, v.z));
 
         const lineGeometry = new LineGeometry();
         lineGeometry.setPositions(positions);
 
-        const lineWidth = config.lineWidthOuter + progress * (config.lineWidthInner - config.lineWidthOuter);
-        const { lineColor, fillColor } = getLayerColors(progress, config);
+        // Apply energy shift: modifies effective energy per layer
+        const energyMod = config.energyShift * progress;  // 0 at outer, full shift at inner
+        const effectiveEnergy = Math.max(0, Math.min(1, config.energy + energyMod));
 
+        // Recalculate energy-dependent values with shift
+        const lineWidthRange = (2 + effectiveEnergy * 3) - (0.5 + effectiveEnergy * 1.5);
+        const lineWidth = (2 + effectiveEnergy * 3) - progress * lineWidthRange;
+        const { lineColor, fillColor } = getLayerColors(progress, config, effectiveEnergy);
+
+        // Apply opacity to line (via transparent + opacity)
         const lineMaterial = new LineMaterial({
           color: lineColor,
           linewidth: lineWidth,
           resolution: new THREE.Vector2(this.width, this.height),
+          transparent: true,
+          opacity: config.opacity,
         });
 
         const line = new Line2(lineGeometry, lineMaterial);
 
-        // Create fill
-        const shape = new THREE.Shape();
-        shape.moveTo(vertices[0].x, vertices[0].y);
-        for (let i = 1; i < vertices.length; i++) {
-          shape.lineTo(vertices[i].x, vertices[i].y);
-        }
-        shape.closePath();
+        // Create fill geometry (flat or extruded based on thickness)
+        let fillGeometry;
+        const thickness = config.thickness || 0;
+        const extrudeSettings = {
+          depth: thickness,
+          bevelEnabled: false,
+        };
 
-        const fillGeometry = new THREE.ShapeGeometry(shape);
+        if (petalShapes && petalShapes.length > 0) {
+          // Use individual petal shapes for clean fills (mandala pattern)
+          const geometries = petalShapes.map(shape => {
+            if (thickness > 0) {
+              return new THREE.ExtrudeGeometry(shape, extrudeSettings);
+            } else {
+              return new THREE.ShapeGeometry(shape);
+            }
+          });
+          fillGeometry = mergeBufferGeometries(geometries);
+          // Dispose individual geometries
+          geometries.forEach(g => g.dispose());
+        } else {
+          // Use vertex-based fill for simpler patterns
+          const shape = new THREE.Shape();
+          shape.moveTo(vertices[0].x, vertices[0].y);
+          for (let i = 1; i < vertices.length; i++) {
+            shape.lineTo(vertices[i].x, vertices[i].y);
+          }
+          shape.closePath();
+          if (thickness > 0) {
+            fillGeometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+          } else {
+            fillGeometry = new THREE.ShapeGeometry(shape);
+          }
+        }
+
+        // Helper to merge geometries
+        function mergeBufferGeometries(geometries) {
+          if (geometries.length === 0) return new THREE.BufferGeometry();
+          if (geometries.length === 1) return geometries[0].clone();
+
+          let totalVertices = 0;
+          let totalIndices = 0;
+          for (const g of geometries) {
+            totalVertices += g.attributes.position.count;
+            if (g.index) totalIndices += g.index.count;
+          }
+
+          const positions = new Float32Array(totalVertices * 3);
+          const indices = totalIndices > 0 ? new Uint32Array(totalIndices) : null;
+
+          let vertexOffset = 0;
+          let indexOffset = 0;
+          let vertexCount = 0;
+
+          for (const g of geometries) {
+            const pos = g.attributes.position.array;
+            positions.set(pos, vertexOffset);
+
+            if (indices && g.index) {
+              const idx = g.index.array;
+              for (let i = 0; i < idx.length; i++) {
+                indices[indexOffset + i] = idx[i] + vertexCount;
+              }
+              indexOffset += idx.length;
+            }
+
+            vertexOffset += pos.length;
+            vertexCount += g.attributes.position.count;
+          }
+
+          const merged = new THREE.BufferGeometry();
+          merged.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+          if (indices) merged.setIndex(new THREE.BufferAttribute(indices, 1));
+          return merged;
+        }
+        // Opacity: interpolate from subtle fill (energy-based) to fully opaque
+        // At opacity=0: use fillOpacity (0.04-0.12), at opacity=1: fully solid
+        const baseFillOpacity = 0.04 + effectiveEnergy * 0.08;
+        const actualFillOpacity = baseFillOpacity + (1 - baseFillOpacity) * config.opacity;
         const fillMaterial = new THREE.MeshBasicMaterial({
           color: fillColor,
-          transparent: true,
-          opacity: config.fillOpacity,
+          transparent: actualFillOpacity < 1,
+          opacity: actualFillOpacity,
           side: THREE.DoubleSide,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
+          blending: config.opacity > 0.5 ? THREE.NormalBlending : THREE.AdditiveBlending,
+          depthWrite: config.opacity > 0.8,
         });
 
         const fill = new THREE.Mesh(fillGeometry, fillMaterial);
@@ -1592,6 +1907,28 @@
         group.add(fill);
         group.add(line);
 
+        // Add shadow layer if shadow > 0 (darkens layers below)
+        let shadowMesh = null;
+        let shadowMaterial = null;
+        if (config.shadow > 0) {
+          // Reuse the same fill geometry for shadow
+          const shadowGeometry = fillGeometry.clone();
+          shadowMaterial = new THREE.MeshBasicMaterial({
+            color: 0x000000,  // Black shadow
+            transparent: true,
+            opacity: config.shadow * 0.6,
+            side: THREE.DoubleSide,
+            blending: THREE.NormalBlending,  // Normal blending to occlude
+            depthWrite: true,
+          });
+          shadowMesh = new THREE.Mesh(shadowGeometry, shadowMaterial);
+          // Scale up slightly, centered behind (no x/y offset for front view)
+          const shadowScale = 1 + config.shadow * 0.08;
+          shadowMesh.scale.set(shadowScale, shadowScale, 1);
+          shadowMesh.position.z = z - 0.05;  // Behind the layer
+          group.add(shadowMesh);
+        }
+
         return {
           group,
           line,
@@ -1600,6 +1937,8 @@
           lineMaterial,
           fillGeometry,
           fillMaterial,
+          shadowMesh,
+          shadowMaterial,
           progress,
         };
       }
@@ -1628,109 +1967,143 @@
         // Update nav cube to match
         this.updateNavCube();
 
-        // Cascading twist animation (per-layer staggered barrel rolls)
-        if (twistAnimating && this.layers.length > 0) {
-          const elapsed = this.time - twistStartTime;
-          const layerDuration = twistBaseDuration / animSpeed;
-          // Stagger in seconds (convert from ms)
-          const staggerSec = twistStagger / 1000;
+        // Camera path automation (stays in front of model)
+        if (cameraPath !== 'none' && isAnimating) {
+          cameraPathTime += 0.016;  // ~60fps increment
+          const t = cameraPathTime * cameraSpeed;
 
-          let allComplete = true;
+          switch (cameraPath) {
+            case 'orbit':
+              // Half orbit: sweeps left to right (-60° to +60°)
+              const orbitPhase = Math.sin(t * Math.PI * 2);
+              this.targetRotation.y = orbitPhase * (Math.PI / 3);  // ±60°
+              break;
 
-          // Animate each layer with staggered timing (in milliseconds)
-          this.layers.forEach((layer, i) => {
-            // Outer layers (lower index) start first, inner layers follow
-            const staggerDelay = i * staggerSec;
-            const layerElapsed = Math.max(0, elapsed - staggerDelay);
-            const layerProgress = Math.min(layerElapsed / layerDuration, 1);
+            case 'flyover':
+              // Front arc: tilts up/down with subtle side movement
+              const flyPhase = t * Math.PI * 2;
+              this.targetRotation.x = Math.sin(flyPhase) * 0.5;  // ±30° vertical
+              this.targetRotation.y = Math.sin(flyPhase * 0.7) * 0.3;  // subtle horizontal
+              break;
 
-            if (layerProgress < 1) allComplete = false;
+            case 'spiral':
+              // Half orbit with zoom, stays in front
+              const spiralPhase = Math.sin(t * Math.PI * 2);
+              this.targetRotation.y = spiralPhase * (Math.PI / 3);  // ±60°
+              this.targetRotation.x = Math.sin(t * Math.PI * 1.3) * 0.35;  // slight tilt
+              const zoomPhase = (t * 0.5) % 1;
+              this.camera.position.z = 5 + Math.sin(zoomPhase * Math.PI * 2) * 2;
+              break;
 
-            const easedProgress = easeInOutCubic(layerProgress);
+            case 'zoom':
+              // Smooth zoom in/out with gentle sway
+              const zPhase = (t * 0.3) % 1;
+              this.camera.position.z = 4.5 + Math.sin(zPhase * Math.PI * 2) * 2.5;
+              this.targetRotation.y = Math.sin(t * 0.4) * 0.2;  // subtle sway
+              this.targetRotation.x = Math.sin(t * 0.3) * 0.1;
+              break;
 
-            // Multiple full spins (twistSpins * 360°)
-            const totalRotation = twistSpins * Math.PI * 2;
-            layer.group.rotation.z = easedProgress * totalRotation;
-          });
-
-          // Stop when all layers complete
-          if (allComplete) {
-            twistAnimating = false;
-            document.getElementById('twist-btn').classList.remove('active');
-            // Reset layer rotations (they've done full rotations, so visually same)
-            this.layers.forEach(layer => {
-              layer.group.rotation.z = 0;
-            });
+            case 'tilt':
+              // Gentle rocking/nodding motion
+              const tiltT = t * 0.8;
+              this.targetRotation.x = Math.sin(tiltT * Math.PI * 2) * 0.4;  // nod
+              this.targetRotation.y = Math.sin(tiltT * Math.PI * 2 * 0.6) * 0.25;  // sway
+              break;
           }
         }
 
-        // LFO modulation
-        if (lfoTarget !== 'none' && isAnimating) {
-          const freq = 0.3 * animSpeed;
-          const t = this.time * freq * Math.PI * 2;
-          const phase = (this.time * freq) % 1;
-
-          let lfoValue;
-          switch (lfoShape) {
-            case 'sine':
-              lfoValue = (Math.sin(t) + 1) / 2;
-              break;
-            case 'triangle':
-              lfoValue = Math.abs(phase * 2 - 1);
-              break;
-            case 'saw':
-              lfoValue = phase;
-              break;
-          }
-
-          // Apply to correct parameter object and update knob/slider
+        // Helper to apply LFO value to a target
+        const applyLfo = (target, lfoVal) => {
           let actualValue;
           let needsRegenerate = true;
 
-          if (lfoTarget === 'hue') {
-            // Hue: 0-360
-            actualValue = lfoValue * 360;
+          if (target === 'hue') {
+            actualValue = lfoVal * 360;
             currentHue = actualValue;
             document.getElementById('hue').value = actualValue;
             updateColorPreview();
             this.updateColors();
-            needsRegenerate = false;  // Color update doesn't need full regenerate
-          } else if (['petals', 'concavity', 'pointiness', 'innerRadius', 'rotation', 'petalChange', 'height'].includes(lfoTarget)) {
-            // Geometry parameters - map lfoValue (0-1) to parameter range
-            if (lfoTarget === 'petals') {
-              actualValue = Math.round(3 + lfoValue * 13);  // 3-16
-            } else if (lfoTarget === 'innerRadius') {
-              actualValue = 0.05 + lfoValue * 0.75;
-            } else if (lfoTarget === 'rotation') {
-              actualValue = lfoValue * 360;
-            } else if (lfoTarget === 'petalChange') {
-              actualValue = (lfoValue - 0.5) * 2;  // Map 0-1 to -1 to 1
-            } else if (lfoTarget === 'height') {
-              actualValue = lfoValue * 4;  // 0-4
-            } else if (lfoTarget === 'pointiness') {
-              actualValue = 0.2 + lfoValue * 2.8;  // 0.2-3
+            needsRegenerate = false;
+          } else if (['petals', 'concavity', 'pointiness', 'innerRadius', 'rotation', 'petalChange', 'height', 'opacity', 'shadow', 'thickness', 'mandalaAlign', 'colorShift'].includes(target)) {
+            if (target === 'petals') {
+              actualValue = Math.round(3 + lfoVal * 13);
+            } else if (target === 'innerRadius') {
+              actualValue = 0.05 + lfoVal * 0.75;
+            } else if (target === 'rotation') {
+              actualValue = lfoVal * 360;
+            } else if (target === 'petalChange') {
+              actualValue = (lfoVal - 0.5) * 2;
+            } else if (target === 'height') {
+              actualValue = lfoVal * 4;
+            } else if (target === 'pointiness') {
+              actualValue = 0.2 + lfoVal * 2.8;
+            } else if (target === 'opacity' || target === 'shadow') {
+              actualValue = lfoVal;
+            } else if (target === 'thickness') {
+              actualValue = lfoVal * 0.5;  // 0 to 0.5
+            } else if (target === 'mandalaAlign') {
+              actualValue = lfoVal * 180;
+            } else if (target === 'colorShift') {
+              actualValue = (lfoVal - 0.5) * 360;
             } else {
-              actualValue = lfoValue;
+              actualValue = lfoVal;
             }
-            geometry[lfoTarget] = actualValue;
+            geometry[target] = actualValue;
           } else {
-            // Macro parameters
-            actualValue = lfoValue;
-            macros[lfoTarget] = actualValue;
+            if (target === 'complexity') {
+              actualValue = Math.round(2 + lfoVal * 22);
+            } else if (target === 'energyShift') {
+              actualValue = (lfoVal - 0.5) * 2;
+            } else {
+              actualValue = lfoVal;
+            }
+            macros[target] = actualValue;
           }
 
-          // Update knob visual
-          if (lfoTarget !== 'hue' && typeof updateKnobValue === 'function') {
-            updateKnobValue(lfoTarget, actualValue);
+          if (target !== 'hue' && typeof updateKnobValue === 'function') {
+            updateKnobValue(target, actualValue);
           }
 
-          // Regenerate geometry (smooth - every frame)
+          return needsRegenerate;
+        };
+
+        // Calculate LFO value from time, freq, and shape
+        const calcLfoValue = (time, freq, shape) => {
+          const t = time * freq * Math.PI * 2;
+          const phase = (time * freq) % 1;
+          let value;
+          switch (shape) {
+            case 'sine': value = (Math.sin(t) + 1) / 2; break;
+            case 'triangle': value = Math.abs(phase * 2 - 1); break;
+            case 'saw': value = phase; break;
+            default: value = 0.5;
+          }
+          return { value, phase };
+        };
+
+        // LFO modulation
+        let needsRegenerate = false;
+
+        if (isAnimating) {
+          // LFO 1
+          if (lfoTarget !== 'none') {
+            const { value, phase } = calcLfoValue(this.time, lfo1Speed, lfoShape);
+            const scaledValue = 0.5 + (value - 0.5) * lfo1Amp;
+            if (applyLfo(lfoTarget, scaledValue)) needsRegenerate = true;
+            drawLfoViz(lfo1VizCanvas, lfo1VizCtx, phase, scaledValue, lfoShape, lfo1Amp);
+          }
+
+          // LFO 2
+          if (lfo2Target !== 'none') {
+            const { value, phase } = calcLfoValue(this.time, lfo2Speed, lfo2Shape);
+            const scaledValue = 0.5 + (value - 0.5) * lfo2Amp;
+            if (applyLfo(lfo2Target, scaledValue)) needsRegenerate = true;
+            drawLfoViz(lfo2VizCanvas, lfo2VizCtx, phase, scaledValue, lfo2Shape, lfo2Amp);
+          }
+
           if (needsRegenerate) {
             this.generate();
           }
-
-          // Update LFO visualization
-          drawLfoViz(phase, lfoValue);
         }
 
         this.renderer.render(this.scene, this.camera);
@@ -1738,10 +2111,14 @@
       }
 
       exportPNG() {
+        // Store original dimensions
+        const originalWidth = this.width;
+        const originalHeight = this.height;
+
         // Render at high resolution
         const scale = 4;
-        const w = this.width * scale;
-        const h = this.height * scale;
+        const w = originalWidth * scale;
+        const h = originalHeight * scale;
 
         this.renderer.setSize(w, h);
         this.layers.forEach(layer => {
@@ -1751,12 +2128,73 @@
         this.renderer.render(this.scene, this.camera);
 
         const link = document.createElement('a');
-        link.download = 'mandala.png';
+        link.download = 'formgen.png';
         link.href = this.renderer.domElement.toDataURL('image/png');
         link.click();
 
-        // Restore
-        this.handleResize();
+        // Restore to original dimensions
+        this.renderer.setSize(originalWidth, originalHeight);
+        this.camera.aspect = originalWidth / originalHeight;
+        this.camera.updateProjectionMatrix();
+        this.layers.forEach(layer => {
+          layer.lineMaterial.resolution.set(originalWidth, originalHeight);
+        });
+        this.renderer.render(this.scene, this.camera);
+      }
+
+      exportOBJ() {
+        // Create a clean scene with exportable geometry
+        const exportScene = new THREE.Scene();
+
+        // Export fill meshes with transforms baked into geometry
+        this.layers.forEach((layer, i) => {
+          // Clone the fill geometry
+          const fillGeom = layer.fillGeometry.clone();
+
+          // Get the actual Z position from the fill mesh + container offset
+          const fillZ = layer.fill.position.z;
+          const containerZ = this.container.position.z;
+          const totalZ = fillZ + containerZ;
+
+          // Bake the Z position directly into the geometry vertices
+          const positions = fillGeom.attributes.position;
+          for (let j = 0; j < positions.count; j++) {
+            positions.setZ(j, positions.getZ(j) + totalZ);
+          }
+          positions.needsUpdate = true;
+
+          // Apply container rotation to geometry
+          const rotMatrix = new THREE.Matrix4();
+          rotMatrix.makeRotationFromEuler(this.container.rotation);
+          fillGeom.applyMatrix4(rotMatrix);
+
+          const fillMat = new THREE.MeshBasicMaterial({
+            color: layer.fillMaterial.color,
+            side: THREE.DoubleSide
+          });
+          const mesh = new THREE.Mesh(fillGeom, fillMat);
+          mesh.name = `layer_${i}`;
+
+          exportScene.add(mesh);
+        });
+
+        const exporter = new OBJExporter();
+        const objString = exporter.parse(exportScene);
+
+        // Download
+        const blob = new Blob([objString], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `formgen-${Date.now()}.obj`;
+        link.click();
+        URL.revokeObjectURL(url);
+
+        // Clean up
+        exportScene.traverse(obj => {
+          if (obj.geometry) obj.geometry.dispose();
+          if (obj.material) obj.material.dispose();
+        });
       }
     }
 
@@ -1993,15 +2431,19 @@
 
         const knob = new Knob(el, (param, value) => {
           // Update the appropriate state object
-          if (['complexity', 'evolution', 'dimension', 'energy'].includes(param)) {
+          if (['complexity', 'evolution', 'dimension', 'energy', 'energyShift'].includes(param)) {
             macros[param] = value;
             renderer.generate();
-          } else if (param === 'animSpeed') {
-            animSpeed = value;
-          } else if (param === 'twistSpins') {
-            twistSpins = Math.round(value);
-          } else if (param === 'twistStagger') {
-            twistStagger = Math.round(value);
+          } else if (param === 'lfo1Speed') {
+            lfo1Speed = value;
+          } else if (param === 'lfo1Amp') {
+            lfo1Amp = value;
+          } else if (param === 'lfo2Speed') {
+            lfo2Speed = value;
+          } else if (param === 'lfo2Amp') {
+            lfo2Amp = value;
+          } else if (param === 'cameraSpeed') {
+            cameraSpeed = value;
           } else if (param in geometry) {
             geometry[param] = value;
             renderer.generate();
@@ -2023,27 +2465,33 @@
     // LFO VISUALIZATION
     // ===================
 
-    const lfoVizCanvas = document.getElementById('lfo-viz');
-    const lfoVizCtx = lfoVizCanvas.getContext('2d');
-    const lfoVizContainer = document.querySelector('.lfo-viz-container');
+    // LFO 1 visualizer
+    const lfo1VizCanvas = document.getElementById('lfo1-viz');
+    const lfo1VizCtx = lfo1VizCanvas.getContext('2d');
+    const lfo1VizContainer = document.getElementById('lfo1-viz-container');
 
-    function drawLfoViz(phase, currentValue) {
-      const w = lfoVizCanvas.width;
-      const h = lfoVizCanvas.height;
+    // LFO 2 visualizer
+    const lfo2VizCanvas = document.getElementById('lfo2-viz');
+    const lfo2VizCtx = lfo2VizCanvas.getContext('2d');
+    const lfo2VizContainer = document.getElementById('lfo2-viz-container');
+
+    function drawLfoViz(canvas, ctx, phase, currentValue, shape, amp) {
+      const w = canvas.width;
+      const h = canvas.height;
       const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
 
-      lfoVizCtx.clearRect(0, 0, w, h);
+      ctx.clearRect(0, 0, w, h);
 
       // Draw waveform
-      lfoVizCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-      lfoVizCtx.lineWidth = 1;
-      lfoVizCtx.beginPath();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
 
       for (let x = 0; x < w; x++) {
         const t = x / w;
         let y;
 
-        switch (lfoShape) {
+        switch (shape) {
           case 'sine':
             y = (Math.sin(t * Math.PI * 2) + 1) / 2;
             break;
@@ -2055,40 +2503,49 @@
             break;
         }
 
+        // Apply amplitude
+        y = 0.5 + (y - 0.5) * amp;
+
         const screenY = h - y * (h - 4) - 2;
         if (x === 0) {
-          lfoVizCtx.moveTo(x, screenY);
+          ctx.moveTo(x, screenY);
         } else {
-          lfoVizCtx.lineTo(x, screenY);
+          ctx.lineTo(x, screenY);
         }
       }
-      lfoVizCtx.stroke();
+      ctx.stroke();
 
       // Draw current position marker
       const markerX = phase * w;
       const markerY = h - currentValue * (h - 4) - 2;
 
       // Vertical line at current position
-      lfoVizCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-      lfoVizCtx.beginPath();
-      lfoVizCtx.moveTo(markerX, 0);
-      lfoVizCtx.lineTo(markerX, h);
-      lfoVizCtx.stroke();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.beginPath();
+      ctx.moveTo(markerX, 0);
+      ctx.lineTo(markerX, h);
+      ctx.stroke();
 
       // Current value dot
-      lfoVizCtx.fillStyle = accent || 'hsl(15, 85%, 55%)';
-      lfoVizCtx.beginPath();
-      lfoVizCtx.arc(markerX, markerY, 4, 0, Math.PI * 2);
-      lfoVizCtx.fill();
+      ctx.fillStyle = accent || 'hsl(15, 85%, 55%)';
+      ctx.beginPath();
+      ctx.arc(markerX, markerY, 3, 0, Math.PI * 2);
+      ctx.fill();
     }
 
     function updateLfoVizVisibility() {
       if (lfoTarget !== 'none') {
-        lfoVizContainer.classList.add('visible');
-        // Draw initial state
-        drawLfoViz(0, 0.5);
+        lfo1VizContainer.classList.add('visible');
+        drawLfoViz(lfo1VizCanvas, lfo1VizCtx, 0, 0.5, lfoShape, lfo1Amp);
       } else {
-        lfoVizContainer.classList.remove('visible');
+        lfo1VizContainer.classList.remove('visible');
+      }
+
+      if (lfo2Target !== 'none') {
+        lfo2VizContainer.classList.add('visible');
+        drawLfoViz(lfo2VizCanvas, lfo2VizCtx, 0, 0.5, lfo2Shape, lfo2Amp);
+      } else {
+        lfo2VizContainer.classList.remove('visible');
       }
     }
 
@@ -2132,15 +2589,6 @@
       document.getElementById('stop-btn').classList.add('active');
     });
 
-    document.getElementById('twist-btn').addEventListener('click', () => {
-      if (!twistAnimating) {
-        twistAnimating = true;
-        twistStartTime = renderer.time;
-        twistStartValue = geometry.rotation;
-        document.getElementById('twist-btn').classList.add('active');
-      }
-    });
-
     document.getElementById('lfo-target').addEventListener('change', (e) => {
       lfoTarget = e.target.value;
       updateLfoVizVisibility();
@@ -2148,10 +2596,27 @@
 
     document.getElementById('lfo-shape').addEventListener('change', (e) => {
       lfoShape = e.target.value;
-      // Redraw waveform with new shape
       if (lfoTarget !== 'none') {
-        drawLfoViz(0, 0.5);
+        drawLfoViz(lfo1VizCanvas, lfo1VizCtx, 0, 0.5, lfoShape, lfo1Amp);
       }
+    });
+
+    document.getElementById('lfo2-target').addEventListener('change', (e) => {
+      lfo2Target = e.target.value;
+      updateLfoVizVisibility();
+    });
+
+    document.getElementById('lfo2-shape').addEventListener('change', (e) => {
+      lfo2Shape = e.target.value;
+      if (lfo2Target !== 'none') {
+        drawLfoViz(lfo2VizCanvas, lfo2VizCtx, 0, 0.5, lfo2Shape, lfo2Amp);
+      }
+    });
+
+    // Camera path
+    document.getElementById('camera-path').addEventListener('change', (e) => {
+      cameraPath = e.target.value;
+      cameraPathTime = 0;  // Reset camera path time when changing
     });
 
     // Export
@@ -2159,8 +2624,214 @@
       renderer.exportPNG();
     });
 
-    document.getElementById('export-svg').addEventListener('click', () => {
-      alert('SVG export coming soon');
+    document.getElementById('export-obj').addEventListener('click', () => {
+      renderer.exportOBJ();
+    });
+
+    // Video Recording with native MP4 encoding (using WebCodecs + mp4-muxer)
+    const recordBtn = document.getElementById('record-btn');
+    let mp4Muxer = null;
+    let videoEncoder = null;
+    let encodedChunks = [];
+    let frameCount = 0;
+    let captureInterval = null;
+
+    // Check if WebCodecs is available
+    const hasWebCodecs = typeof VideoEncoder !== 'undefined';
+
+    async function startRecordingMP4() {
+      const canvas = document.getElementById('mandala-canvas');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+      // Load mp4-muxer dynamically
+      if (!mp4Muxer) {
+        recordBtn.textContent = 'Loading...';
+        const module = await import('https://esm.sh/mp4-muxer@5.1.3');
+        mp4Muxer = module;
+      }
+
+      const width = canvas.width;
+      const height = canvas.height;
+      const fps = 30;
+
+      encodedChunks = [];
+      frameCount = 0;
+
+      // Create muxer
+      const muxer = new mp4Muxer.Muxer({
+        target: new mp4Muxer.ArrayBufferTarget(),
+        video: {
+          codec: 'avc',
+          width: width,
+          height: height,
+        },
+        fastStart: 'in-memory',
+      });
+
+      // Create encoder
+      videoEncoder = new VideoEncoder({
+        output: (chunk, meta) => {
+          muxer.addVideoChunk(chunk, meta);
+        },
+        error: (e) => console.error('Encoder error:', e),
+      });
+
+      await videoEncoder.configure({
+        codec: 'avc1.640028',
+        width: width,
+        height: height,
+        bitrate: 8_000_000,
+        framerate: fps,
+      });
+
+      isRecording = true;
+      recordingStartTime = Date.now();
+      recordBtn.classList.add('recording');
+
+      // Capture frames at 30fps
+      const frameInterval = 1000 / fps;
+      captureInterval = setInterval(async () => {
+        if (!isRecording) return;
+
+        const bitmap = await createImageBitmap(canvas);
+        const frame = new VideoFrame(bitmap, {
+          timestamp: frameCount * (1_000_000 / fps), // microseconds
+        });
+
+        videoEncoder.encode(frame, { keyFrame: frameCount % 60 === 0 });
+        frame.close();
+        bitmap.close();
+        frameCount++;
+      }, frameInterval);
+
+      // Update duration display
+      const updateDuration = () => {
+        if (!isRecording) return;
+        const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
+        const mins = Math.floor(elapsed / 60);
+        const secs = elapsed % 60;
+        recordBtn.textContent = `Stop (${mins}:${secs.toString().padStart(2, '0')})`;
+        requestAnimationFrame(updateDuration);
+      };
+      updateDuration();
+
+      // Store muxer reference for stop
+      window._currentMuxer = muxer;
+    }
+
+    async function stopRecordingMP4() {
+      clearInterval(captureInterval);
+      isRecording = false;
+
+      recordBtn.textContent = 'Encoding...';
+
+      // Flush encoder
+      await videoEncoder.flush();
+      videoEncoder.close();
+
+      // Finalize muxer
+      const muxer = window._currentMuxer;
+      muxer.finalize();
+
+      const buffer = muxer.target.buffer;
+      const blob = new Blob([buffer], { type: 'video/mp4' });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `formgen-${Date.now()}.mp4`;
+      link.click();
+      URL.revokeObjectURL(url);
+
+      recordBtn.classList.remove('recording');
+      recordBtn.textContent = 'Record';
+    }
+
+    // Fallback to WebM if WebCodecs not available
+    function startRecordingWebM() {
+      const canvas = document.getElementById('mandala-canvas');
+      const stream = canvas.captureStream(30);
+
+      const mimeTypes = [
+        'video/webm;codecs=vp9',
+        'video/webm;codecs=vp8',
+        'video/webm',
+      ];
+
+      let mimeType = mimeTypes.find(type => MediaRecorder.isTypeSupported(type)) || '';
+
+      mediaRecorder = new MediaRecorder(stream, {
+        mimeType: mimeType,
+        videoBitsPerSecond: 12000000
+      });
+
+      recordedChunks = [];
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          recordedChunks.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: mimeType || 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `formgen-${Date.now()}.webm`;
+        link.click();
+        URL.revokeObjectURL(url);
+        recordBtn.textContent = 'Record';
+      };
+
+      mediaRecorder.start(33);
+      isRecording = true;
+      recordingStartTime = Date.now();
+      recordBtn.classList.add('recording');
+
+      const updateDuration = () => {
+        if (!isRecording) return;
+        const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
+        const mins = Math.floor(elapsed / 60);
+        const secs = elapsed % 60;
+        recordBtn.textContent = `Stop (${mins}:${secs.toString().padStart(2, '0')})`;
+        requestAnimationFrame(updateDuration);
+      };
+      updateDuration();
+    }
+
+    function stopRecordingWebM() {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+      isRecording = false;
+      recordBtn.classList.remove('recording');
+    }
+
+    // Use WebCodecs MP4 if available, otherwise WebM
+    function startRecording() {
+      if (hasWebCodecs) {
+        startRecordingMP4();
+      } else {
+        console.log('WebCodecs not available, using WebM fallback');
+        startRecordingWebM();
+      }
+    }
+
+    function stopRecording() {
+      if (hasWebCodecs) {
+        stopRecordingMP4();
+      } else {
+        stopRecordingWebM();
+      }
+    }
+
+    recordBtn.addEventListener('click', () => {
+      if (isRecording) {
+        stopRecording();
+      } else {
+        startRecording();
+      }
     });
 
     // Copy config to clipboard
@@ -2172,7 +2843,7 @@
         geometry: { ...geometry },
         animation: {
           speed: animSpeed,
-          spins: twistSpins,
+          twistDegrees: twistDegrees,
           stagger: twistStagger
         }
       };
@@ -2223,9 +2894,9 @@
             animSpeed = config.animation.speed;
             updateKnobValue('animSpeed', animSpeed);
           }
-          if (config.animation.spins !== undefined) {
-            twistSpins = config.animation.spins;
-            updateKnobValue('twistSpins', twistSpins);
+          if (config.animation.twistDegrees !== undefined) {
+            twistDegrees = config.animation.twistDegrees;
+            updateKnobValue('twistDegrees', twistDegrees);
           }
           if (config.animation.stagger !== undefined) {
             twistStagger = config.animation.stagger;
@@ -2248,15 +2919,6 @@
     updateColorPreview();
     renderer.generate();
     renderer.animate(0);
-
-    // Auto-play 1 spin on load
-    setTimeout(() => {
-      twistSpins = 1;
-      updateKnobValue('twistSpins', 1);
-      twistAnimating = true;
-      twistStartTime = renderer.time;
-      document.getElementById('twist-btn').classList.add('active');
-    }, 500);
   </script>
 </body>
 </html>
