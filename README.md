@@ -58,9 +58,9 @@ FormGen is the first step toward **the easiest way for creators to generate high
 
 See [STRATEGY.md](STRATEGY.md) for the full product vision and roadmap.
 
-## Domain
+## Live
 
-[formgen.design](https://formgen.design) (planned)
+**[formgen.design](https://formgen.design)**
 
 ## Documentation
 
