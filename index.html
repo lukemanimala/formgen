@@ -360,6 +360,63 @@
       display: none;
     }
 
+    .audio-control {
+      margin-top: 8px;
+    }
+
+    .audio-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+
+    .audio-info span {
+      flex: 1;
+      font-size: 11px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .audio-play-btn {
+      padding: 4px 12px;
+      background: var(--accent);
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .audio-play-btn.playing {
+      background: var(--text-tertiary);
+    }
+
+    .audio-reset-btn {
+      padding: 4px 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-tertiary);
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .audio-reset-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
     .lfo-viz-container.visible {
       display: block;
     }
@@ -768,6 +825,25 @@
           <button class="anim-btn" id="stop-btn">Stop</button>
         </div>
 
+        <!-- Audio -->
+        <div class="section-label" style="margin-top: 12px; font-size: 9px;">Audio</div>
+        <div class="audio-control">
+          <input type="file" id="audio-file" accept="audio/*" style="display: none;">
+          <button class="export-btn" id="audio-upload-btn" style="width: 100%;">Upload Audio</button>
+          <div class="audio-info" id="audio-info" style="display: none;">
+            <span id="audio-name"></span>
+            <button class="audio-play-btn" id="audio-play-btn">Play</button>
+            <button class="audio-reset-btn" id="audio-reset-btn">×</button>
+          </div>
+        </div>
+        <div class="knob-row" style="margin-top: 8px;">
+          <div class="knob-control" data-param="audioSmooth" data-min="0" data-max="0.95" data-value="0.85">
+            <div class="knob-container"></div>
+            <div class="knob-name">Smooth</div>
+            <div class="knob-value">0.85</div>
+          </div>
+        </div>
+
         <!-- LFO 1 -->
         <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 1</div>
         <div class="lfo-control">
@@ -796,6 +872,11 @@
             <option value="sine">Sine</option>
             <option value="triangle">Triangle</option>
             <option value="saw">Saw</option>
+            <optgroup label="Audio">
+              <option value="bass">Bass</option>
+              <option value="mid">Mid</option>
+              <option value="treble">Treble</option>
+            </optgroup>
           </select>
         </div>
         <div class="knob-row" style="margin-top: 8px;">
@@ -808,6 +889,11 @@
             <div class="knob-container"></div>
             <div class="knob-name">Amp</div>
             <div class="knob-value">1.00</div>
+          </div>
+          <div class="knob-control" data-param="lfo1Offset" data-min="0" data-max="1" data-value="0.5">
+            <div class="knob-container"></div>
+            <div class="knob-name">Center</div>
+            <div class="knob-value">0.50</div>
           </div>
         </div>
         <div class="lfo-viz-container" id="lfo1-viz-container">
@@ -842,6 +928,11 @@
             <option value="sine">Sine</option>
             <option value="triangle">Triangle</option>
             <option value="saw">Saw</option>
+            <optgroup label="Audio">
+              <option value="bass">Bass</option>
+              <option value="mid">Mid</option>
+              <option value="treble">Treble</option>
+            </optgroup>
           </select>
         </div>
         <div class="knob-row" style="margin-top: 8px;">
@@ -855,9 +946,126 @@
             <div class="knob-name">Amp</div>
             <div class="knob-value">1.00</div>
           </div>
+          <div class="knob-control" data-param="lfo2Offset" data-min="0" data-max="1" data-value="0.5">
+            <div class="knob-container"></div>
+            <div class="knob-name">Center</div>
+            <div class="knob-value">0.50</div>
+          </div>
         </div>
         <div class="lfo-viz-container" id="lfo2-viz-container">
           <canvas id="lfo2-viz" width="200" height="32"></canvas>
+        </div>
+
+        <!-- LFO 3 -->
+        <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 3</div>
+        <div class="lfo-control">
+          <select class="lfo-select" id="lfo3-target">
+            <option value="none">Off</option>
+            <option value="complexity">Layers</option>
+            <option value="evolution">Twist</option>
+            <option value="dimension">Dimension</option>
+            <option value="energy">Energy</option>
+            <option value="energyShift">Energy Shift</option>
+            <option value="hue">Hue</option>
+            <option value="petals">Petals</option>
+            <option value="concavity">Concavity</option>
+            <option value="pointiness">Pointiness</option>
+            <option value="petalChange">Petal Change</option>
+            <option value="innerRadius">Inner Radius</option>
+            <option value="rotation">Rotation</option>
+            <option value="height">Height</option>
+            <option value="opacity">Opacity</option>
+            <option value="shadow">Shadow</option>
+            <option value="thickness">Thickness</option>
+            <option value="mandalaAlign">Mandala Align</option>
+            <option value="colorShift">Color Shift</option>
+          </select>
+          <select class="lfo-select" id="lfo3-shape">
+            <option value="sine">Sine</option>
+            <option value="triangle">Triangle</option>
+            <option value="saw">Saw</option>
+            <optgroup label="Audio">
+              <option value="bass">Bass</option>
+              <option value="mid">Mid</option>
+              <option value="treble">Treble</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="knob-row" style="margin-top: 8px;">
+          <div class="knob-control" data-param="lfo3Speed" data-min="0.05" data-max="2" data-value="0.15">
+            <div class="knob-container"></div>
+            <div class="knob-name">Speed</div>
+            <div class="knob-value">0.15</div>
+          </div>
+          <div class="knob-control" data-param="lfo3Amp" data-min="0" data-max="1" data-value="1">
+            <div class="knob-container"></div>
+            <div class="knob-name">Amp</div>
+            <div class="knob-value">1.00</div>
+          </div>
+          <div class="knob-control" data-param="lfo3Offset" data-min="0" data-max="1" data-value="0.5">
+            <div class="knob-container"></div>
+            <div class="knob-name">Center</div>
+            <div class="knob-value">0.50</div>
+          </div>
+        </div>
+        <div class="lfo-viz-container" id="lfo3-viz-container">
+          <canvas id="lfo3-viz" width="200" height="32"></canvas>
+        </div>
+
+        <!-- LFO 4 -->
+        <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 4</div>
+        <div class="lfo-control">
+          <select class="lfo-select" id="lfo4-target">
+            <option value="none">Off</option>
+            <option value="complexity">Layers</option>
+            <option value="evolution">Twist</option>
+            <option value="dimension">Dimension</option>
+            <option value="energy">Energy</option>
+            <option value="energyShift">Energy Shift</option>
+            <option value="hue">Hue</option>
+            <option value="petals">Petals</option>
+            <option value="concavity">Concavity</option>
+            <option value="pointiness">Pointiness</option>
+            <option value="petalChange">Petal Change</option>
+            <option value="innerRadius">Inner Radius</option>
+            <option value="rotation">Rotation</option>
+            <option value="height">Height</option>
+            <option value="opacity">Opacity</option>
+            <option value="shadow">Shadow</option>
+            <option value="thickness">Thickness</option>
+            <option value="mandalaAlign">Mandala Align</option>
+            <option value="colorShift">Color Shift</option>
+          </select>
+          <select class="lfo-select" id="lfo4-shape">
+            <option value="sine">Sine</option>
+            <option value="triangle">Triangle</option>
+            <option value="saw">Saw</option>
+            <optgroup label="Audio">
+              <option value="bass">Bass</option>
+              <option value="mid">Mid</option>
+              <option value="treble">Treble</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="knob-row" style="margin-top: 8px;">
+          <div class="knob-control" data-param="lfo4Speed" data-min="0.05" data-max="2" data-value="0.1">
+            <div class="knob-container"></div>
+            <div class="knob-name">Speed</div>
+            <div class="knob-value">0.10</div>
+          </div>
+          <div class="knob-control" data-param="lfo4Amp" data-min="0" data-max="1" data-value="1">
+            <div class="knob-container"></div>
+            <div class="knob-name">Amp</div>
+            <div class="knob-value">1.00</div>
+          </div>
+          <div class="knob-control" data-param="lfo4Offset" data-min="0" data-max="1" data-value="0.5">
+            <div class="knob-container"></div>
+            <div class="knob-name">Center</div>
+            <div class="knob-value">0.50</div>
+          </div>
+        </div>
+        <div class="lfo-viz-container" id="lfo4-viz-container">
+          <canvas id="lfo4-viz" width="200" height="32"></canvas>
         </div>
 
         <!-- Camera Path -->
@@ -962,12 +1170,28 @@
     let lfoShape = 'sine';
     let lfo1Speed = 0.3;
     let lfo1Amp = 1.0;
+    let lfo1Offset = 0.5;
 
     // LFO 2 state
     let lfo2Target = 'none';
     let lfo2Shape = 'sine';
     let lfo2Speed = 0.2;
     let lfo2Amp = 1.0;
+    let lfo2Offset = 0.5;
+
+    // LFO 3 state
+    let lfo3Target = 'none';
+    let lfo3Shape = 'sine';
+    let lfo3Speed = 0.15;
+    let lfo3Amp = 1.0;
+    let lfo3Offset = 0.5;
+
+    // LFO 4 state
+    let lfo4Target = 'none';
+    let lfo4Shape = 'sine';
+    let lfo4Speed = 0.1;
+    let lfo4Amp = 1.0;
+    let lfo4Offset = 0.5;
 
     // Recording state
     let mediaRecorder = null;
@@ -979,6 +1203,15 @@
     let cameraPath = 'none';  // none, orbit, flyover, spiral, zoom
     let cameraSpeed = 0.3;
     let cameraPathTime = 0;
+
+    // Audio state
+    let audioContext = null;
+    let audioAnalyser = null;
+    let audioSource = null;
+    let audioElement = null;
+    let audioData = new Uint8Array(256);
+    let audioLevels = { bass: 0, mid: 0, treble: 0 };
+    let audioSmooth = 0.85;  // Higher = smoother/calmer (0-0.95)
 
     // Geometry controls
     const geometry = {
@@ -2076,6 +2309,9 @@
             case 'sine': value = (Math.sin(t) + 1) / 2; break;
             case 'triangle': value = Math.abs(phase * 2 - 1); break;
             case 'saw': value = phase; break;
+            case 'bass': value = audioLevels.bass; break;
+            case 'mid': value = audioLevels.mid; break;
+            case 'treble': value = audioLevels.treble; break;
             default: value = 0.5;
           }
           return { value, phase };
@@ -2085,10 +2321,12 @@
         let needsRegenerate = false;
 
         if (isAnimating) {
+          // Update audio levels for audio-reactive LFOs
+          updateAudioLevels();
           // LFO 1
           if (lfoTarget !== 'none') {
             const { value, phase } = calcLfoValue(this.time, lfo1Speed, lfoShape);
-            const scaledValue = 0.5 + (value - 0.5) * lfo1Amp;
+            const scaledValue = lfo1Offset + (value - 0.5) * lfo1Amp;
             if (applyLfo(lfoTarget, scaledValue)) needsRegenerate = true;
             drawLfoViz(lfo1VizCanvas, lfo1VizCtx, phase, scaledValue, lfoShape, lfo1Amp);
           }
@@ -2096,9 +2334,25 @@
           // LFO 2
           if (lfo2Target !== 'none') {
             const { value, phase } = calcLfoValue(this.time, lfo2Speed, lfo2Shape);
-            const scaledValue = 0.5 + (value - 0.5) * lfo2Amp;
+            const scaledValue = lfo2Offset + (value - 0.5) * lfo2Amp;
             if (applyLfo(lfo2Target, scaledValue)) needsRegenerate = true;
             drawLfoViz(lfo2VizCanvas, lfo2VizCtx, phase, scaledValue, lfo2Shape, lfo2Amp);
+          }
+
+          // LFO 3
+          if (lfo3Target !== 'none') {
+            const { value, phase } = calcLfoValue(this.time, lfo3Speed, lfo3Shape);
+            const scaledValue = lfo3Offset + (value - 0.5) * lfo3Amp;
+            if (applyLfo(lfo3Target, scaledValue)) needsRegenerate = true;
+            drawLfoViz(lfo3VizCanvas, lfo3VizCtx, phase, scaledValue, lfo3Shape, lfo3Amp);
+          }
+
+          // LFO 4
+          if (lfo4Target !== 'none') {
+            const { value, phase } = calcLfoValue(this.time, lfo4Speed, lfo4Shape);
+            const scaledValue = lfo4Offset + (value - 0.5) * lfo4Amp;
+            if (applyLfo(lfo4Target, scaledValue)) needsRegenerate = true;
+            drawLfoViz(lfo4VizCanvas, lfo4VizCtx, phase, scaledValue, lfo4Shape, lfo4Amp);
           }
 
           if (needsRegenerate) {
@@ -2438,12 +2692,30 @@
             lfo1Speed = value;
           } else if (param === 'lfo1Amp') {
             lfo1Amp = value;
+          } else if (param === 'lfo1Offset') {
+            lfo1Offset = value;
           } else if (param === 'lfo2Speed') {
             lfo2Speed = value;
           } else if (param === 'lfo2Amp') {
             lfo2Amp = value;
+          } else if (param === 'lfo2Offset') {
+            lfo2Offset = value;
+          } else if (param === 'lfo3Speed') {
+            lfo3Speed = value;
+          } else if (param === 'lfo3Amp') {
+            lfo3Amp = value;
+          } else if (param === 'lfo3Offset') {
+            lfo3Offset = value;
+          } else if (param === 'lfo4Speed') {
+            lfo4Speed = value;
+          } else if (param === 'lfo4Amp') {
+            lfo4Amp = value;
+          } else if (param === 'lfo4Offset') {
+            lfo4Offset = value;
           } else if (param === 'cameraSpeed') {
             cameraSpeed = value;
+          } else if (param === 'audioSmooth') {
+            audioSmooth = value;
           } else if (param in geometry) {
             geometry[param] = value;
             renderer.generate();
@@ -2474,6 +2746,16 @@
     const lfo2VizCanvas = document.getElementById('lfo2-viz');
     const lfo2VizCtx = lfo2VizCanvas.getContext('2d');
     const lfo2VizContainer = document.getElementById('lfo2-viz-container');
+
+    // LFO 3 visualizer
+    const lfo3VizCanvas = document.getElementById('lfo3-viz');
+    const lfo3VizCtx = lfo3VizCanvas.getContext('2d');
+    const lfo3VizContainer = document.getElementById('lfo3-viz-container');
+
+    // LFO 4 visualizer
+    const lfo4VizCanvas = document.getElementById('lfo4-viz');
+    const lfo4VizCtx = lfo4VizCanvas.getContext('2d');
+    const lfo4VizContainer = document.getElementById('lfo4-viz-container');
 
     function drawLfoViz(canvas, ctx, phase, currentValue, shape, amp) {
       const w = canvas.width;
@@ -2547,6 +2829,20 @@
       } else {
         lfo2VizContainer.classList.remove('visible');
       }
+
+      if (lfo3Target !== 'none') {
+        lfo3VizContainer.classList.add('visible');
+        drawLfoViz(lfo3VizCanvas, lfo3VizCtx, 0, 0.5, lfo3Shape, lfo3Amp);
+      } else {
+        lfo3VizContainer.classList.remove('visible');
+      }
+
+      if (lfo4Target !== 'none') {
+        lfo4VizContainer.classList.add('visible');
+        drawLfoViz(lfo4VizCanvas, lfo4VizCtx, 0, 0.5, lfo4Shape, lfo4Amp);
+      } else {
+        lfo4VizContainer.classList.remove('visible');
+      }
     }
 
     // ===================
@@ -2589,6 +2885,133 @@
       document.getElementById('stop-btn').classList.add('active');
     });
 
+    // Audio controls
+    const audioFileInput = document.getElementById('audio-file');
+    const audioUploadBtn = document.getElementById('audio-upload-btn');
+    const audioInfo = document.getElementById('audio-info');
+    const audioNameSpan = document.getElementById('audio-name');
+    const audioPlayBtn = document.getElementById('audio-play-btn');
+
+    audioUploadBtn.addEventListener('click', () => {
+      audioFileInput.click();
+    });
+
+    audioFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Create audio context on first upload
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        audioAnalyser = audioContext.createAnalyser();
+        audioAnalyser.fftSize = 256;
+        audioData = new Uint8Array(audioAnalyser.frequencyBinCount);
+      }
+
+      // Clean up previous audio
+      if (audioElement) {
+        audioElement.pause();
+        if (audioSource) {
+          audioSource.disconnect();
+        }
+      }
+
+      // Create audio element from file
+      audioElement = new Audio(URL.createObjectURL(file));
+      audioElement.crossOrigin = 'anonymous';
+
+      audioElement.addEventListener('canplaythrough', () => {
+        // Connect to analyser
+        audioSource = audioContext.createMediaElementSource(audioElement);
+        audioSource.connect(audioAnalyser);
+        audioAnalyser.connect(audioContext.destination);
+
+        // Show audio info
+        audioNameSpan.textContent = file.name.substring(0, 20) + (file.name.length > 20 ? '...' : '');
+        audioInfo.style.display = 'flex';
+        audioUploadBtn.style.display = 'none';
+      }, { once: true });
+    });
+
+    audioPlayBtn.addEventListener('click', () => {
+      if (!audioElement) return;
+
+      if (audioElement.paused) {
+        audioContext.resume();
+        audioElement.play();
+        audioPlayBtn.textContent = 'Pause';
+        audioPlayBtn.classList.add('playing');
+        // Auto-start animation when audio plays
+        isAnimating = true;
+        document.getElementById('play-btn').classList.add('active');
+        document.getElementById('stop-btn').classList.remove('active');
+      } else {
+        audioElement.pause();
+        audioPlayBtn.textContent = 'Play';
+        audioPlayBtn.classList.remove('playing');
+      }
+    });
+
+    const audioResetBtn = document.getElementById('audio-reset-btn');
+    audioResetBtn.addEventListener('click', () => {
+      // Stop and clean up audio
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.src = '';
+        audioElement = null;
+      }
+      if (audioSource) {
+        audioSource.disconnect();
+        audioSource = null;
+      }
+
+      // Reset UI
+      audioInfo.style.display = 'none';
+      audioUploadBtn.style.display = 'block';
+      audioPlayBtn.textContent = 'Play';
+      audioPlayBtn.classList.remove('playing');
+      audioFileInput.value = '';
+
+      // Reset audio levels
+      audioLevels = { bass: 0, mid: 0, treble: 0 };
+    });
+
+    // Update audio levels from analyser
+    function updateAudioLevels() {
+      if (!audioAnalyser || !audioElement || audioElement.paused) {
+        audioLevels = { bass: 0, mid: 0, treble: 0 };
+        return;
+      }
+
+      audioAnalyser.getByteFrequencyData(audioData);
+      const binCount = audioData.length;
+
+      // Split frequency bins into bass (0-15%), mid (15-50%), treble (50-100%)
+      const bassEnd = Math.floor(binCount * 0.15);
+      const midEnd = Math.floor(binCount * 0.5);
+
+      let bassSum = 0, midSum = 0, trebleSum = 0;
+
+      for (let i = 0; i < binCount; i++) {
+        if (i < bassEnd) {
+          bassSum += audioData[i];
+        } else if (i < midEnd) {
+          midSum += audioData[i];
+        } else {
+          trebleSum += audioData[i];
+        }
+      }
+
+      // Normalize to 0-1 range with smoothing (higher = calmer/smoother)
+      const newBass = bassSum / bassEnd / 255;
+      const newMid = midSum / (midEnd - bassEnd) / 255;
+      const newTreble = trebleSum / (binCount - midEnd) / 255;
+
+      audioLevels.bass = audioLevels.bass * audioSmooth + newBass * (1 - audioSmooth);
+      audioLevels.mid = audioLevels.mid * audioSmooth + newMid * (1 - audioSmooth);
+      audioLevels.treble = audioLevels.treble * audioSmooth + newTreble * (1 - audioSmooth);
+    }
+
     document.getElementById('lfo-target').addEventListener('change', (e) => {
       lfoTarget = e.target.value;
       updateLfoVizVisibility();
@@ -2610,6 +3033,30 @@
       lfo2Shape = e.target.value;
       if (lfo2Target !== 'none') {
         drawLfoViz(lfo2VizCanvas, lfo2VizCtx, 0, 0.5, lfo2Shape, lfo2Amp);
+      }
+    });
+
+    document.getElementById('lfo3-target').addEventListener('change', (e) => {
+      lfo3Target = e.target.value;
+      updateLfoVizVisibility();
+    });
+
+    document.getElementById('lfo3-shape').addEventListener('change', (e) => {
+      lfo3Shape = e.target.value;
+      if (lfo3Target !== 'none') {
+        drawLfoViz(lfo3VizCanvas, lfo3VizCtx, 0, 0.5, lfo3Shape, lfo3Amp);
+      }
+    });
+
+    document.getElementById('lfo4-target').addEventListener('change', (e) => {
+      lfo4Target = e.target.value;
+      updateLfoVizVisibility();
+    });
+
+    document.getElementById('lfo4-shape').addEventListener('change', (e) => {
+      lfo4Shape = e.target.value;
+      if (lfo4Target !== 'none') {
+        drawLfoViz(lfo4VizCanvas, lfo4VizCtx, 0, 0.5, lfo4Shape, lfo4Amp);
       }
     });
 

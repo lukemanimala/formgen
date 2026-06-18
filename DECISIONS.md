@@ -108,3 +108,69 @@
 - More interesting exports for Notch/TouchDesigner
 - Slightly higher geometry complexity
 - Can be animated via LFO
+
+---
+
+## ADR-008: Audio-Reactive LFO System
+
+**Date**: 2026-06-17
+
+**Context**: Phase 1 roadmap calls for audio-reactive visuals. Traditional approach would be separate audio analysis mode.
+
+**Decision**: Integrate audio reactivity directly into the existing LFO system by adding Bass, Mid, and Treble as LFO "shapes" alongside Sine, Triangle, and Saw.
+
+**Consequences**:
+- No separate audio mode - unified animation system
+- Any parameter that can be LFO-animated can be audio-reactive
+- Multiple parameters can react to different frequency bands simultaneously
+- Users already understand LFO controls, minimal learning curve
+- Web Audio API with AnalyserNode for FFT frequency analysis
+
+---
+
+## ADR-009: 4 LFO Architecture
+
+**Date**: 2026-06-17
+
+**Context**: With audio reactivity, users want multiple parameters animated simultaneously (e.g., bass drives scale, treble drives rotation, mid drives color).
+
+**Decision**: Expand from 2 LFOs to 4 independent LFOs, each with target, shape, speed, amplitude, and center controls.
+
+**Consequences**:
+- Up to 4 simultaneous parameter animations
+- Rich compound animations with audio + traditional LFOs
+- More UI complexity, but each LFO is self-contained
+- Center/offset control allows biasing oscillation midpoint
+
+---
+
+## ADR-010: LFO Center/Offset Control
+
+**Date**: 2026-06-17
+
+**Context**: Default LFO oscillates 0-1 around midpoint 0.5. Users wanted control over where the oscillation centers.
+
+**Decision**: Add Center knob (0-1) to each LFO. Formula: `center + (lfoValue - 0.5) * amplitude`
+
+**Consequences**:
+- Center=0.5 (default): oscillates evenly around middle
+- Center=0.2: biases toward low values
+- Center=0.8: biases toward high values
+- Combined with amplitude, precise control over oscillation range
+- Particularly useful for subtle variations around a specific value
+
+---
+
+## ADR-011: Audio Smoothing for Calm Effects
+
+**Date**: 2026-06-17
+
+**Context**: Raw audio frequency data is jittery, creating nervous/frantic animations rather than smooth, calm visuals.
+
+**Decision**: Implement exponential smoothing with adjustable Smooth knob (default 0.85). Formula: `smoothed = old * smooth + new * (1 - smooth)`
+
+**Consequences**:
+- Higher smoothing (0.9+): slow, flowing response to audio
+- Lower smoothing (0.3-0.5): punchy, reactive response
+- Default 0.85 provides calm, organic movement
+- User-adjustable for different musical styles

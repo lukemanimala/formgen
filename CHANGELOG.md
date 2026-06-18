@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2024-01-XX
+## [Unreleased] - 2026-06-17
+
+### Added
+- **4 LFO System**: Expanded from 2 to 4 independent oscillators
+- **LFO Center/Offset**: Each LFO has adjustable oscillation midpoint (0-1)
+- **Audio-Reactive Animation**: Upload audio files for reactive visuals
+- **Frequency Band Analysis**: Bass, Mid, Treble bands as LFO shapes
+- **Audio Smoothing**: Adjustable smoothing (0.85 default) for calm effects
+- **Audio Reset**: Clear button to remove audio and return to upload state
+
+## [0.2.0] - 2026-06-16
 
 ### Added
 - **OBJ Export**: 3D model export for Notch, TouchDesigner, Blender

@@ -14,8 +14,10 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 - **Color**: Hue control with layer-by-layer color shift
 
 ### Animation
-- **Dual LFO system**: Two independent oscillators with Speed and Amplitude
+- **4 LFO system**: Four independent oscillators with Speed, Amplitude, and Center controls
 - **LFO shapes**: Sine, Triangle, Saw
+- **Audio-reactive**: Bass, Mid, Treble frequency bands drive any parameter
+- **Audio smoothing**: Adjustable smoothing for calm or punchy audio response
 - **Camera paths**: Orbit, Flyover, Spiral, Zoom, Tilt
 - **Animatable parameters**: All geometry and macro controls
 
@@ -29,6 +31,7 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 
 - **Three.js** - 3D rendering
 - **WebCodecs + mp4-muxer** - Native MP4 video encoding
+- **Web Audio API** - Audio analysis for reactive animations
 - **OBJExporter** - 3D model export
 
 ## Quick Start
