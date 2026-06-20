@@ -53,11 +53,18 @@ Log architectural and product decisions using ADR format:
 **Consequences**: What are the tradeoffs?
 ```
 
-### 5. Summarize
+### 5. Commit and Push
 
 After updating docs:
+- Stage all changes with `git add -A`
+- Commit with descriptive message summarizing the changes
+- Push to remote
+
+### 6. Summarize
+
+After pushing:
 - List what was documented
-- Suggest next steps or open questions
+- Confirm commit and push succeeded
 - Note any technical debt or future considerations
 
 ## Usage

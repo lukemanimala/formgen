@@ -1811,7 +1811,7 @@
         window.addEventListener('resize', this.handleResize);
 
         this.initOrbitControls();
-        this.initNavCube();
+        this.initViewCube();
       }
 
       initOrbitControls() {
@@ -1894,7 +1894,7 @@
         }, { passive: false });
       }
 
-      initNavCube() {
+      initViewCube() {
         const navCube = document.getElementById('nav-cube');
         const faces = document.querySelectorAll('.nav-cube-face');
         const arrows = document.querySelectorAll('.nav-arrow');
@@ -1953,15 +1953,15 @@
           this.camera.position.z = 6;
         });
 
-        this.navCube = navCube;
+        this.viewCube = navCube;
       }
 
-      updateNavCube() {
-        if (!this.navCube) return;
-        // Sync nav cube rotation with model rotation (inverted for visual match)
-        const rotX = -this.currentRotation.x * (180 / Math.PI);
+      updateViewCube() {
+        if (!this.viewCube) return;
+        // Sync view cube rotation with model rotation
+        const rotX = this.currentRotation.x * (180 / Math.PI);
         const rotY = -this.currentRotation.y * (180 / Math.PI);
-        this.navCube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        this.viewCube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
       }
 
       handleResize() {
@@ -2197,8 +2197,8 @@
         this.container.rotation.x = this.currentRotation.x;
         this.container.rotation.y = this.currentRotation.y;
 
-        // Update nav cube to match
-        this.updateNavCube();
+        // Update view cube to match
+        this.updateViewCube();
 
         // Camera path automation (stays in front of model)
         if (cameraPath !== 'none' && isAnimating) {
