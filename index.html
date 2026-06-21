@@ -893,7 +893,7 @@
           </div>
           <div class="knob-control" data-param="lfo1Offset" data-min="0" data-max="1" data-value="0.5">
             <div class="knob-container"></div>
-            <div class="knob-name">Center</div>
+            <div class="knob-name">Bias</div>
             <div class="knob-value">0.50</div>
           </div>
         </div>
@@ -949,7 +949,7 @@
           </div>
           <div class="knob-control" data-param="lfo2Offset" data-min="0" data-max="1" data-value="0.5">
             <div class="knob-container"></div>
-            <div class="knob-name">Center</div>
+            <div class="knob-name">Bias</div>
             <div class="knob-value">0.50</div>
           </div>
         </div>
@@ -1005,7 +1005,7 @@
           </div>
           <div class="knob-control" data-param="lfo3Offset" data-min="0" data-max="1" data-value="0.5">
             <div class="knob-container"></div>
-            <div class="knob-name">Center</div>
+            <div class="knob-name">Bias</div>
             <div class="knob-value">0.50</div>
           </div>
         </div>
@@ -1061,7 +1061,7 @@
           </div>
           <div class="knob-control" data-param="lfo4Offset" data-min="0" data-max="1" data-value="0.5">
             <div class="knob-container"></div>
-            <div class="knob-name">Center</div>
+            <div class="knob-name">Bias</div>
             <div class="knob-value">0.50</div>
           </div>
         </div>
@@ -2330,8 +2330,12 @@
           } else {
             if (target === 'complexity') {
               actualValue = Math.round(2 + lfoVal * 22);
+            } else if (target === 'evolution') {
+              actualValue = (lfoVal - 0.5) * 8;  // Maps 0-1 to -4 to +4
             } else if (target === 'energyShift') {
               actualValue = (lfoVal - 0.5) * 2;
+            } else if (target === 'dimension') {
+              actualValue = lfoVal;  // 0-1 range
             } else {
               actualValue = lfoVal;
             }
