@@ -7,9 +7,9 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 ## Features
 
 ### Pattern Generation
-- **6 pattern types**: Mandala, Spiral, Star, Rosette, Flower, Spirograph
-- **Macro controls**: Layers, Twist, Dimension, Energy
-- **Geometry controls**: Petals, Concavity, Pointiness, Inner Radius, Rotation, Height
+- **7 pattern types**: Mandala, Spiral, Star, Polygon, Rosette, Flower, Spirograph
+- **Macro controls**: Layers, Twist, Depth, Energy
+- **Geometry controls**: Petals, Concavity, Pointiness, Inner Radius, Petal Change, Align, Rotation, Height
 - **Layer effects**: Opacity, Shadow, Thickness (3D extrusion)
 - **Color**: Hue control with layer-by-layer color shift
 

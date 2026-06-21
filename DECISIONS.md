@@ -174,3 +174,36 @@
 - Lower smoothing (0.3-0.5): punchy, reactive response
 - Default 0.85 provides calm, organic movement
 - User-adjustable for different musical styles
+
+---
+
+## ADR-012: Universal Geometry Controls
+
+**Date**: 2026-06-20
+
+**Context**: Geometry knobs (Petals, Concavity, Pointiness, Petal Change, Align) only worked with certain patterns. Users turning knobs saw no effect on some patterns, creating confusion and eroding trust in the UI.
+
+**Decision**: Make every geometry knob work with every pattern. Apply North Star framework: "Does this turn an idea into something real, fast, and obvious?" Dead controls fail "obvious" and "fast" tests.
+
+**Consequences**:
+- Every knob does something on every pattern
+- Consistent mental model: turn knob, see change
+- Some mappings are interpretive (e.g., Pointiness → curve tightness in Spirograph)
+- More code per pattern, but clearer user experience
+- Evaluated against alternative (show/hide knobs per pattern) - rejected due to UI instability
+
+---
+
+## ADR-013: Depth Curve for Layer Distribution
+
+**Date**: 2026-06-20
+
+**Context**: "Dimension" macro calculated perspectiveTilt but never applied it - dead code. The knob only affected layer spacing indirectly. Users expected it to do something visible.
+
+**Decision**: Rename to "Depth" and implement actual functionality: control non-linear z-distribution of layers (0=even spacing, 1=compressed toward center).
+
+**Consequences**:
+- Depth knob now has visible, consistent effect
+- Layers cluster toward top at high Depth values (more detail at apex)
+- Added getLayerZ() helper used by all patterns
+- Removed 90+ lines of dead code (unused helper functions, config values)

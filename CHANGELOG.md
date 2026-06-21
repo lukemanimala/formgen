@@ -2,7 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2026-06-17
+## [Unreleased] - 2026-06-20
+
+### Added
+- **Polygon Pattern**: New pattern type where Petals controls number of sides
+- **Universal Geometry Controls**: All knobs now work with all patterns
+  - Petal Change: evolves complexity across layers (all patterns)
+  - Align: per-layer rotational offset (all patterns)
+  - Pointiness: affects curve tightness in Spirograph
+
+### Changed
+- **Dimension → Depth**: Renamed macro, now controls layer z-distribution curve
+- **Twist Range**: Expanded to ±4 radians (was 0-1.5), now bipolar
+- **LFO Amplitude**: Full amplitude now uses full parameter range regardless of center
+- **View Cube**: Fixed rotation sync (X and Y directions corrected)
+
+### Fixed
+- Twist and Mandala Align now work together (were mutually exclusive)
+- Removed glitchy jump when Twist was at 0
+
+### Removed
+- Dead code: unused config values and helper functions (~100 lines)
+
+---
+
+## [0.3.0] - 2026-06-17
 
 ### Added
 - **4 LFO System**: Expanded from 2 to 4 independent oscillators

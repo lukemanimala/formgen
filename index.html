@@ -697,6 +697,7 @@
           <button class="pattern-btn" data-pattern="spiral">Spiral</button>
           <button class="pattern-btn active" data-pattern="mandala">Mandala</button>
           <button class="pattern-btn" data-pattern="star">Star</button>
+          <button class="pattern-btn" data-pattern="polygon">Polygon</button>
           <button class="pattern-btn" data-pattern="rosette">Rosette</button>
           <button class="pattern-btn" data-pattern="flower">Flower</button>
           <button class="pattern-btn" data-pattern="spirograph">Spirograph</button>
@@ -712,14 +713,14 @@
             <div class="knob-name">Layers</div>
             <div class="knob-value">12</div>
           </div>
-          <div class="knob-control" data-param="evolution" data-min="0" data-max="1" data-value="0.3">
+          <div class="knob-control" data-param="evolution" data-min="-4" data-max="4" data-value="0.3" data-bipolar="true">
             <div class="knob-container"></div>
             <div class="knob-name">Twist</div>
             <div class="knob-value">0.30</div>
           </div>
           <div class="knob-control" data-param="dimension" data-min="0" data-max="1" data-value="0.4">
             <div class="knob-container"></div>
-            <div class="knob-name">Dimension</div>
+            <div class="knob-name">Depth</div>
             <div class="knob-value">0.40</div>
           </div>
           <div class="knob-control" data-param="energy" data-min="0" data-max="1" data-value="0.6">
@@ -851,7 +852,7 @@
             <option value="none">Off</option>
             <option value="complexity">Layers</option>
             <option value="evolution">Twist</option>
-            <option value="dimension">Dimension</option>
+            <option value="dimension">Depth</option>
             <option value="energy">Energy</option>
             <option value="energyShift">Energy Shift</option>
             <option value="hue">Hue</option>
@@ -907,7 +908,7 @@
             <option value="none">Off</option>
             <option value="complexity">Layers</option>
             <option value="evolution">Twist</option>
-            <option value="dimension">Dimension</option>
+            <option value="dimension">Depth</option>
             <option value="energy">Energy</option>
             <option value="energyShift">Energy Shift</option>
             <option value="hue">Hue</option>
@@ -963,7 +964,7 @@
             <option value="none">Off</option>
             <option value="complexity">Layers</option>
             <option value="evolution">Twist</option>
-            <option value="dimension">Dimension</option>
+            <option value="dimension">Depth</option>
             <option value="energy">Energy</option>
             <option value="energyShift">Energy Shift</option>
             <option value="hue">Hue</option>
@@ -1019,7 +1020,7 @@
             <option value="none">Off</option>
             <option value="complexity">Layers</option>
             <option value="evolution">Twist</option>
-            <option value="dimension">Dimension</option>
+            <option value="dimension">Depth</option>
             <option value="energy">Energy</option>
             <option value="energyShift">Energy Shift</option>
             <option value="hue">Hue</option>
@@ -1231,57 +1232,46 @@
 
     // Expand macros to full configuration
     function expandMacros() {
-      const c = macros.complexity;  // Now raw layer count (2-24)
-      const ev = macros.evolution;
-      const d = macros.dimension;
-      const en = macros.energy;
+      const layers = Math.floor(macros.complexity);
+      const twist = macros.evolution;
+      const depth = macros.dimension;
+      const energy = macros.energy;
 
-      // Layers is now a direct count from the knob
-      const layers = Math.floor(c);
-      const totalHeight = geometry.height;         // From height knob
+      const totalHeight = geometry.height;
       const layerSpacing = layers > 1 ? totalHeight / (layers - 1) : 0;
 
       return {
-        // From Complexity (Layers)
+        // Layers
         layers,
-        segments: geometry.petals,                // Use petals for segment count
-        pointsPerCorner: Math.floor(8 + layers / 3),  // Smoothness based on layer count
 
-        // From Evolution (Twist)
-        totalTwist: -0.3 - ev * 1.2,              // -0.3 to -1.5 radians
-        radiusChange: 0.1 + ev * 0.5,             // Corner radius evolution
+        // Twist
+        totalTwist: twist,
 
-        // From Dimension
-        layerSpacing,                             // Calculated from height / layers
-        perspectiveTilt: d * 0.8,                 // Y-axis tilt
+        // Depth (layer z-distribution curve: 0=even, 1=compressed toward center)
+        layerSpacing,
+        depthCurve: depth,
 
-        // From Energy
-        energy: en,
-        energyShift: macros.energyShift,          // -1 to 1
-        saturation: 60 + en * 35,                 // 60-95%
-        lineWidthOuter: 2 + en * 3,               // 2-5
-        lineWidthInner: 0.5 + en * 1.5,           // 0.5-2
-        fillOpacity: 0.04 + en * 0.08,            // 0.04-0.12
+        // Energy
+        energy,
+        energyShift: macros.energyShift,
 
         // Fixed
         baseRadius: 2.2,
-        cornerRadius: 0.04,
 
-        // From Geometry controls
+        // Geometry controls
         petals: geometry.petals,
         concavity: geometry.concavity,
-        pointiness: geometry.pointiness,  // 0.2-3, sharpness of tips
-        petalChange: geometry.petalChange,  // -1 to 1
+        pointiness: geometry.pointiness,
+        petalChange: geometry.petalChange,
         innerRadiusRatio: geometry.innerRadius,
-        rotationDeg: geometry.rotation,  // degrees
-        rotationRad: geometry.rotation * Math.PI / 180,  // radians
+        rotationRad: geometry.rotation * Math.PI / 180,
         totalHeight: geometry.height,
-        opacity: geometry.opacity,  // 0-1, layer opacity multiplier
-        shadow: geometry.shadow,    // 0-1, shadow/glow intensity
-        mandalaAlign: geometry.mandalaAlign,  // 0-180, mandala layer alignment
-        mandalaAlignRad: geometry.mandalaAlign * Math.PI / 180,  // in radians
-        colorShift: geometry.colorShift,  // -180 to 180, hue shift across layers
-        thickness: geometry.thickness,  // 0-0.5, extrusion depth
+        opacity: geometry.opacity,
+        shadow: geometry.shadow,
+        mandalaAlign: geometry.mandalaAlign,
+        mandalaAlignRad: geometry.mandalaAlign * Math.PI / 180,
+        colorShift: geometry.colorShift,
+        thickness: geometry.thickness,
       };
     }
 
@@ -1289,33 +1279,166 @@
     // PATTERN GENERATORS
     // ===================
 
+    // Helper: Calculate z position with depth curve
+    // depthCurve 0 = even spacing, 1 = compressed toward center (more layers near top)
+    function getLayerZ(layerIndex, totalLayers, config) {
+      const progress = layerIndex / (totalLayers - 1);
+      const curve = config.depthCurve || 0;
+      // Apply easing: curve=0 is linear, curve=1 compresses layers toward center
+      const easedProgress = progress + curve * (Math.pow(progress, 2) - progress);
+      return easedProgress * config.totalHeight;
+    }
+
     function generateSpiralGeometry(config, layerIndex, totalLayers) {
       const progress = layerIndex / (totalLayers - 1);
-      const innerRadius = config.baseRadius * config.innerRadiusRatio;
-      const radius = config.baseRadius - progress * (config.baseRadius - innerRadius);
-      const rotation = progress * config.totalTwist;
-      const z = layerIndex * config.layerSpacing;
-      const cornerRadius = getLayerCornerRadius(progress, config);
+      const z = getLayerZ(layerIndex, totalLayers, config);
 
-      return {
-        vertices: getTriangleVertices(radius, rotation, z, cornerRadius, config),
-        z
-      };
+      // Use all geometry controls
+      const baseSides = config.petals;
+      const petalChange = config.petalChange;
+      const concavity = config.concavity;
+      const pointiness = config.pointiness;
+
+      // Sides can change across layers
+      const sidesMultiplier = 1 + petalChange * progress;
+      const sides = Math.max(3, Math.round(baseSides * sidesMultiplier));
+
+      // Radius shrinks toward center
+      const outerRadius = config.baseRadius * (1 - progress * (1 - config.innerRadiusRatio));
+
+      // Corner rounding from concavity
+      const cornerRadius = concavity * 0.4;
+
+      // Rotation: base + twist + mandalaAlign
+      const twistRotation = progress * config.totalTwist;
+      const alignRotation = config.mandalaAlign > 0 ? layerIndex * config.mandalaAlignRad : 0;
+      const rotation = config.rotationRad + twistRotation + alignRotation;
+
+      const vertices = [];
+
+      if (cornerRadius <= 0.01) {
+        // Sharp corners
+        for (let i = 0; i <= sides; i++) {
+          const angle = rotation + (i / sides) * Math.PI * 2 - Math.PI / 2;
+          vertices.push(new THREE.Vector3(
+            outerRadius * Math.cos(angle),
+            outerRadius * Math.sin(angle),
+            z
+          ));
+        }
+      } else {
+        // Rounded corners
+        const pointsPerSide = 8;
+        for (let i = 0; i < sides; i++) {
+          const cornerAngle = rotation + (i / sides) * Math.PI * 2 - Math.PI / 2;
+          const nextCornerAngle = rotation + ((i + 1) / sides) * Math.PI * 2 - Math.PI / 2;
+
+          for (let j = 0; j <= pointsPerSide; j++) {
+            const t = j / pointsPerSide;
+            const angle = cornerAngle + t * (nextCornerAngle - cornerAngle);
+
+            // Blend for rounded corners - pointiness affects sharpness
+            const midT = Math.abs(t - 0.5) * 2;
+            const blend = Math.pow(midT, 2 / pointiness);
+            const r = outerRadius * (1 - cornerRadius * 0.3 * (1 - blend));
+
+            vertices.push(new THREE.Vector3(
+              r * Math.cos(angle),
+              r * Math.sin(angle),
+              z
+            ));
+          }
+        }
+      }
+
+      return { vertices, z };
+    }
+
+    function generatePolygonGeometry(config, layerIndex, totalLayers) {
+      const progress = layerIndex / (totalLayers - 1);
+      const z = getLayerZ(layerIndex, totalLayers, config);
+
+      // Use all geometry controls
+      const baseSides = config.petals;
+      const petalChange = config.petalChange;
+      const cornerRadius = config.concavity * 0.3;
+
+      // Sides can change across layers
+      const sidesMultiplier = 1 + petalChange * progress;
+      const sides = Math.max(3, Math.round(baseSides * sidesMultiplier));
+
+      const outerRadius = config.baseRadius * (1 - progress * (1 - config.innerRadiusRatio));
+
+      // Rotation: base + twist + mandalaAlign
+      const twistRotation = progress * config.totalTwist;
+      const alignRotation = config.mandalaAlign > 0 ? layerIndex * config.mandalaAlignRad : 0;
+      const rotation = config.rotationRad + twistRotation + alignRotation;
+
+      const vertices = [];
+
+      if (cornerRadius <= 0.01) {
+        // Sharp corners - simple polygon
+        for (let i = 0; i <= sides; i++) {
+          const angle = rotation + (i / sides) * Math.PI * 2;
+          vertices.push(new THREE.Vector3(
+            outerRadius * Math.cos(angle),
+            outerRadius * Math.sin(angle),
+            z
+          ));
+        }
+      } else {
+        // Rounded corners
+        const pointsPerCorner = 8;
+        const innerRadius = outerRadius * (1 - cornerRadius);
+
+        for (let i = 0; i < sides; i++) {
+          const cornerAngle = rotation + (i / sides) * Math.PI * 2;
+          const nextCornerAngle = rotation + ((i + 1) / sides) * Math.PI * 2;
+          const arcRadius = outerRadius * cornerRadius * 0.5;
+
+          // Points along each side with rounded corners
+          for (let j = 0; j <= pointsPerCorner; j++) {
+            const t = j / pointsPerCorner;
+            const angle = cornerAngle + t * (nextCornerAngle - cornerAngle);
+
+            // Blend between corner arc and straight edge
+            const midT = Math.abs(t - 0.5) * 2; // 0 at middle, 1 at corners
+            const blend = Math.pow(midT, 2 / config.pointiness);
+            const r = outerRadius * (1 - cornerRadius * 0.3 * (1 - blend));
+
+            vertices.push(new THREE.Vector3(
+              r * Math.cos(angle),
+              r * Math.sin(angle),
+              z
+            ));
+          }
+        }
+      }
+
+      return { vertices, z };
     }
 
     function generateRosetteGeometry(config, layerIndex, totalLayers) {
       const progress = layerIndex / (totalLayers - 1);
-      const z = layerIndex * config.layerSpacing;
+      const z = getLayerZ(layerIndex, totalLayers, config);
 
-      // Use geometry controls
-      const petals = config.petals;
+      // Use all geometry controls
+      const basePetals = config.petals;
+      const petalChange = config.petalChange;
       const concavity = config.concavity;
       const pointiness = config.pointiness;
 
-      const outerRadius = config.baseRadius * (1 - progress * (1 - config.innerRadiusRatio));
-      const depth = 0.3 + concavity * 0.5;  // How deep the rosette curves
+      // Petals can change across layers
+      const petalMultiplier = 1 + petalChange * progress;
+      const petals = Math.max(3, Math.round(basePetals * petalMultiplier));
 
-      const rotation = config.rotationRad + progress * config.totalTwist;
+      const outerRadius = config.baseRadius * (1 - progress * (1 - config.innerRadiusRatio));
+      const depth = 0.3 + concavity * 0.5;
+
+      // Rotation: base + twist + mandalaAlign
+      const twistRotation = progress * config.totalTwist;
+      const alignRotation = config.mandalaAlign > 0 ? layerIndex * config.mandalaAlignRad : 0;
+      const rotation = config.rotationRad + twistRotation + alignRotation;
 
       const vertices = [];
       const pointsPerPetal = 20;
@@ -1323,10 +1446,12 @@
 
       for (let i = 0; i <= totalPoints; i++) {
         const t = i / totalPoints;
-        const angle = rotation + t * Math.PI * 2;
+        const baseAngle = t * Math.PI * 2;
+        const angle = baseAngle + rotation;
 
         // Rosette formula: modulated radius with pointiness
-        const rawMod = Math.cos(petals * angle);
+        // Use baseAngle for modulation so twist only rotates the shape
+        const rawMod = Math.cos(petals * baseAngle);
         const modulation = Math.sign(rawMod) * Math.pow(Math.abs(rawMod), 1 / pointiness);
         const r = outerRadius * (1 - depth + depth * (modulation + 1) / 2);
 
@@ -1342,15 +1467,24 @@
 
     function generateFlowerGeometry(config, layerIndex, totalLayers) {
       const progress = layerIndex / (totalLayers - 1);
-      const z = layerIndex * config.layerSpacing;
+      const z = getLayerZ(layerIndex, totalLayers, config);
 
-      // Use geometry controls
-      const petals = config.petals;
+      // Use all geometry controls
+      const basePetals = config.petals;
+      const petalChange = config.petalChange;
       const concavity = config.concavity;
       const pointiness = config.pointiness;
 
+      // Petals can change across layers
+      const petalMultiplier = 1 + petalChange * progress;
+      const petals = Math.max(3, Math.round(basePetals * petalMultiplier));
+
       const radius = config.baseRadius * (1 - progress * (1 - config.innerRadiusRatio));
-      const rotation = config.rotationRad + progress * config.totalTwist * 0.5;
+
+      // Rotation: base + twist + mandalaAlign
+      const twistRotation = progress * config.totalTwist * 0.5;
+      const alignRotation = config.mandalaAlign > 0 ? layerIndex * config.mandalaAlignRad : 0;
+      const rotation = config.rotationRad + twistRotation + alignRotation;
 
       const vertices = [];
       const points = petals * 20;
@@ -1376,22 +1510,32 @@
 
     function generateSpirographGeometry(config, layerIndex, totalLayers) {
       const progress = layerIndex / (totalLayers - 1);
-      const z = layerIndex * config.layerSpacing;
+      const z = getLayerZ(layerIndex, totalLayers, config);
 
-      // Use geometry controls
-      const k = config.petals;  // Number of cusps
-      const penDistance = 0.3 + config.concavity * 0.7;  // Concavity affects pen distance
+      // Use all geometry controls
+      const baseCusps = config.petals;
+      const petalChange = config.petalChange;
+      const concavity = config.concavity;
+      const pointiness = config.pointiness;
 
-      // Rotation from slider (degrees converted to radians) + layer twist
-      const baseRotation = config.rotationRad;
-      const layerTwist = progress * config.totalTwist;
-      const totalRotation = baseRotation + layerTwist;
+      // Cusps can change across layers
+      const cuspsMultiplier = 1 + petalChange * progress;
+      const k = Math.max(3, Math.round(baseCusps * cuspsMultiplier));
+
+      // Concavity affects pen distance, pointiness affects curve tightness
+      const penDistance = 0.3 + concavity * 0.7;
+      const curveTightness = 0.5 + pointiness * 0.5;
+
+      // Rotation: base + twist + mandalaAlign
+      const twistRotation = progress * config.totalTwist;
+      const alignRotation = config.mandalaAlign > 0 ? layerIndex * config.mandalaAlignRad : 0;
+      const totalRotation = config.rotationRad + twistRotation + alignRotation;
 
       // Spirograph (hypotrochoid) parameters
       const scale = config.baseRadius * (1 - progress * (1 - config.innerRadiusRatio));
       const R = scale;
       const r = R / k;
-      const d = r * penDistance;
+      const d = r * penDistance * curveTightness;
 
       const vertices = [];
       const rotations = k;
@@ -1402,7 +1546,7 @@
         const x = (R - r) * Math.cos(t) + d * Math.cos((R - r) / r * t);
         const y = (R - r) * Math.sin(t) - d * Math.sin((R - r) / r * t);
 
-        // Apply total rotation (base + layer twist)
+        // Apply total rotation (base + layer twist + align)
         const cos = Math.cos(totalRotation);
         const sin = Math.sin(totalRotation);
         vertices.push(new THREE.Vector3(
@@ -1430,7 +1574,7 @@
 
     function generateMandalaGeometry(config, layerIndex, totalLayers) {
       const progress = layerIndex / (totalLayers - 1);
-      const z = layerIndex * config.layerSpacing;
+      const z = getLayerZ(layerIndex, totalLayers, config);
 
       // Use geometry controls
       const basePetals = config.petals;
@@ -1450,29 +1594,19 @@
       // Concavity controls how much the sides bulge (-1 = concave, 0 = straight, 1 = convex)
       const curve = petalWidth * (0.5 + concavity * 0.5);
 
-      // Layer rotation: use mandalaAlign if set, otherwise use Evolution twist
-      let layerTwist;
-      let alternateOffset = 0;
-
-      if (config.mandalaAlign > 0) {
-        // Clean alignment: each layer offset by mandalaAlign degrees (no interlocking)
-        layerTwist = layerIndex * config.mandalaAlignRad;
-      } else if (Math.abs(config.totalTwist) > 0.01) {
-        // Use Evolution macro twist with interlocking pattern
-        layerTwist = progress * config.totalTwist;
-        alternateOffset = (layerIndex % 2) * (Math.PI / numPetals);
-      } else {
-        // No twist at all - perfect alignment
-        layerTwist = 0;
-      }
-      const baseRotation = config.rotationRad + layerTwist;
+      // Layer rotation: combine twist and mandalaAlign
+      // Twist adds progressive rotation based on layer progress
+      // MandalaAlign adds fixed per-layer offset
+      const twistRotation = progress * config.totalTwist;
+      const alignRotation = config.mandalaAlign > 0 ? layerIndex * config.mandalaAlignRad : 0;
+      const baseRotation = config.rotationRad + twistRotation + alignRotation;
 
       const vertices = [];
       const samplesPerCurve = 10;
 
       // Draw each petal using Bezier curves (like original mandala-renderer)
       for (let p = 0; p < numPetals; p++) {
-        const petalAngle = baseRotation + alternateOffset + (p / numPetals) * Math.PI * 2;
+        const petalAngle = baseRotation + (p / numPetals) * Math.PI * 2;
         const cos = Math.cos(petalAngle);
         const sin = Math.sin(petalAngle);
 
@@ -1536,7 +1670,7 @@
       // Create individual petal fill shapes using same Bezier curves as strokes
       const petalShapes = [];
       for (let p = 0; p < numPetals; p++) {
-        const petalAngle = baseRotation + alternateOffset + (p / numPetals) * Math.PI * 2;
+        const petalAngle = baseRotation + (p / numPetals) * Math.PI * 2;
         const cos = Math.cos(petalAngle);
         const sin = Math.sin(petalAngle);
 
@@ -1597,12 +1731,17 @@
 
     function generateStarGeometry(config, layerIndex, totalLayers) {
       const progress = layerIndex / (totalLayers - 1);
-      const z = layerIndex * config.layerSpacing;
+      const z = getLayerZ(layerIndex, totalLayers, config);
 
-      // Use geometry controls
-      const numPoints = config.petals;
+      // Use all geometry controls
+      const basePoints = config.petals;
+      const petalChange = config.petalChange;
       const concavity = config.concavity;
       const pointiness = config.pointiness;
+
+      // Points can change across layers
+      const pointsMultiplier = 1 + petalChange * progress;
+      const numPoints = Math.max(3, Math.round(basePoints * pointsMultiplier));
 
       // Radius shrinks toward center
       const outerRadius = config.baseRadius * (1 - progress * (1 - config.innerRadiusRatio));
@@ -1610,8 +1749,10 @@
       // Inner radius based on concavity (0 = polygon, 1 = deep star)
       const innerRadius = outerRadius * (1 - concavity * 0.85);
 
-      // Alternating rotation for interlocking stars
-      const baseRotation = config.rotationRad + progress * config.totalTwist;
+      // Rotation: base + twist + mandalaAlign
+      const twistRotation = progress * config.totalTwist;
+      const alignRotation = config.mandalaAlign > 0 ? layerIndex * config.mandalaAlignRad : 0;
+      const baseRotation = config.rotationRad + twistRotation + alignRotation;
       const alternateOffset = (layerIndex % 2) * (Math.PI / numPoints);
       const rotation = baseRotation + alternateOffset - Math.PI / 2;
 
@@ -1644,103 +1785,6 @@
       vertices.push(vertices[0].clone());
 
       return { vertices, z };
-    }
-
-    // Helper: Triangle with rounded corners (from logo animation)
-    function getTriangleVertices(radius, rotation, z, cornerRadius, config) {
-      if (cornerRadius <= 0.001) {
-        const vertices = [];
-        for (let i = 0; i < 3; i++) {
-          const angle = rotation + (i * Math.PI * 2 / 3) - Math.PI / 2;
-          vertices.push(new THREE.Vector3(
-            radius * Math.cos(angle),
-            radius * Math.sin(angle),
-            z
-          ));
-        }
-        vertices.push(vertices[0].clone());
-        return vertices;
-      }
-
-      const vertices = [];
-      const corners = [];
-
-      for (let i = 0; i < 3; i++) {
-        const angle = rotation + (i * Math.PI * 2 / 3) - Math.PI / 2;
-        corners.push({
-          x: radius * Math.cos(angle),
-          y: radius * Math.sin(angle),
-          angle
-        });
-      }
-
-      const actualCornerRadius = Math.min(cornerRadius * radius, radius * 0.45);
-
-      for (let i = 0; i < 3; i++) {
-        const curr = corners[i];
-        const next = corners[(i + 1) % 3];
-        const prev = corners[(i + 2) % 3];
-
-        const toPrev = { x: prev.x - curr.x, y: prev.y - curr.y };
-        const toNext = { x: next.x - curr.x, y: next.y - curr.y };
-
-        const lenPrev = Math.sqrt(toPrev.x ** 2 + toPrev.y ** 2);
-        const lenNext = Math.sqrt(toNext.x ** 2 + toNext.y ** 2);
-        toPrev.x /= lenPrev; toPrev.y /= lenPrev;
-        toNext.x /= lenNext; toNext.y /= lenNext;
-
-        const bisector = { x: toPrev.x + toNext.x, y: toPrev.y + toNext.y };
-        const bisectorLen = Math.sqrt(bisector.x ** 2 + bisector.y ** 2);
-        if (bisectorLen > 0.001) {
-          bisector.x /= bisectorLen;
-          bisector.y /= bisectorLen;
-        }
-
-        const halfAngle = Math.acos(Math.max(-1, Math.min(1, toPrev.x * toNext.x + toPrev.y * toNext.y))) / 2;
-        const insetDist = actualCornerRadius / Math.sin(halfAngle);
-
-        const arcCenter = {
-          x: curr.x + bisector.x * insetDist,
-          y: curr.y + bisector.y * insetDist
-        };
-
-        const arcStart = {
-          x: curr.x + toPrev.x * actualCornerRadius,
-          y: curr.y + toPrev.y * actualCornerRadius
-        };
-        const arcEnd = {
-          x: curr.x + toNext.x * actualCornerRadius,
-          y: curr.y + toNext.y * actualCornerRadius
-        };
-
-        const startAngle = Math.atan2(arcStart.y - arcCenter.y, arcStart.x - arcCenter.x);
-        const endAngle = Math.atan2(arcEnd.y - arcCenter.y, arcEnd.x - arcCenter.x);
-
-        let angleDiff = endAngle - startAngle;
-        if (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-        if (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-
-        const arcRadius = actualCornerRadius / Math.tan(halfAngle);
-
-        for (let j = 0; j <= config.pointsPerCorner; j++) {
-          const t = j / config.pointsPerCorner;
-          const angle = startAngle + angleDiff * t;
-          vertices.push(new THREE.Vector3(
-            arcCenter.x + Math.cos(angle) * arcRadius,
-            arcCenter.y + Math.sin(angle) * arcRadius,
-            z
-          ));
-        }
-      }
-
-      vertices.push(vertices[0].clone());
-      return vertices;
-    }
-
-    function getLayerCornerRadius(progress, config) {
-      const base = config.cornerRadius;
-      const change = config.radiusChange;
-      return base + (change * progress * (0.8 - base));
     }
 
     // ===================
@@ -1959,8 +2003,8 @@
       updateViewCube() {
         if (!this.viewCube) return;
         // Sync view cube rotation with model rotation
-        const rotX = this.currentRotation.x * (180 / Math.PI);
-        const rotY = -this.currentRotation.y * (180 / Math.PI);
+        const rotX = -this.currentRotation.x * (180 / Math.PI);
+        const rotY = this.currentRotation.y * (180 / Math.PI);
         this.viewCube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
       }
 
@@ -1999,6 +2043,7 @@
           spiral: generateSpiralGeometry,
           mandala: generateMandalaGeometry,
           star: generateStarGeometry,
+          polygon: generatePolygonGeometry,
           rosette: generateRosetteGeometry,
           flower: generateFlowerGeometry,
           spirograph: generateSpirographGeometry,
@@ -2323,10 +2368,11 @@
         if (isAnimating) {
           // Update audio levels for audio-reactive LFOs
           updateAudioLevels();
-          // LFO 1
+          // LFO 1 - at full amp, use full range (0-1); offset shifts center when amp < 1
           if (lfoTarget !== 'none') {
             const { value, phase } = calcLfoValue(this.time, lfo1Speed, lfoShape);
-            const scaledValue = lfo1Offset + (value - 0.5) * lfo1Amp;
+            const center = 0.5 + (lfo1Offset - 0.5) * (1 - lfo1Amp);
+            const scaledValue = center + (value - 0.5) * lfo1Amp;
             if (applyLfo(lfoTarget, scaledValue)) needsRegenerate = true;
             drawLfoViz(lfo1VizCanvas, lfo1VizCtx, phase, scaledValue, lfoShape, lfo1Amp);
           }
@@ -2334,7 +2380,8 @@
           // LFO 2
           if (lfo2Target !== 'none') {
             const { value, phase } = calcLfoValue(this.time, lfo2Speed, lfo2Shape);
-            const scaledValue = lfo2Offset + (value - 0.5) * lfo2Amp;
+            const center = 0.5 + (lfo2Offset - 0.5) * (1 - lfo2Amp);
+            const scaledValue = center + (value - 0.5) * lfo2Amp;
             if (applyLfo(lfo2Target, scaledValue)) needsRegenerate = true;
             drawLfoViz(lfo2VizCanvas, lfo2VizCtx, phase, scaledValue, lfo2Shape, lfo2Amp);
           }
@@ -2342,7 +2389,8 @@
           // LFO 3
           if (lfo3Target !== 'none') {
             const { value, phase } = calcLfoValue(this.time, lfo3Speed, lfo3Shape);
-            const scaledValue = lfo3Offset + (value - 0.5) * lfo3Amp;
+            const center = 0.5 + (lfo3Offset - 0.5) * (1 - lfo3Amp);
+            const scaledValue = center + (value - 0.5) * lfo3Amp;
             if (applyLfo(lfo3Target, scaledValue)) needsRegenerate = true;
             drawLfoViz(lfo3VizCanvas, lfo3VizCtx, phase, scaledValue, lfo3Shape, lfo3Amp);
           }
@@ -2350,7 +2398,8 @@
           // LFO 4
           if (lfo4Target !== 'none') {
             const { value, phase } = calcLfoValue(this.time, lfo4Speed, lfo4Shape);
-            const scaledValue = lfo4Offset + (value - 0.5) * lfo4Amp;
+            const center = 0.5 + (lfo4Offset - 0.5) * (1 - lfo4Amp);
+            const scaledValue = center + (value - 0.5) * lfo4Amp;
             if (applyLfo(lfo4Target, scaledValue)) needsRegenerate = true;
             drawLfoViz(lfo4VizCanvas, lfo4VizCtx, phase, scaledValue, lfo4Shape, lfo4Amp);
           }
