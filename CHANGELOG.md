@@ -2,7 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2026-06-20
+## [Unreleased] - 2026-06-27
+
+### Added
+- **Bloom Post-Processing**: UnrealBloomPass effect with adjustable strength (0-3)
+- **Bloom LFO Target**: Bloom strength can be animated via any of the 4 LFOs
+- **Background Color Picker**: Change background color via color picker in Color section
+- **Lightness Control**: Adjust mandala brightness (20-80%) independent of hue
+
+### Fixed
+- **Video Recording**: Fixed black frames by enabling WebGL preserveDrawingBuffer
+- **Video Resolution**: Fixed H.264 codec limits by scaling down large canvases to fit AVC level 4.0
+
+---
+
+## [0.4.0] - 2026-06-20
 
 ### Added
 - **Polygon Pattern**: New pattern type where Petals controls number of sides

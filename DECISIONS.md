@@ -207,3 +207,37 @@
 - Layers cluster toward top at high Depth values (more detail at apex)
 - Added getLayerZ() helper used by all patterns
 - Removed 90+ lines of dead code (unused helper functions, config values)
+
+---
+
+## ADR-014: Bloom Post-Processing
+
+**Date**: 2026-06-27
+
+**Context**: Users wanted more visual polish and "wow factor" for their exports. Bloom creates a glow effect around bright areas, making patterns feel more ethereal and professional.
+
+**Decision**: Add UnrealBloomPass from Three.js post-processing library with adjustable strength (0-3), radius (0.8), and threshold (0.2).
+
+**Consequences**:
+- Immediate visual upgrade - everything glows
+- Added to Effects UI section with slider control
+- Bloom is an LFO target, enabling animated glow effects
+- Higher threshold (0.2) prevents dark background from blooming excessively
+- Slight performance cost from post-processing pass
+
+---
+
+## ADR-015: Video Recording Resolution Scaling
+
+**Date**: 2026-06-27
+
+**Context**: MP4 recording failed on high-resolution displays because H.264 AVC level 4.0 has a maximum coded area of ~2M pixels. Canvas at 2240x1566 = 3.5M pixels exceeded this limit.
+
+**Decision**: Automatically scale down recording resolution to fit within AVC level 4.0 limits while maintaining aspect ratio. Use 16-pixel macroblock alignment.
+
+**Consequences**:
+- Recording works on all display sizes
+- Maximum recording resolution is approximately 1080p equivalent
+- 16-pixel alignment prevents codec rounding issues
+- Quality trade-off: recorded video may be lower resolution than display
+- Alternative (using higher AVC level) rejected due to device compatibility concerns

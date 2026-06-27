@@ -11,7 +11,8 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 - **Macro controls**: Layers, Twist, Depth, Energy
 - **Geometry controls**: Petals, Concavity, Pointiness, Inner Radius, Petal Change, Align, Rotation, Height
 - **Layer effects**: Opacity, Shadow, Thickness (3D extrusion)
-- **Color**: Hue control with layer-by-layer color shift
+- **Color**: Hue control with layer-by-layer color shift, lightness control
+- **Effects**: Bloom post-processing with adjustable strength, background color picker
 
 ### Animation
 - **4 LFO system**: Four independent oscillators with Speed, Amplitude, and Center controls
@@ -19,7 +20,7 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 - **Audio-reactive**: Bass, Mid, Treble frequency bands drive any parameter
 - **Audio smoothing**: Adjustable smoothing for calm or punchy audio response
 - **Camera paths**: Orbit, Flyover, Spiral, Zoom, Tilt
-- **Animatable parameters**: All geometry and macro controls
+- **Animatable parameters**: All geometry, macro, and effect controls (including bloom)
 
 ### Export
 - **PNG**: 4x resolution render

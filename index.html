@@ -301,6 +301,29 @@
       cursor: pointer;
     }
 
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 0;
+    }
+
+    .slider-row input[type="range"] {
+      height: 4px;
+      border-radius: 2px;
+      background: var(--surface);
+      -webkit-appearance: none;
+    }
+
+    .slider-row input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+    }
+
     /* Animation Controls */
     .animation-row {
       display: flex;
@@ -809,12 +832,21 @@
           <div class="color-preview" id="color-preview"></div>
           <input type="range" class="hue-slider" id="hue" min="0" max="360" value="15">
         </div>
+        <div class="slider-row" style="margin-top: 8px;">
+          <label style="font-size: 10px; color: var(--text-secondary); width: 50px;">Light</label>
+          <input type="range" id="lightness" min="20" max="80" value="55" style="flex: 1;">
+          <span id="lightness-value" style="font-size: 10px; color: var(--text-secondary); width: 30px; text-align: right;">55%</span>
+        </div>
         <div class="knob-row" style="margin-top: 12px;">
           <div class="knob-control" data-param="colorShift" data-min="-180" data-max="180" data-value="0" data-step="5" data-format="deg" data-bipolar="true">
             <div class="knob-container"></div>
             <div class="knob-name">Shift</div>
             <div class="knob-value">0°</div>
           </div>
+        </div>
+        <div class="slider-row" style="margin-top: 12px;">
+          <label style="font-size: 10px; color: var(--text-secondary); width: 50px;">BG</label>
+          <input type="color" id="bg-color" value="#0a0a0a" style="flex: 1; height: 24px; border: none; border-radius: 4px; cursor: pointer;">
         </div>
       </div>
 
@@ -868,6 +900,7 @@
             <option value="thickness">Thickness</option>
             <option value="mandalaAlign">Mandala Align</option>
             <option value="colorShift">Color Shift</option>
+            <option value="bloom">Bloom</option>
           </select>
           <select class="lfo-select" id="lfo-shape">
             <option value="sine">Sine</option>
@@ -924,6 +957,7 @@
             <option value="thickness">Thickness</option>
             <option value="mandalaAlign">Mandala Align</option>
             <option value="colorShift">Color Shift</option>
+            <option value="bloom">Bloom</option>
           </select>
           <select class="lfo-select" id="lfo2-shape">
             <option value="sine">Sine</option>
@@ -980,6 +1014,7 @@
             <option value="thickness">Thickness</option>
             <option value="mandalaAlign">Mandala Align</option>
             <option value="colorShift">Color Shift</option>
+            <option value="bloom">Bloom</option>
           </select>
           <select class="lfo-select" id="lfo3-shape">
             <option value="sine">Sine</option>
@@ -1036,6 +1071,7 @@
             <option value="thickness">Thickness</option>
             <option value="mandalaAlign">Mandala Align</option>
             <option value="colorShift">Color Shift</option>
+            <option value="bloom">Bloom</option>
           </select>
           <select class="lfo-select" id="lfo4-shape">
             <option value="sine">Sine</option>
@@ -1087,6 +1123,16 @@
             <div class="knob-name">Speed</div>
             <div class="knob-value">0.30</div>
           </div>
+        </div>
+      </div>
+
+      <!-- Effects -->
+      <div class="control-section">
+        <div class="section-label">Effects</div>
+        <div class="slider-row">
+          <label style="font-size: 10px; color: var(--text-secondary);">Bloom</label>
+          <input type="range" id="bloom-strength" min="0" max="3" step="0.1" value="1.5" style="flex: 1;">
+          <span id="bloom-value" style="font-size: 10px; color: var(--text-secondary); width: 30px; text-align: right;">1.5</span>
         </div>
       </div>
 
@@ -1149,6 +1195,9 @@
     import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
     import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
     import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
     // ===================
     // MACRO CONFIGURATION
@@ -1806,12 +1855,15 @@
       const en = effectiveEnergy !== null ? effectiveEnergy : config.energy;
       const s = 60 + en * 35;  // Saturation based on energy
 
-      // Line colors: dark outer, bright inner
-      const lineL = 22 + progress * 38;
+      // Lightness scaling based on currentLightness (20-80 range, default 55)
+      const lightScale = currentLightness / 55;  // 1.0 at default
+
+      // Line colors: dark outer, bright inner (scaled by lightness)
+      const lineL = Math.min(95, (22 + progress * 38) * lightScale);
       const lineColor = hslToThreeColor(h, s, lineL);
 
-      // Fill colors: darker
-      const fillL = 15 + progress * 7;
+      // Fill colors: darker (scaled by lightness)
+      const fillL = Math.min(90, (15 + progress * 7) * lightScale);
       const fillColor = hslToThreeColor(h, s * 0.9, fillL);
 
       return { lineColor, fillColor };
@@ -1832,10 +1884,28 @@
         this.camera.position.set(0, 0, 6);
         this.camera.lookAt(0, 0, 0);
 
-        this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
         this.renderer.setSize(this.width, this.height);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        this.renderer.setClearColor(0x0a0a0a, 1);
+        this.renderer.toneMapping = THREE.ReinhardToneMapping;
+        this.renderer.toneMappingExposure = 1.0;
+
+        // Background color
+        this.bgColor = new THREE.Color(0x0a0a0a);
+        this.renderer.setClearColor(this.bgColor, 1);
+
+        // Post-processing with bloom
+        this.composer = new EffectComposer(this.renderer);
+        this.renderPass = new RenderPass(this.scene, this.camera);
+        this.composer.addPass(this.renderPass);
+
+        this.bloomPass = new UnrealBloomPass(
+          new THREE.Vector2(this.width, this.height),
+          1.5,   // strength
+          0.8,   // radius
+          0.2    // threshold - higher so dark bg doesn't bloom
+        );
+        this.composer.addPass(this.bloomPass);
 
         this.container = new THREE.Group();
         this.scene.add(this.container);
@@ -2014,10 +2084,16 @@
         this.camera.aspect = this.width / this.height;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.width, this.height);
+        this.composer.setSize(this.width, this.height);
+        this.bloomPass.resolution.set(this.width, this.height);
 
         this.layers.forEach(layer => {
           layer.lineMaterial.resolution.set(this.width, this.height);
         });
+      }
+
+      renderWithBloom() {
+        this.composer.render();
       }
 
       clearLayers() {
@@ -2302,6 +2378,12 @@
             updateColorPreview();
             this.updateColors();
             needsRegenerate = false;
+          } else if (target === 'bloom') {
+            actualValue = lfoVal * 3;  // 0 to 3 range
+            this.bloomPass.strength = actualValue;
+            document.getElementById('bloom-strength').value = actualValue;
+            document.getElementById('bloom-value').textContent = actualValue.toFixed(1);
+            needsRegenerate = false;
           } else if (['petals', 'concavity', 'pointiness', 'innerRadius', 'rotation', 'petalChange', 'height', 'opacity', 'shadow', 'thickness', 'mandalaAlign', 'colorShift'].includes(target)) {
             if (target === 'petals') {
               actualValue = Math.round(3 + lfoVal * 13);
@@ -2413,7 +2495,7 @@
           }
         }
 
-        this.renderer.render(this.scene, this.camera);
+        this.renderWithBloom();
         requestAnimationFrame(this.animate.bind(this));
       }
 
@@ -2428,11 +2510,13 @@
         const h = originalHeight * scale;
 
         this.renderer.setSize(w, h);
+        this.composer.setSize(w, h);
+        this.bloomPass.resolution.set(w, h);
         this.layers.forEach(layer => {
           layer.lineMaterial.resolution.set(w, h);
         });
 
-        this.renderer.render(this.scene, this.camera);
+        this.renderWithBloom();
 
         const link = document.createElement('a');
         link.download = 'formgen.png';
@@ -2441,12 +2525,14 @@
 
         // Restore to original dimensions
         this.renderer.setSize(originalWidth, originalHeight);
+        this.composer.setSize(originalWidth, originalHeight);
+        this.bloomPass.resolution.set(originalWidth, originalHeight);
         this.camera.aspect = originalWidth / originalHeight;
         this.camera.updateProjectionMatrix();
         this.layers.forEach(layer => {
           layer.lineMaterial.resolution.set(originalWidth, originalHeight);
         });
-        this.renderer.render(this.scene, this.camera);
+        this.renderWithBloom();
       }
 
       exportOBJ() {
@@ -2517,9 +2603,11 @@
       if (slider && slider.value != value) slider.value = value;
     }
 
+    let currentLightness = 55;
+
     function updateColorPreview() {
       const preview = document.getElementById('color-preview');
-      preview.style.background = `hsl(${currentHue}, 85%, 55%)`;
+      preview.style.background = `hsl(${currentHue}, 85%, ${currentLightness}%)`;
       document.documentElement.style.setProperty('--accent-hue', currentHue);
     }
 
@@ -2925,6 +3013,28 @@
       renderer.updateColors();
     });
 
+    // Bloom control
+    document.getElementById('bloom-strength').addEventListener('input', (e) => {
+      const value = parseFloat(e.target.value);
+      renderer.bloomPass.strength = value;
+      document.getElementById('bloom-value').textContent = value.toFixed(1);
+    });
+
+    // Lightness control
+    document.getElementById('lightness').addEventListener('input', (e) => {
+      currentLightness = parseInt(e.target.value);
+      document.getElementById('lightness-value').textContent = currentLightness + '%';
+      updateColorPreview();
+      renderer.updateColors();
+    });
+
+    // Background color control
+    document.getElementById('bg-color').addEventListener('input', (e) => {
+      const color = e.target.value;
+      renderer.bgColor.set(color);
+      renderer.renderer.setClearColor(renderer.bgColor);
+    });
+
     // Animation controls
     document.getElementById('play-btn').addEventListener('click', () => {
       isAnimating = true;
@@ -3150,9 +3260,22 @@
         mp4Muxer = module;
       }
 
-      const width = canvas.width;
-      const height = canvas.height;
+      // AVC level 4.0 max coded area is ~2M pixels
+      // H.264 rounds up to 16-pixel macroblocks, so use conservative limit
+      const MAX_PIXELS = 1920 * 1080; // Safe 1080p limit
+      const canvasPixels = canvas.width * canvas.height;
+      const scale = canvasPixels > MAX_PIXELS ? Math.sqrt(MAX_PIXELS / canvasPixels) : 1;
+
+      // Round down to multiples of 16 (H.264 macroblock alignment)
+      const width = Math.floor(canvas.width * scale / 16) * 16;
+      const height = Math.floor(canvas.height * scale / 16) * 16;
       const fps = 30;
+
+      // Create offscreen canvas for scaled recording
+      const recordCanvas = new OffscreenCanvas(width, height);
+      const recordCtx = recordCanvas.getContext('2d');
+      window._recordCanvas = recordCanvas;
+      window._recordCtx = recordCtx;
 
       encodedChunks = [];
       frameCount = 0;
@@ -3193,7 +3316,12 @@
       captureInterval = setInterval(async () => {
         if (!isRecording) return;
 
-        const bitmap = await createImageBitmap(canvas);
+        // Draw main canvas scaled onto recording canvas
+        const recordCanvas = window._recordCanvas;
+        const recordCtx = window._recordCtx;
+        recordCtx.drawImage(canvas, 0, 0, recordCanvas.width, recordCanvas.height);
+
+        const bitmap = await createImageBitmap(recordCanvas);
         const frame = new VideoFrame(bitmap, {
           timestamp: frameCount * (1_000_000 / fps), // microseconds
         });
