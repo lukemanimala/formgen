@@ -12,7 +12,9 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 - **Geometry controls**: Petals, Concavity, Pointiness, Inner Radius, Petal Change, Align, Rotation, Height
 - **Layer effects**: Opacity, Shadow, Thickness (3D extrusion)
 - **Color**: Hue control with layer-by-layer color shift, lightness control
-- **Effects**: Bloom post-processing with adjustable strength, background color picker
+- **Effects**: Bloom post-processing, mirror/kaleidoscope modes, background color picker
+- **Mirror modes**: Radial (shader-based kaleidoscope) or Copies (geometry duplication)
+- **Collapsible UI**: Accordion sections for easier navigation
 
 ### Animation
 - **4 LFO system**: Four independent oscillators with Speed, Amplitude, and Center controls

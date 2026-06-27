@@ -241,3 +241,39 @@
 - 16-pixel alignment prevents codec rounding issues
 - Quality trade-off: recorded video may be lower resolution than display
 - Alternative (using higher AVC level) rejected due to device compatibility concerns
+
+---
+
+## ADR-016: Dual Mirror System (Radial vs Copies)
+
+**Date**: 2026-06-27
+
+**Context**: Users wanted to fill out the canvas more with repeated patterns. Two approaches emerged: shader-based kaleidoscope and geometry duplication.
+
+**Decision**: Implement both modes, letting users choose:
+- **Radial**: Post-processing kaleidoscope shader that divides the screen into segments and mirrors them. Performant, true radial symmetry.
+- **Copies**: Clone the geometry and arrange copies in a circle around the center original. More copies = more geometry, but different visual effect.
+
+**Consequences**:
+- Users get both options based on their needs
+- Radial is zero-cost (shader operates on final image)
+- Copies increases geometry count but keeps center mandala visible
+- Count selector works for both modes (4, 6, 8, 12, 16)
+- Copies mode interprets count as "how many MORE" (center + N copies)
+
+---
+
+## ADR-017: Collapsible UI Sections
+
+**Date**: 2026-06-27
+
+**Context**: Control panel had grown to 7+ sections, requiring significant scrolling. Users needed to navigate between frequently-used and rarely-used controls.
+
+**Decision**: Add accordion-style collapsible sections. Click header to toggle. Some sections start collapsed (Geometry, Color, Animation) while others stay open (Pattern, Macros, Effects, Export).
+
+**Consequences**:
+- Reduced initial visual clutter
+- Faster navigation to desired controls
+- Users can expand only what they need
+- State persists during session (not saved between reloads)
+- Minimal CSS/JS overhead (~30 lines)

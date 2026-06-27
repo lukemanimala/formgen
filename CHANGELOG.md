@@ -9,10 +9,18 @@ All notable changes to this project will be documented in this file.
 - **Bloom LFO Target**: Bloom strength can be animated via any of the 4 LFOs
 - **Background Color Picker**: Change background color via color picker in Color section
 - **Lightness Control**: Adjust mandala brightness (20-80%) independent of hue
+- **Mirror System**: Two modes for filling out the canvas
+  - **Radial**: Post-processing kaleidoscope shader for true radial symmetry
+  - **Copies**: Geometry duplication with center original + surrounding copies
+- **Mirror Count**: 4, 6, 8, 12, or 16 segments/copies
+- **Collapsible Sections**: Accordion-style UI panels for easier navigation
 
 ### Fixed
 - **Video Recording**: Fixed black frames by enabling WebGL preserveDrawingBuffer
 - **Video Resolution**: Fixed H.264 codec limits by scaling down large canvases to fit AVC level 4.0
+
+### Changed
+- **UI Layout**: Geometry, Color, and Animation sections collapsed by default
 
 ---
 
