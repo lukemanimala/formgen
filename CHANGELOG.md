@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2026-06-27
+## [Unreleased] - 2026-06-28
 
 ### Added
 - **Bloom Post-Processing**: UnrealBloomPass effect with adjustable strength (0-3)
@@ -10,10 +10,13 @@ All notable changes to this project will be documented in this file.
 - **Background Color Picker**: Change background color via color picker in Color section
 - **Lightness Control**: Adjust mandala brightness (20-80%) independent of hue
 - **Mirror System**: Two modes for filling out the canvas
-  - **Radial**: Post-processing kaleidoscope shader for true radial symmetry
-  - **Copies**: Geometry duplication with center original + surrounding copies
+  - **Kaleid**: Post-processing kaleidoscope shader for true radial symmetry
+  - **Ring**: Geometry duplication with center original + surrounding copies
 - **Mirror Count**: 4, 6, 8, 12, or 16 segments/copies
 - **Collapsible Sections**: Accordion-style UI panels for easier navigation
+- **Audio Recording**: Video exports now include audio track when audio is loaded
+  - MP4: AAC-LC encoding via AudioEncoder + mp4-muxer
+  - WebM: Opus encoding via MediaRecorder
 
 ### Fixed
 - **Video Recording**: Fixed black frames by enabling WebGL preserveDrawingBuffer
@@ -21,6 +24,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - **UI Layout**: Geometry, Color, and Animation sections collapsed by default
+- **LFO Bias → Center**: Renamed for clarity (describes oscillation midpoint)
+- **Mirror Labels**: Radial → Kaleid, Copies → Ring (more intuitive)
 
 ---
 

@@ -277,3 +277,22 @@
 - Users can expand only what they need
 - State persists during session (not saved between reloads)
 - Minimal CSS/JS overhead (~30 lines)
+
+---
+
+## ADR-018: Audio Recording Integration
+
+**Date**: 2026-06-28
+
+**Context**: FormGen is a music visuals tool, but video exports had no audio. Users expected to hear the music they were visualizing in their exports.
+
+**Decision**: Integrate audio capture into both recording paths:
+- **MP4 (WebCodecs)**: Use AudioEncoder with AAC-LC codec, capture via ScriptProcessorNode, mux with mp4-muxer
+- **WebM (MediaRecorder)**: Create MediaStreamDestination from existing audio graph, combine with video stream
+
+**Consequences**:
+- Video exports include synced audio when audio file is loaded
+- Reuses existing Web Audio API graph (no duplicate connections)
+- AAC for MP4 ensures broad compatibility
+- Opus for WebM provides good quality at low bitrate
+- Audio only included when user has loaded an audio file

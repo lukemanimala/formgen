@@ -123,17 +123,10 @@
 
     .section-content {
       padding: 0 24px 20px;
-      overflow: hidden;
-      transition: max-height 0.25s ease, padding 0.25s ease, opacity 0.2s ease;
-      max-height: 1000px;
-      opacity: 1;
     }
 
     .control-section.collapsed .section-content {
-      max-height: 0;
-      padding-top: 0;
-      padding-bottom: 0;
-      opacity: 0;
+      display: none;
     }
 
     /* Pattern Selector */
@@ -988,7 +981,7 @@
           </div>
           <div class="knob-control" data-param="lfo1Offset" data-min="0" data-max="1" data-value="0.5">
             <div class="knob-container"></div>
-            <div class="knob-name">Bias</div>
+            <div class="knob-name">Center</div>
             <div class="knob-value">0.50</div>
           </div>
         </div>
@@ -1045,7 +1038,7 @@
           </div>
           <div class="knob-control" data-param="lfo2Offset" data-min="0" data-max="1" data-value="0.5">
             <div class="knob-container"></div>
-            <div class="knob-name">Bias</div>
+            <div class="knob-name">Center</div>
             <div class="knob-value">0.50</div>
           </div>
         </div>
@@ -1102,7 +1095,7 @@
           </div>
           <div class="knob-control" data-param="lfo3Offset" data-min="0" data-max="1" data-value="0.5">
             <div class="knob-container"></div>
-            <div class="knob-name">Bias</div>
+            <div class="knob-name">Center</div>
             <div class="knob-value">0.50</div>
           </div>
         </div>
@@ -1159,7 +1152,7 @@
           </div>
           <div class="knob-control" data-param="lfo4Offset" data-min="0" data-max="1" data-value="0.5">
             <div class="knob-container"></div>
-            <div class="knob-name">Bias</div>
+            <div class="knob-name">Center</div>
             <div class="knob-value">0.50</div>
           </div>
         </div>
@@ -1205,8 +1198,8 @@
           <label style="font-size: 10px; color: var(--text-secondary);">Mirror</label>
           <select id="mirror-mode" class="lfo-select" style="width: 90px;">
             <option value="off">Off</option>
-            <option value="kaleidoscope">Radial</option>
-            <option value="duplicate">Copies</option>
+            <option value="kaleidoscope">Kaleid</option>
+            <option value="duplicate">Ring</option>
           </select>
           <select id="mirror-count" class="lfo-select" style="flex: 1;">
             <option value="4">4</option>
@@ -3488,12 +3481,15 @@
     const recordBtn = document.getElementById('record-btn');
     let mp4Muxer = null;
     let videoEncoder = null;
+    let audioEncoder = null;
     let encodedChunks = [];
     let frameCount = 0;
     let captureInterval = null;
+    let audioProcessor = null;
 
     // Check if WebCodecs is available
     const hasWebCodecs = typeof VideoEncoder !== 'undefined';
+    const hasAudioEncoder = typeof AudioEncoder !== 'undefined';
 
     async function startRecordingMP4() {
       const canvas = document.getElementById('mandala-canvas');
@@ -3526,8 +3522,11 @@
       encodedChunks = [];
       frameCount = 0;
 
-      // Create muxer
-      const muxer = new mp4Muxer.Muxer({
+      // Check if we have audio to record
+      const hasAudio = audioElement && audioContext && audioSource && hasAudioEncoder;
+
+      // Create muxer with video and optional audio
+      const muxerConfig = {
         target: new mp4Muxer.ArrayBufferTarget(),
         video: {
           codec: 'avc',
@@ -3535,7 +3534,17 @@
           height: height,
         },
         fastStart: 'in-memory',
-      });
+      };
+
+      if (hasAudio) {
+        muxerConfig.audio = {
+          codec: 'aac',
+          numberOfChannels: 2,
+          sampleRate: audioContext.sampleRate,
+        };
+      }
+
+      const muxer = new mp4Muxer.Muxer(muxerConfig);
 
       // Create encoder
       videoEncoder = new VideoEncoder({
@@ -3552,6 +3561,60 @@
         bitrate: 8_000_000,
         framerate: fps,
       });
+
+      // Set up audio encoder if audio is available
+      if (hasAudio) {
+        audioEncoder = new AudioEncoder({
+          output: (chunk, meta) => {
+            muxer.addAudioChunk(chunk, meta);
+          },
+          error: (e) => console.error('Audio encoder error:', e),
+        });
+
+        await audioEncoder.configure({
+          codec: 'mp4a.40.2', // AAC-LC
+          numberOfChannels: 2,
+          sampleRate: audioContext.sampleRate,
+          bitrate: 128_000,
+        });
+
+        // Create ScriptProcessor to capture audio samples
+        const bufferSize = 4096;
+        audioProcessor = audioContext.createScriptProcessor(bufferSize, 2, 2);
+        let audioTimestamp = 0;
+
+        audioProcessor.onaudioprocess = (e) => {
+          if (!isRecording || !audioEncoder) return;
+
+          const left = e.inputBuffer.getChannelData(0);
+          const right = e.inputBuffer.getChannelData(1);
+
+          // Interleave channels into Float32Array
+          const interleaved = new Float32Array(left.length * 2);
+          for (let i = 0; i < left.length; i++) {
+            interleaved[i * 2] = left[i];
+            interleaved[i * 2 + 1] = right[i];
+          }
+
+          const audioData = new AudioData({
+            format: 'f32-planar',
+            sampleRate: audioContext.sampleRate,
+            numberOfFrames: left.length,
+            numberOfChannels: 2,
+            timestamp: audioTimestamp,
+            data: new Float32Array([...left, ...right]),
+          });
+
+          audioEncoder.encode(audioData);
+          audioData.close();
+          audioTimestamp += (left.length / audioContext.sampleRate) * 1_000_000;
+        };
+
+        // Insert processor into audio graph
+        audioSource.connect(audioProcessor);
+        audioProcessor.connect(audioContext.destination);
+        window._audioProcessor = audioProcessor;
+      }
 
       isRecording = true;
       recordingStartTime = Date.now();
@@ -3599,9 +3662,21 @@
 
       recordBtn.textContent = 'Encoding...';
 
-      // Flush encoder
+      // Clean up audio processor
+      if (window._audioProcessor) {
+        window._audioProcessor.disconnect();
+        window._audioProcessor = null;
+      }
+
+      // Flush encoders
       await videoEncoder.flush();
       videoEncoder.close();
+
+      if (audioEncoder) {
+        await audioEncoder.flush();
+        audioEncoder.close();
+        audioEncoder = null;
+      }
 
       // Finalize muxer
       const muxer = window._currentMuxer;
@@ -3624,9 +3699,27 @@
     // Fallback to WebM if WebCodecs not available
     function startRecordingWebM() {
       const canvas = document.getElementById('mandala-canvas');
-      const stream = canvas.captureStream(30);
+      const videoStream = canvas.captureStream(30);
+
+      // Combine video with audio if available
+      let stream = videoStream;
+      if (audioElement && audioContext && audioSource) {
+        // Create destination node and connect to existing audio graph
+        const dest = audioContext.createMediaStreamDestination();
+        audioSource.connect(dest); // Tap into existing audio source
+
+        // Combine video and audio tracks
+        const combinedStream = new MediaStream([
+          ...videoStream.getVideoTracks(),
+          ...dest.stream.getAudioTracks()
+        ]);
+        stream = combinedStream;
+        window._recordingAudioDest = dest; // Store for cleanup
+      }
 
       const mimeTypes = [
+        'video/webm;codecs=vp9,opus',
+        'video/webm;codecs=vp8,opus',
         'video/webm;codecs=vp9',
         'video/webm;codecs=vp8',
         'video/webm',
