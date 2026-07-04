@@ -18,6 +18,7 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 
 ### Animation
 - **4 LFO system**: Four independent oscillators with Speed, Amplitude, and Center controls
+- **Multi-target LFOs**: Each LFO can control multiple parameters simultaneously
 - **LFO shapes**: Sine, Triangle, Saw
 - **Audio-reactive**: Bass, Mid, Treble frequency bands drive any parameter
 - **Audio smoothing**: Adjustable smoothing for calm or punchy audio response
@@ -26,9 +27,10 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 
 ### Export
 - **PNG**: 4x resolution render
-- **MP4**: Native H.264 encoding via WebCodecs
+- **MP4**: Native H.264 encoding via WebCodecs (720p to 4K, configurable FPS/bitrate)
 - **OBJ**: 3D model export for Notch, TouchDesigner, Blender, etc.
-- **Config**: JSON preset save/load
+- **Presets**: 8 built-in presets + save/load custom presets
+- **Config**: Download/import JSON configurations
 
 ## Tech Stack
 
@@ -39,10 +41,10 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 
 ## Quick Start
 
-1. Open `index.html` in a modern browser (Chrome/Edge recommended for MP4 export)
-2. Select a pattern type
+1. Open `start.html` for the landing page with preset gallery, or `index.html` directly
+2. Select a pattern type or start from a built-in preset
 3. Adjust macro and geometry controls
-4. Use LFOs to animate parameters
+4. Use LFOs to animate parameters (select multiple targets per LFO)
 5. Export as PNG, video, or OBJ
 
 ## Export to Notch

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FormGen - Procedural Geometry for Creators</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --surface: rgba(255, 255, 255, 0.03);
+      --surface-hover: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.08);
+      --text-primary: rgba(255, 255, 255, 0.9);
+      --text-secondary: rgba(255, 255, 255, 0.5);
+      --text-tertiary: rgba(255, 255, 255, 0.3);
+      --accent: hsl(15, 85%, 55%);
+    }
+
+    body {
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 24px;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+
+    .logo {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--accent), #ff9966);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .start-blank {
+      display: inline-block;
+      padding: 14px 32px;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .start-blank:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 100, 50, 0.3);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 48px 0 32px;
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .presets-section {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .presets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .preset-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .preset-card:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .preset-emoji {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .preset-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .preset-card:hover .preset-name {
+      color: var(--text-primary);
+    }
+
+    .footer {
+      margin-top: 64px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1 class="logo">FormGen</h1>
+    <p class="tagline">Create stunning procedural geometry and music visuals. No design skills required.</p>
+    <a href="index.html" class="start-blank">Start from Scratch</a>
+  </div>
+
+  <div class="divider">or start with a preset</div>
+
+  <div class="presets-section">
+    <div class="presets-grid">
+      <a href="index.html?preset=cosmic-bloom" class="preset-card">
+        <span class="preset-emoji">🌌</span>
+        <span class="preset-name">Cosmic Bloom</span>
+      </a>
+      <a href="index.html?preset=liquid-glass" class="preset-card">
+        <span class="preset-emoji">🌊</span>
+        <span class="preset-name">Liquid Glass</span>
+      </a>
+      <a href="index.html?preset=infinite-tunnel" class="preset-card">
+        <span class="preset-emoji">🌀</span>
+        <span class="preset-name">Infinite Tunnel</span>
+      </a>
+      <a href="index.html?preset=crystal-pulse" class="preset-card">
+        <span class="preset-emoji">💎</span>
+        <span class="preset-name">Crystal Pulse</span>
+      </a>
+      <a href="index.html?preset=kaleidoscope" class="preset-card">
+        <span class="preset-emoji">🔮</span>
+        <span class="preset-name">Kaleidoscope</span>
+      </a>
+      <a href="index.html?preset=bass-reactor" class="preset-card">
+        <span class="preset-emoji">⚡</span>
+        <span class="preset-name">Bass Reactor</span>
+      </a>
+      <a href="index.html?preset=solar-flare" class="preset-card">
+        <span class="preset-emoji">☀️</span>
+        <span class="preset-name">Solar Flare</span>
+      </a>
+      <a href="index.html?preset=dreamscape" class="preset-card">
+        <span class="preset-emoji">🌙</span>
+        <span class="preset-name">Dreamscape</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">
+    Built with <a href="https://github.com/anthropics/claude-code" target="_blank">Claude Code</a>
+  </div>
+</body>
+</html>

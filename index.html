@@ -136,6 +136,38 @@
       gap: 8px;
     }
 
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    .preset-btn {
+      padding: 8px 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .preset-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .preset-btn .emoji {
+      margin-right: 4px;
+    }
+
     .pattern-btn {
       padding: 12px;
       background: var(--surface);
@@ -403,6 +435,79 @@
       font-family: inherit;
       font-size: 12px;
       cursor: pointer;
+    }
+
+    /* Multi-select dropdown */
+    .lfo-multiselect {
+      position: relative;
+      flex: 1;
+    }
+
+    .lfo-multiselect-btn {
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .lfo-multiselect-btn:hover {
+      border-color: var(--border-hover);
+    }
+
+    .lfo-multiselect-btn.active {
+      border-color: var(--accent);
+    }
+
+    .lfo-multiselect-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-top: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .lfo-multiselect.open .lfo-multiselect-dropdown {
+      display: block;
+    }
+
+    .lfo-multiselect-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--text-secondary);
+      transition: background 0.1s ease;
+    }
+
+    .lfo-multiselect-option:hover {
+      background: var(--surface-hover);
+      color: var(--text-primary);
+    }
+
+    .lfo-multiselect-option input {
+      accent-color: var(--accent);
+    }
+
+    .lfo-multiselect-option.checked {
+      color: var(--text-primary);
     }
 
     .lfo-viz-container {
@@ -935,28 +1040,33 @@
         <!-- LFO 1 -->
         <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 1</div>
         <div class="lfo-control">
-          <select class="lfo-select" id="lfo-target">
-            <option value="none">Off</option>
-            <option value="complexity">Layers</option>
-            <option value="evolution">Twist</option>
-            <option value="dimension">Depth</option>
-            <option value="energy">Energy</option>
-            <option value="energyShift">Energy Shift</option>
-            <option value="hue">Hue</option>
-            <option value="petals">Petals</option>
-            <option value="concavity">Concavity</option>
-            <option value="pointiness">Pointiness</option>
-            <option value="petalChange">Petal Change</option>
-            <option value="innerRadius">Inner Radius</option>
-            <option value="rotation">Rotation</option>
-            <option value="height">Height</option>
-            <option value="opacity">Opacity</option>
-            <option value="shadow">Shadow</option>
-            <option value="thickness">Thickness</option>
-            <option value="mandalaAlign">Mandala Align</option>
-            <option value="colorShift">Color Shift</option>
-            <option value="bloom">Bloom</option>
-          </select>
+          <div class="lfo-multiselect" id="lfo1-multiselect">
+            <button class="lfo-multiselect-btn" type="button">
+              <span class="lfo-multiselect-label">Off</span>
+              <span style="font-size: 10px;">▼</span>
+            </button>
+            <div class="lfo-multiselect-dropdown">
+              <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="dimension"> Depth</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="energy"> Energy</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="energyShift"> Energy Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="petals"> Petals</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="concavity"> Concavity</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="pointiness"> Pointiness</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="petalChange"> Petal Change</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="innerRadius"> Inner Radius</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="rotation"> Rotation</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="height"> Height</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="thickness"> Thickness</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="mandalaAlign"> Mandala Align</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="colorShift"> Color Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="bloom"> Bloom</label>
+            </div>
+          </div>
           <select class="lfo-select" id="lfo-shape">
             <option value="sine">Sine</option>
             <option value="triangle">Triangle</option>
@@ -992,28 +1102,33 @@
         <!-- LFO 2 -->
         <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 2</div>
         <div class="lfo-control">
-          <select class="lfo-select" id="lfo2-target">
-            <option value="none">Off</option>
-            <option value="complexity">Layers</option>
-            <option value="evolution">Twist</option>
-            <option value="dimension">Depth</option>
-            <option value="energy">Energy</option>
-            <option value="energyShift">Energy Shift</option>
-            <option value="hue">Hue</option>
-            <option value="petals">Petals</option>
-            <option value="concavity">Concavity</option>
-            <option value="pointiness">Pointiness</option>
-            <option value="petalChange">Petal Change</option>
-            <option value="innerRadius">Inner Radius</option>
-            <option value="rotation">Rotation</option>
-            <option value="height">Height</option>
-            <option value="opacity">Opacity</option>
-            <option value="shadow">Shadow</option>
-            <option value="thickness">Thickness</option>
-            <option value="mandalaAlign">Mandala Align</option>
-            <option value="colorShift">Color Shift</option>
-            <option value="bloom">Bloom</option>
-          </select>
+          <div class="lfo-multiselect" id="lfo2-multiselect">
+            <button class="lfo-multiselect-btn" type="button">
+              <span class="lfo-multiselect-label">Off</span>
+              <span style="font-size: 10px;">▼</span>
+            </button>
+            <div class="lfo-multiselect-dropdown">
+              <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="dimension"> Depth</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="energy"> Energy</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="energyShift"> Energy Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="petals"> Petals</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="concavity"> Concavity</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="pointiness"> Pointiness</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="petalChange"> Petal Change</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="innerRadius"> Inner Radius</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="rotation"> Rotation</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="height"> Height</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="thickness"> Thickness</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="mandalaAlign"> Mandala Align</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="colorShift"> Color Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="bloom"> Bloom</label>
+            </div>
+          </div>
           <select class="lfo-select" id="lfo2-shape">
             <option value="sine">Sine</option>
             <option value="triangle">Triangle</option>
@@ -1049,28 +1164,33 @@
         <!-- LFO 3 -->
         <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 3</div>
         <div class="lfo-control">
-          <select class="lfo-select" id="lfo3-target">
-            <option value="none">Off</option>
-            <option value="complexity">Layers</option>
-            <option value="evolution">Twist</option>
-            <option value="dimension">Depth</option>
-            <option value="energy">Energy</option>
-            <option value="energyShift">Energy Shift</option>
-            <option value="hue">Hue</option>
-            <option value="petals">Petals</option>
-            <option value="concavity">Concavity</option>
-            <option value="pointiness">Pointiness</option>
-            <option value="petalChange">Petal Change</option>
-            <option value="innerRadius">Inner Radius</option>
-            <option value="rotation">Rotation</option>
-            <option value="height">Height</option>
-            <option value="opacity">Opacity</option>
-            <option value="shadow">Shadow</option>
-            <option value="thickness">Thickness</option>
-            <option value="mandalaAlign">Mandala Align</option>
-            <option value="colorShift">Color Shift</option>
-            <option value="bloom">Bloom</option>
-          </select>
+          <div class="lfo-multiselect" id="lfo3-multiselect">
+            <button class="lfo-multiselect-btn" type="button">
+              <span class="lfo-multiselect-label">Off</span>
+              <span style="font-size: 10px;">▼</span>
+            </button>
+            <div class="lfo-multiselect-dropdown">
+              <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="dimension"> Depth</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="energy"> Energy</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="energyShift"> Energy Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="petals"> Petals</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="concavity"> Concavity</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="pointiness"> Pointiness</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="petalChange"> Petal Change</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="innerRadius"> Inner Radius</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="rotation"> Rotation</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="height"> Height</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="thickness"> Thickness</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="mandalaAlign"> Mandala Align</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="colorShift"> Color Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="bloom"> Bloom</label>
+            </div>
+          </div>
           <select class="lfo-select" id="lfo3-shape">
             <option value="sine">Sine</option>
             <option value="triangle">Triangle</option>
@@ -1106,28 +1226,33 @@
         <!-- LFO 4 -->
         <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 4</div>
         <div class="lfo-control">
-          <select class="lfo-select" id="lfo4-target">
-            <option value="none">Off</option>
-            <option value="complexity">Layers</option>
-            <option value="evolution">Twist</option>
-            <option value="dimension">Depth</option>
-            <option value="energy">Energy</option>
-            <option value="energyShift">Energy Shift</option>
-            <option value="hue">Hue</option>
-            <option value="petals">Petals</option>
-            <option value="concavity">Concavity</option>
-            <option value="pointiness">Pointiness</option>
-            <option value="petalChange">Petal Change</option>
-            <option value="innerRadius">Inner Radius</option>
-            <option value="rotation">Rotation</option>
-            <option value="height">Height</option>
-            <option value="opacity">Opacity</option>
-            <option value="shadow">Shadow</option>
-            <option value="thickness">Thickness</option>
-            <option value="mandalaAlign">Mandala Align</option>
-            <option value="colorShift">Color Shift</option>
-            <option value="bloom">Bloom</option>
-          </select>
+          <div class="lfo-multiselect" id="lfo4-multiselect">
+            <button class="lfo-multiselect-btn" type="button">
+              <span class="lfo-multiselect-label">Off</span>
+              <span style="font-size: 10px;">▼</span>
+            </button>
+            <div class="lfo-multiselect-dropdown">
+              <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="dimension"> Depth</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="energy"> Energy</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="energyShift"> Energy Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="petals"> Petals</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="concavity"> Concavity</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="pointiness"> Pointiness</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="petalChange"> Petal Change</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="innerRadius"> Inner Radius</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="rotation"> Rotation</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="height"> Height</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="thickness"> Thickness</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="mandalaAlign"> Mandala Align</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="colorShift"> Color Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="bloom"> Bloom</label>
+            </div>
+          </div>
           <select class="lfo-select" id="lfo4-shape">
             <option value="sine">Sine</option>
             <option value="triangle">Triangle</option>
@@ -1212,6 +1337,33 @@
         </div>
       </div>
 
+      <!-- Presets -->
+      <div class="control-section">
+        <div class="section-header">
+          <div class="section-label">Presets</div>
+          <span class="section-arrow">▼</span>
+        </div>
+        <div class="section-content">
+        <div class="preset-grid" id="builtin-presets">
+          <!-- Built-in presets loaded via JS -->
+        </div>
+        <div class="section-label" style="margin-top: 12px; font-size: 9px;">Custom</div>
+        <div class="slider-row">
+          <input type="text" id="preset-name" placeholder="Preset name..." style="flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 8px; color: var(--text-primary); font-family: inherit; font-size: 12px;">
+          <button class="export-btn" id="save-preset" style="width: 60px; margin-left: 8px;">Save</button>
+        </div>
+        <div class="slider-row" style="margin-top: 8px;">
+          <select id="preset-list" class="lfo-select" style="flex: 1;">
+            <option value="">-- Select Preset --</option>
+          </select>
+        </div>
+        <div class="export-row" style="margin-top: 8px;">
+          <button class="export-btn" id="load-preset">Load</button>
+          <button class="export-btn" id="delete-preset" style="background: rgba(255,100,100,0.1);">Delete</button>
+        </div>
+        </div>
+      </div>
+
       <!-- Export -->
       <div class="control-section">
         <div class="section-header">
@@ -1223,9 +1375,35 @@
           <button class="export-btn" id="export-png">PNG</button>
           <button class="export-btn" id="record-btn">Record</button>
         </div>
-        <div class="export-row" style="margin-top: 8px;">
-          <button class="export-btn" id="copy-config">Copy Config</button>
-          <button class="export-btn" id="load-config">Load Config</button>
+        <div class="section-label" style="margin-top: 12px; font-size: 9px;">Video Settings</div>
+        <div class="slider-row">
+          <label style="font-size: 10px; color: var(--text-secondary); width: 35px;">Res</label>
+          <select id="record-resolution" class="lfo-select" style="flex: 1;">
+            <option value="720">720p</option>
+            <option value="1080" selected>1080p</option>
+            <option value="1440">1440p</option>
+            <option value="2160">4K</option>
+          </select>
+        </div>
+        <div class="slider-row" style="margin-top: 6px;">
+          <label style="font-size: 10px; color: var(--text-secondary); width: 35px;">FPS</label>
+          <select id="record-fps" class="lfo-select" style="flex: 1;">
+            <option value="30" selected>30 fps</option>
+            <option value="60">60 fps</option>
+          </select>
+        </div>
+        <div class="slider-row" style="margin-top: 6px;">
+          <label style="font-size: 10px; color: var(--text-secondary); width: 35px;">Quality</label>
+          <select id="record-quality" class="lfo-select" style="flex: 1;">
+            <option value="standard">Standard (8 Mbps)</option>
+            <option value="high" selected>High (15 Mbps)</option>
+            <option value="max">Max (30 Mbps)</option>
+          </select>
+        </div>
+        <div class="export-row" style="margin-top: 12px;">
+          <button class="export-btn" id="download-config">Download</button>
+          <button class="export-btn" id="import-config">Import</button>
+          <input type="file" id="import-config-file" accept=".json" style="display: none;">
         </div>
         <div class="section-label" style="margin-top: 12px; font-size: 9px;">3D Model</div>
         <div class="export-row">
@@ -1298,28 +1476,28 @@
     let isAnimating = false;
 
     // LFO 1 state
-    let lfoTarget = 'none';
+    let lfoTargets = [];  // Array of targets for multi-select
     let lfoShape = 'sine';
     let lfo1Speed = 0.3;
     let lfo1Amp = 1.0;
     let lfo1Offset = 0.5;
 
     // LFO 2 state
-    let lfo2Target = 'none';
+    let lfo2Targets = [];
     let lfo2Shape = 'sine';
     let lfo2Speed = 0.2;
     let lfo2Amp = 1.0;
     let lfo2Offset = 0.5;
 
     // LFO 3 state
-    let lfo3Target = 'none';
+    let lfo3Targets = [];
     let lfo3Shape = 'sine';
     let lfo3Speed = 0.15;
     let lfo3Amp = 1.0;
     let lfo3Offset = 0.5;
 
     // LFO 4 state
-    let lfo4Target = 'none';
+    let lfo4Targets = [];
     let lfo4Shape = 'sine';
     let lfo4Speed = 0.1;
     let lfo4Amp = 1.0;
@@ -2673,38 +2851,46 @@
           // Update audio levels for audio-reactive LFOs
           updateAudioLevels();
           // LFO 1 - at full amp, use full range (0-1); offset shifts center when amp < 1
-          if (lfoTarget !== 'none') {
+          if (lfoTargets.length > 0) {
             const { value, phase } = calcLfoValue(this.time, lfo1Speed, lfoShape);
             const center = 0.5 + (lfo1Offset - 0.5) * (1 - lfo1Amp);
             const scaledValue = center + (value - 0.5) * lfo1Amp;
-            if (applyLfo(lfoTarget, scaledValue)) needsRegenerate = true;
+            for (const target of lfoTargets) {
+              if (applyLfo(target, scaledValue)) needsRegenerate = true;
+            }
             drawLfoViz(lfo1VizCanvas, lfo1VizCtx, phase, scaledValue, lfoShape, lfo1Amp);
           }
 
           // LFO 2
-          if (lfo2Target !== 'none') {
+          if (lfo2Targets.length > 0) {
             const { value, phase } = calcLfoValue(this.time, lfo2Speed, lfo2Shape);
             const center = 0.5 + (lfo2Offset - 0.5) * (1 - lfo2Amp);
             const scaledValue = center + (value - 0.5) * lfo2Amp;
-            if (applyLfo(lfo2Target, scaledValue)) needsRegenerate = true;
+            for (const target of lfo2Targets) {
+              if (applyLfo(target, scaledValue)) needsRegenerate = true;
+            }
             drawLfoViz(lfo2VizCanvas, lfo2VizCtx, phase, scaledValue, lfo2Shape, lfo2Amp);
           }
 
           // LFO 3
-          if (lfo3Target !== 'none') {
+          if (lfo3Targets.length > 0) {
             const { value, phase } = calcLfoValue(this.time, lfo3Speed, lfo3Shape);
             const center = 0.5 + (lfo3Offset - 0.5) * (1 - lfo3Amp);
             const scaledValue = center + (value - 0.5) * lfo3Amp;
-            if (applyLfo(lfo3Target, scaledValue)) needsRegenerate = true;
+            for (const target of lfo3Targets) {
+              if (applyLfo(target, scaledValue)) needsRegenerate = true;
+            }
             drawLfoViz(lfo3VizCanvas, lfo3VizCtx, phase, scaledValue, lfo3Shape, lfo3Amp);
           }
 
           // LFO 4
-          if (lfo4Target !== 'none') {
+          if (lfo4Targets.length > 0) {
             const { value, phase } = calcLfoValue(this.time, lfo4Speed, lfo4Shape);
             const center = 0.5 + (lfo4Offset - 0.5) * (1 - lfo4Amp);
             const scaledValue = center + (value - 0.5) * lfo4Amp;
-            if (applyLfo(lfo4Target, scaledValue)) needsRegenerate = true;
+            for (const target of lfo4Targets) {
+              if (applyLfo(target, scaledValue)) needsRegenerate = true;
+            }
             drawLfoViz(lfo4VizCanvas, lfo4VizCtx, phase, scaledValue, lfo4Shape, lfo4Amp);
           }
 
@@ -3175,28 +3361,28 @@
     }
 
     function updateLfoVizVisibility() {
-      if (lfoTarget !== 'none') {
+      if (lfoTargets.length > 0) {
         lfo1VizContainer.classList.add('visible');
         drawLfoViz(lfo1VizCanvas, lfo1VizCtx, 0, 0.5, lfoShape, lfo1Amp);
       } else {
         lfo1VizContainer.classList.remove('visible');
       }
 
-      if (lfo2Target !== 'none') {
+      if (lfo2Targets.length > 0) {
         lfo2VizContainer.classList.add('visible');
         drawLfoViz(lfo2VizCanvas, lfo2VizCtx, 0, 0.5, lfo2Shape, lfo2Amp);
       } else {
         lfo2VizContainer.classList.remove('visible');
       }
 
-      if (lfo3Target !== 'none') {
+      if (lfo3Targets.length > 0) {
         lfo3VizContainer.classList.add('visible');
         drawLfoViz(lfo3VizCanvas, lfo3VizCtx, 0, 0.5, lfo3Shape, lfo3Amp);
       } else {
         lfo3VizContainer.classList.remove('visible');
       }
 
-      if (lfo4Target !== 'none') {
+      if (lfo4Targets.length > 0) {
         lfo4VizContainer.classList.add('visible');
         drawLfoViz(lfo4VizCanvas, lfo4VizCtx, 0, 0.5, lfo4Shape, lfo4Amp);
       } else {
@@ -3414,50 +3600,110 @@
       audioLevels.treble = audioLevels.treble * audioSmooth + newTreble * (1 - audioSmooth);
     }
 
-    document.getElementById('lfo-target').addEventListener('change', (e) => {
-      lfoTarget = e.target.value;
-      updateLfoVizVisibility();
+    // Multi-select LFO target handling
+    function setupLfoMultiselect(containerId, targetsArray, updateLabel) {
+      const container = document.getElementById(containerId);
+      const btn = container.querySelector('.lfo-multiselect-btn');
+      const dropdown = container.querySelector('.lfo-multiselect-dropdown');
+      const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+      const label = container.querySelector('.lfo-multiselect-label');
+
+      // Toggle dropdown
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // Close other dropdowns
+        document.querySelectorAll('.lfo-multiselect.open').forEach(ms => {
+          if (ms !== container) ms.classList.remove('open');
+        });
+        container.classList.toggle('open');
+      });
+
+      // Handle checkbox changes
+      checkboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+          const checked = Array.from(checkboxes).filter(c => c.checked).map(c => c.value);
+          updateLabel(checked, label, btn);
+          updateLfoVizVisibility();
+        });
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!container.contains(e.target)) {
+          container.classList.remove('open');
+        }
+      });
+
+      return { checkboxes, label, btn };
+    }
+
+    // Label update helper
+    const targetLabels = {
+      complexity: 'Layers', evolution: 'Twist', dimension: 'Depth', energy: 'Energy',
+      energyShift: 'Energy Shift', hue: 'Hue', petals: 'Petals', concavity: 'Concavity',
+      pointiness: 'Pointiness', petalChange: 'Petal Change', innerRadius: 'Inner Radius',
+      rotation: 'Rotation', height: 'Height', opacity: 'Opacity', shadow: 'Shadow',
+      thickness: 'Thickness', mandalaAlign: 'Mandala Align', colorShift: 'Color Shift', bloom: 'Bloom'
+    };
+
+    function updateLfoLabel(targets, label, btn) {
+      if (targets.length === 0) {
+        label.textContent = 'Off';
+        btn.classList.remove('active');
+      } else if (targets.length === 1) {
+        label.textContent = targetLabels[targets[0]] || targets[0];
+        btn.classList.add('active');
+      } else {
+        label.textContent = `${targets.length} targets`;
+        btn.classList.add('active');
+      }
+    }
+
+    // Setup all 4 LFO multiselects
+    const lfo1Ms = setupLfoMultiselect('lfo1-multiselect', lfoTargets, (checked, label, btn) => {
+      lfoTargets = checked;
+      updateLfoLabel(checked, label, btn);
+    });
+
+    const lfo2Ms = setupLfoMultiselect('lfo2-multiselect', lfo2Targets, (checked, label, btn) => {
+      lfo2Targets = checked;
+      updateLfoLabel(checked, label, btn);
+    });
+
+    const lfo3Ms = setupLfoMultiselect('lfo3-multiselect', lfo3Targets, (checked, label, btn) => {
+      lfo3Targets = checked;
+      updateLfoLabel(checked, label, btn);
+    });
+
+    const lfo4Ms = setupLfoMultiselect('lfo4-multiselect', lfo4Targets, (checked, label, btn) => {
+      lfo4Targets = checked;
+      updateLfoLabel(checked, label, btn);
     });
 
     document.getElementById('lfo-shape').addEventListener('change', (e) => {
       lfoShape = e.target.value;
-      if (lfoTarget !== 'none') {
+      if (lfoTargets.length > 0) {
         drawLfoViz(lfo1VizCanvas, lfo1VizCtx, 0, 0.5, lfoShape, lfo1Amp);
       }
     });
 
-    document.getElementById('lfo2-target').addEventListener('change', (e) => {
-      lfo2Target = e.target.value;
-      updateLfoVizVisibility();
-    });
-
     document.getElementById('lfo2-shape').addEventListener('change', (e) => {
       lfo2Shape = e.target.value;
-      if (lfo2Target !== 'none') {
+      if (lfo2Targets.length > 0) {
         drawLfoViz(lfo2VizCanvas, lfo2VizCtx, 0, 0.5, lfo2Shape, lfo2Amp);
       }
     });
 
-    document.getElementById('lfo3-target').addEventListener('change', (e) => {
-      lfo3Target = e.target.value;
-      updateLfoVizVisibility();
-    });
-
     document.getElementById('lfo3-shape').addEventListener('change', (e) => {
       lfo3Shape = e.target.value;
-      if (lfo3Target !== 'none') {
+      if (lfo3Targets.length > 0) {
         drawLfoViz(lfo3VizCanvas, lfo3VizCtx, 0, 0.5, lfo3Shape, lfo3Amp);
       }
     });
 
-    document.getElementById('lfo4-target').addEventListener('change', (e) => {
-      lfo4Target = e.target.value;
-      updateLfoVizVisibility();
-    });
-
     document.getElementById('lfo4-shape').addEventListener('change', (e) => {
       lfo4Shape = e.target.value;
-      if (lfo4Target !== 'none') {
+      if (lfo4Targets.length > 0) {
         drawLfoViz(lfo4VizCanvas, lfo4VizCtx, 0, 0.5, lfo4Shape, lfo4Amp);
       }
     });
@@ -3502,16 +3748,48 @@
         mp4Muxer = module;
       }
 
-      // AVC level 4.0 max coded area is ~2M pixels
-      // H.264 rounds up to 16-pixel macroblocks, so use conservative limit
-      const MAX_PIXELS = 1920 * 1080; // Safe 1080p limit
-      const canvasPixels = canvas.width * canvas.height;
-      const scale = canvasPixels > MAX_PIXELS ? Math.sqrt(MAX_PIXELS / canvasPixels) : 1;
+      // Get recording settings from UI
+      const resolutionSetting = parseInt(document.getElementById('record-resolution').value);
+      const fps = parseInt(document.getElementById('record-fps').value);
+      const qualitySetting = document.getElementById('record-quality').value;
 
-      // Round down to multiples of 16 (H.264 macroblock alignment)
-      const width = Math.floor(canvas.width * scale / 16) * 16;
-      const height = Math.floor(canvas.height * scale / 16) * 16;
-      const fps = 30;
+      // Bitrate based on quality setting
+      const bitrates = { standard: 8_000_000, high: 15_000_000, max: 30_000_000 };
+      const bitrate = bitrates[qualitySetting] || 15_000_000;
+
+      // Calculate target dimensions based on resolution setting
+      // Maintain aspect ratio of canvas
+      const aspectRatio = canvas.width / canvas.height;
+      let targetHeight = resolutionSetting;
+      let targetWidth = Math.round(targetHeight * aspectRatio);
+
+      // AVC level limits - use level 5.1 for high res, 4.0 for standard
+      // Level 4.0: max 2,097,152 pixels (good for 1080p)
+      // Level 5.1: max 36,864 macroblocks = ~9.4M pixels (good for 4K)
+      const MAX_CODED_AREA_L40 = 2097152;
+      const MAX_CODED_AREA_L51 = 36864 * 256; // ~9.4M pixels
+
+      let codedArea = targetWidth * targetHeight;
+      let avcLevel = '640028'; // Level 4.0 default
+
+      // If exceeds level 4.0, try level 5.1
+      if (codedArea > MAX_CODED_AREA_L40) {
+        avcLevel = '640033'; // Level 5.1
+
+        // If still exceeds level 5.1, scale down
+        if (codedArea > MAX_CODED_AREA_L51) {
+          const scaleFactor = Math.sqrt(MAX_CODED_AREA_L51 / codedArea);
+          targetWidth = Math.floor(targetWidth * scaleFactor);
+          targetHeight = Math.floor(targetHeight * scaleFactor);
+          console.log(`Scaling down to ${targetWidth}x${targetHeight} to fit AVC level 5.1`);
+        }
+      }
+
+      // Round to multiples of 16 (H.264 macroblock alignment)
+      const width = Math.floor(targetWidth / 16) * 16;
+      const height = Math.floor(targetHeight / 16) * 16;
+
+      console.log(`Recording at ${width}x${height}, AVC level ${avcLevel === '640033' ? '5.1' : '4.0'}`);
 
       // Create offscreen canvas for scaled recording
       const recordCanvas = new OffscreenCanvas(width, height);
@@ -3555,10 +3833,10 @@
       });
 
       await videoEncoder.configure({
-        codec: 'avc1.640028',
+        codec: `avc1.${avcLevel}`,
         width: width,
         height: height,
-        bitrate: 8_000_000,
+        bitrate: bitrate,
         framerate: fps,
       });
 
@@ -3699,7 +3977,8 @@
     // Fallback to WebM if WebCodecs not available
     function startRecordingWebM() {
       const canvas = document.getElementById('mandala-canvas');
-      const videoStream = canvas.captureStream(30);
+      const fps = parseInt(document.getElementById('record-fps').value) || 30;
+      const videoStream = canvas.captureStream(fps);
 
       // Combine video with audio if available
       let stream = videoStream;
@@ -3727,9 +4006,14 @@
 
       let mimeType = mimeTypes.find(type => MediaRecorder.isTypeSupported(type)) || '';
 
+      // Get bitrate from quality setting
+      const qualitySetting = document.getElementById('record-quality').value;
+      const bitrates = { standard: 8_000_000, high: 15_000_000, max: 30_000_000 };
+      const bitrate = bitrates[qualitySetting] || 15_000_000;
+
       mediaRecorder = new MediaRecorder(stream, {
         mimeType: mimeType,
-        videoBitsPerSecond: 12000000
+        videoBitsPerSecond: bitrate
       });
 
       recordedChunks = [];
@@ -3801,86 +4085,516 @@
       }
     });
 
-    // Copy config to clipboard
-    document.getElementById('copy-config').addEventListener('click', () => {
-      const config = {
-        pattern: currentPattern,
-        hue: currentHue,
-        macros: { ...macros },
-        geometry: { ...geometry },
-        animation: {
-          speed: animSpeed,
-          twistDegrees: twistDegrees,
-          stagger: twistStagger
+    // Download config as JSON file
+    document.getElementById('download-config').addEventListener('click', () => {
+      const config = getCurrentConfig();
+      const json = JSON.stringify(config, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `formgen-${currentPattern}-${Date.now()}.json`;
+      link.click();
+
+      URL.revokeObjectURL(url);
+
+      const btn = document.getElementById('download-config');
+      btn.textContent = 'Done!';
+      setTimeout(() => btn.textContent = 'Download', 1500);
+    });
+
+    // Import config from JSON file
+    const importFileInput = document.getElementById('import-config-file');
+
+    document.getElementById('import-config').addEventListener('click', () => {
+      importFileInput.click();
+    });
+
+    importFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const config = JSON.parse(event.target.result);
+          applyConfig(config);
+
+          const btn = document.getElementById('import-config');
+          btn.textContent = 'Loaded!';
+          setTimeout(() => btn.textContent = 'Import', 1500);
+        } catch (err) {
+          alert('Failed to load config. Invalid JSON file.');
         }
       };
-      const json = JSON.stringify(config, null, 2);
-      navigator.clipboard.writeText(json).then(() => {
-        const btn = document.getElementById('copy-config');
-        btn.textContent = 'Copied!';
-        setTimeout(() => btn.textContent = 'Copy Config', 1500);
-      });
+      reader.readAsText(file);
+
+      // Reset input so same file can be loaded again
+      importFileInput.value = '';
     });
 
-    // Load config from clipboard
-    document.getElementById('load-config').addEventListener('click', async () => {
-      try {
-        const json = await navigator.clipboard.readText();
-        const config = JSON.parse(json);
+    // =====================
+    // PRESET SYSTEM
+    // =====================
 
-        // Apply pattern
-        if (config.pattern) {
-          currentPattern = config.pattern;
-          document.querySelectorAll('.pattern-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.pattern === config.pattern);
-          });
+    const PRESETS_KEY = 'formgen_presets';
+
+    // Built-in presets
+    const BUILT_IN_PRESETS = {
+      '🌌 Cosmic Bloom': {
+        version: 1,
+        pattern: 'mandala',
+        hue: 270,
+        lightness: 45,
+        bgColor: '#050510',
+        macros: { complexity: 16, evolution: 0.8, dimension: 0.6, energy: 0.5, energyShift: 0.2 },
+        geometry: { petals: 8, concavity: 0.6, pointiness: 1.2, innerRadius: 0.25, rotation: 0, petalChange: 0.3, height: 2.5, opacity: 0.9, shadow: 0.3, thickness: 0.1, mandalaAlign: 30, colorShift: 45 },
+        lfo1: { target: 'rotation', shape: 'sine', speed: 0.05, amp: 0.3, offset: 0.5 },
+        lfo2: { target: 'bloom', shape: 'sine', speed: 0.08, amp: 0.5, offset: 0.6 },
+        lfo3: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        lfo4: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        effects: { bloom: 2.2, mirrorMode: 'off', mirrorCount: 4 },
+        camera: 'off'
+      },
+      '🌊 Liquid Glass': {
+        version: 1,
+        pattern: 'flower',
+        hue: 190,
+        lightness: 60,
+        bgColor: '#0a0a0a',
+        macros: { complexity: 20, evolution: 0.2, dimension: 0.3, energy: 0.4, energyShift: -0.1 },
+        geometry: { petals: 6, concavity: 0.3, pointiness: 0.8, innerRadius: 0.4, rotation: 0, petalChange: 0.1, height: 1.8, opacity: 0.7, shadow: 0.1, thickness: 0.05, mandalaAlign: 0, colorShift: 20 },
+        lfo1: { target: 'opacity', shape: 'sine', speed: 0.12, amp: 0.4, offset: 0.7 },
+        lfo2: { target: 'innerRadius', shape: 'triangle', speed: 0.06, amp: 0.3, offset: 0.5 },
+        lfo3: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        lfo4: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        effects: { bloom: 1.5, mirrorMode: 'off', mirrorCount: 4 },
+        camera: 'off'
+      },
+      '🌀 Infinite Tunnel': {
+        version: 1,
+        pattern: 'spiral',
+        hue: 280,
+        lightness: 50,
+        bgColor: '#000000',
+        macros: { complexity: 24, evolution: 2.5, dimension: 0.9, energy: 0.7, energyShift: 0.3 },
+        geometry: { petals: 5, concavity: 0.5, pointiness: 1.5, innerRadius: 0.15, rotation: 0, petalChange: 0.5, height: 3, opacity: 1, shadow: 0.2, thickness: 0, mandalaAlign: 0, colorShift: 60 },
+        lfo1: { target: 'rotation', shape: 'saw', speed: 0.1, amp: 1, offset: 0.5 },
+        lfo2: { target: 'evolution', shape: 'sine', speed: 0.03, amp: 0.3, offset: 0.5 },
+        lfo3: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        lfo4: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        effects: { bloom: 1.8, mirrorMode: 'off', mirrorCount: 4 },
+        camera: 'zoom'
+      },
+      '💎 Crystal Pulse': {
+        version: 1,
+        pattern: 'star',
+        hue: 200,
+        lightness: 65,
+        bgColor: '#080812',
+        macros: { complexity: 12, evolution: 0.5, dimension: 0.5, energy: 0.8, energyShift: 0 },
+        geometry: { petals: 8, concavity: 0.8, pointiness: 2.5, innerRadius: 0.2, rotation: 0, petalChange: 0.2, height: 2.2, opacity: 1, shadow: 0.4, thickness: 0.15, mandalaAlign: 22.5, colorShift: 30 },
+        lfo1: { target: 'energy', shape: 'bass', speed: 0.1, amp: 0.6, offset: 0.6 },
+        lfo2: { target: 'pointiness', shape: 'mid', speed: 0.1, amp: 0.4, offset: 0.5 },
+        lfo3: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        lfo4: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        effects: { bloom: 1.2, mirrorMode: 'off', mirrorCount: 4 },
+        camera: 'off'
+      },
+      '🔮 Kaleidoscope': {
+        version: 1,
+        pattern: 'rosette',
+        hue: 320,
+        lightness: 55,
+        bgColor: '#0a0a0a',
+        macros: { complexity: 10, evolution: 0.6, dimension: 0.4, energy: 0.6, energyShift: 0.1 },
+        geometry: { petals: 6, concavity: 0.5, pointiness: 1.3, innerRadius: 0.3, rotation: 0, petalChange: 0.4, height: 2, opacity: 1, shadow: 0.2, thickness: 0.08, mandalaAlign: 15, colorShift: 50 },
+        lfo1: { target: 'rotation', shape: 'sine', speed: 0.08, amp: 0.5, offset: 0.5 },
+        lfo2: { target: 'colorShift', shape: 'triangle', speed: 0.05, amp: 0.4, offset: 0.5 },
+        lfo3: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        lfo4: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        effects: { bloom: 1.5, mirrorMode: 'kaleidoscope', mirrorCount: 8 },
+        camera: 'off'
+      },
+      '⚡ Bass Reactor': {
+        version: 1,
+        pattern: 'polygon',
+        hue: 30,
+        lightness: 55,
+        bgColor: '#0a0505',
+        macros: { complexity: 14, evolution: 1.2, dimension: 0.5, energy: 0.7, energyShift: 0.2 },
+        geometry: { petals: 6, concavity: 0.4, pointiness: 1.8, innerRadius: 0.25, rotation: 0, petalChange: 0.3, height: 2.5, opacity: 1, shadow: 0.3, thickness: 0.12, mandalaAlign: 0, colorShift: 25 },
+        lfo1: { target: 'height', shape: 'bass', speed: 0.1, amp: 0.8, offset: 0.4 },
+        lfo2: { target: 'rotation', shape: 'treble', speed: 0.1, amp: 0.5, offset: 0.5 },
+        lfo3: { target: 'bloom', shape: 'mid', speed: 0.1, amp: 0.6, offset: 0.5 },
+        lfo4: { target: 'energy', shape: 'bass', speed: 0.1, amp: 0.5, offset: 0.6 },
+        effects: { bloom: 2, mirrorMode: 'off', mirrorCount: 4 },
+        camera: 'off'
+      },
+      '☀️ Solar Flare': {
+        version: 1,
+        pattern: 'flower',
+        hue: 25,
+        lightness: 60,
+        bgColor: '#0a0500',
+        macros: { complexity: 18, evolution: 1.5, dimension: 0.7, energy: 0.9, energyShift: 0.4 },
+        geometry: { petals: 12, concavity: 0.7, pointiness: 2, innerRadius: 0.15, rotation: 0, petalChange: 0.6, height: 3, opacity: 1, shadow: 0.5, thickness: 0.1, mandalaAlign: 7.5, colorShift: 35 },
+        lfo1: { target: 'rotation', shape: 'sine', speed: 0.03, amp: 0.2, offset: 0.5 },
+        lfo2: { target: 'energy', shape: 'sine', speed: 0.07, amp: 0.3, offset: 0.7 },
+        lfo3: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        lfo4: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        effects: { bloom: 3, mirrorMode: 'off', mirrorCount: 4 },
+        camera: 'orbit'
+      },
+      '🌙 Dreamscape': {
+        version: 1,
+        pattern: 'spirograph',
+        hue: 240,
+        lightness: 40,
+        bgColor: '#050508',
+        macros: { complexity: 22, evolution: 0.3, dimension: 0.2, energy: 0.3, energyShift: -0.2 },
+        geometry: { petals: 7, concavity: 0.4, pointiness: 0.6, innerRadius: 0.5, rotation: 0, petalChange: 0.15, height: 1.5, opacity: 0.8, shadow: 0.1, thickness: 0.03, mandalaAlign: 0, colorShift: 15 },
+        lfo1: { target: 'rotation', shape: 'sine', speed: 0.02, amp: 0.15, offset: 0.5 },
+        lfo2: { target: 'hue', shape: 'triangle', speed: 0.01, amp: 0.2, offset: 0.5 },
+        lfo3: { target: 'opacity', shape: 'sine', speed: 0.04, amp: 0.2, offset: 0.8 },
+        lfo4: { target: 'none', shape: 'sine', speed: 0.1, amp: 1, offset: 0.5 },
+        effects: { bloom: 1.8, mirrorMode: 'off', mirrorCount: 4 },
+        camera: 'off'
+      }
+    };
+
+    // Gather all current settings into a config object
+    function getCurrentConfig() {
+      return {
+        version: 1,
+        pattern: currentPattern,
+        hue: currentHue,
+        lightness: parseInt(document.getElementById('lightness').value),
+        bgColor: document.getElementById('bg-color').value,
+        macros: { ...macros },
+        geometry: { ...geometry },
+        lfo1: {
+          targets: [...lfoTargets],  // Array of targets
+          shape: document.getElementById('lfo-shape').value,
+          speed: lfo1Speed,
+          amp: lfo1Amp,
+          offset: lfo1Offset
+        },
+        lfo2: {
+          targets: [...lfo2Targets],
+          shape: document.getElementById('lfo2-shape').value,
+          speed: lfo2Speed,
+          amp: lfo2Amp,
+          offset: lfo2Offset
+        },
+        lfo3: {
+          targets: [...lfo3Targets],
+          shape: document.getElementById('lfo3-shape').value,
+          speed: lfo3Speed,
+          amp: lfo3Amp,
+          offset: lfo3Offset
+        },
+        lfo4: {
+          targets: [...lfo4Targets],
+          shape: document.getElementById('lfo4-shape').value,
+          speed: lfo4Speed,
+          amp: lfo4Amp,
+          offset: lfo4Offset
+        },
+        effects: {
+          bloom: parseFloat(document.getElementById('bloom-strength').value),
+          mirrorMode: document.getElementById('mirror-mode').value,
+          mirrorCount: parseInt(document.getElementById('mirror-count').value)
+        },
+        camera: document.getElementById('camera-path').value
+      };
+    }
+
+    // Apply a config object to the UI and state
+    function applyConfig(config) {
+      // Pattern
+      if (config.pattern) {
+        currentPattern = config.pattern;
+        document.querySelectorAll('.pattern-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.pattern === config.pattern);
+        });
+      }
+
+      // Color
+      if (config.hue !== undefined) {
+        currentHue = config.hue;
+        document.getElementById('hue').value = currentHue;
+        updateColorPreview();
+      }
+      if (config.lightness !== undefined) {
+        document.getElementById('lightness').value = config.lightness;
+        document.getElementById('lightness-value').textContent = config.lightness + '%';
+      }
+      if (config.bgColor) {
+        document.getElementById('bg-color').value = config.bgColor;
+        renderer.bgColor.set(config.bgColor);
+        renderer.renderer.setClearColor(renderer.bgColor);
+      }
+
+      // Macros
+      if (config.macros) {
+        Object.assign(macros, config.macros);
+        Object.keys(config.macros).forEach(key => updateKnobValue(key, config.macros[key]));
+      }
+
+      // Geometry
+      if (config.geometry) {
+        Object.assign(geometry, config.geometry);
+        Object.keys(config.geometry).forEach(key => updateKnobValue(key, config.geometry[key]));
+      }
+
+      // Helper to set multiselect checkboxes and update label
+      function setLfoMultiselect(containerId, targets) {
+        const container = document.getElementById(containerId);
+        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+        const label = container.querySelector('.lfo-multiselect-label');
+        const btn = container.querySelector('.lfo-multiselect-btn');
+
+        // Uncheck all first
+        checkboxes.forEach(cb => cb.checked = false);
+
+        // Check the ones in targets
+        targets.forEach(target => {
+          const cb = container.querySelector(`input[value="${target}"]`);
+          if (cb) cb.checked = true;
+        });
+
+        // Update label
+        if (targets.length === 0) {
+          label.textContent = 'Off';
+          btn.classList.remove('active');
+        } else if (targets.length === 1) {
+          label.textContent = targetLabels[targets[0]] || targets[0];
+          btn.classList.add('active');
+        } else {
+          label.textContent = `${targets.length} targets`;
+          btn.classList.add('active');
         }
+      }
 
-        // Apply hue
-        if (config.hue !== undefined) {
-          currentHue = config.hue;
-          document.getElementById('hue').value = currentHue;
-          updateColorPreview();
+      // LFO 1
+      if (config.lfo1) {
+        // Support both old single target and new array format
+        const targets = config.lfo1.targets || (config.lfo1.target && config.lfo1.target !== 'none' ? [config.lfo1.target] : []);
+        lfoTargets = targets;
+        setLfoMultiselect('lfo1-multiselect', targets);
+        lfoShape = config.lfo1.shape || 'sine';
+        document.getElementById('lfo-shape').value = lfoShape;
+        if (config.lfo1.speed !== undefined) { lfo1Speed = config.lfo1.speed; updateKnobValue('lfo1Speed', lfo1Speed); }
+        if (config.lfo1.amp !== undefined) { lfo1Amp = config.lfo1.amp; updateKnobValue('lfo1Amp', lfo1Amp); }
+        if (config.lfo1.offset !== undefined) { lfo1Offset = config.lfo1.offset; updateKnobValue('lfo1Offset', lfo1Offset); }
+      }
+
+      // LFO 2
+      if (config.lfo2) {
+        const targets = config.lfo2.targets || (config.lfo2.target && config.lfo2.target !== 'none' ? [config.lfo2.target] : []);
+        lfo2Targets = targets;
+        setLfoMultiselect('lfo2-multiselect', targets);
+        lfo2Shape = config.lfo2.shape || 'sine';
+        document.getElementById('lfo2-shape').value = lfo2Shape;
+        if (config.lfo2.speed !== undefined) { lfo2Speed = config.lfo2.speed; updateKnobValue('lfo2Speed', lfo2Speed); }
+        if (config.lfo2.amp !== undefined) { lfo2Amp = config.lfo2.amp; updateKnobValue('lfo2Amp', lfo2Amp); }
+        if (config.lfo2.offset !== undefined) { lfo2Offset = config.lfo2.offset; updateKnobValue('lfo2Offset', lfo2Offset); }
+      }
+
+      // LFO 3
+      if (config.lfo3) {
+        const targets = config.lfo3.targets || (config.lfo3.target && config.lfo3.target !== 'none' ? [config.lfo3.target] : []);
+        lfo3Targets = targets;
+        setLfoMultiselect('lfo3-multiselect', targets);
+        lfo3Shape = config.lfo3.shape || 'sine';
+        document.getElementById('lfo3-shape').value = lfo3Shape;
+        if (config.lfo3.speed !== undefined) { lfo3Speed = config.lfo3.speed; updateKnobValue('lfo3Speed', lfo3Speed); }
+        if (config.lfo3.amp !== undefined) { lfo3Amp = config.lfo3.amp; updateKnobValue('lfo3Amp', lfo3Amp); }
+        if (config.lfo3.offset !== undefined) { lfo3Offset = config.lfo3.offset; updateKnobValue('lfo3Offset', lfo3Offset); }
+      }
+
+      // LFO 4
+      if (config.lfo4) {
+        const targets = config.lfo4.targets || (config.lfo4.target && config.lfo4.target !== 'none' ? [config.lfo4.target] : []);
+        lfo4Targets = targets;
+        setLfoMultiselect('lfo4-multiselect', targets);
+        lfo4Shape = config.lfo4.shape || 'sine';
+        document.getElementById('lfo4-shape').value = lfo4Shape;
+        if (config.lfo4.speed !== undefined) { lfo4Speed = config.lfo4.speed; updateKnobValue('lfo4Speed', lfo4Speed); }
+        if (config.lfo4.amp !== undefined) { lfo4Amp = config.lfo4.amp; updateKnobValue('lfo4Amp', lfo4Amp); }
+        if (config.lfo4.offset !== undefined) { lfo4Offset = config.lfo4.offset; updateKnobValue('lfo4Offset', lfo4Offset); }
+      }
+
+      // Effects
+      if (config.effects) {
+        if (config.effects.bloom !== undefined) {
+          document.getElementById('bloom-strength').value = config.effects.bloom;
+          document.getElementById('bloom-value').textContent = config.effects.bloom.toFixed(1);
+          renderer.bloomPass.strength = config.effects.bloom;
         }
-
-        // Apply macros
-        if (config.macros) {
-          Object.assign(macros, config.macros);
-          Object.keys(config.macros).forEach(key => updateKnobValue(key, config.macros[key]));
+        if (config.effects.mirrorMode) {
+          document.getElementById('mirror-mode').value = config.effects.mirrorMode;
         }
-
-        // Apply geometry
-        if (config.geometry) {
-          Object.assign(geometry, config.geometry);
-          Object.keys(config.geometry).forEach(key => updateKnobValue(key, config.geometry[key]));
+        if (config.effects.mirrorCount) {
+          document.getElementById('mirror-count').value = config.effects.mirrorCount;
         }
+        renderer.setMirror(
+          config.effects.mirrorMode || 'off',
+          config.effects.mirrorCount || 4
+        );
+      }
 
-        // Apply animation settings
-        if (config.animation) {
-          if (config.animation.speed !== undefined) {
-            animSpeed = config.animation.speed;
-            updateKnobValue('animSpeed', animSpeed);
-          }
-          if (config.animation.twistDegrees !== undefined) {
-            twistDegrees = config.animation.twistDegrees;
-            updateKnobValue('twistDegrees', twistDegrees);
-          }
-          if (config.animation.stagger !== undefined) {
-            twistStagger = config.animation.stagger;
-            updateKnobValue('twistStagger', twistStagger);
-          }
-        }
+      // Camera
+      if (config.camera) {
+        document.getElementById('camera-path').value = config.camera;
+      }
 
-        renderer.generate();
-        renderer.updateColors();
+      renderer.generate();
+      renderer.updateColors();
+      updateLfoVizVisibility();
+    }
 
-        const btn = document.getElementById('load-config');
+    // Load presets from localStorage
+    function loadPresets() {
+      const data = localStorage.getItem(PRESETS_KEY);
+      return data ? JSON.parse(data) : {};
+    }
+
+    // Save presets to localStorage
+    function savePresets(presets) {
+      localStorage.setItem(PRESETS_KEY, JSON.stringify(presets));
+    }
+
+    // Update the preset dropdown
+    function updatePresetList() {
+      const select = document.getElementById('preset-list');
+      const presets = loadPresets();
+      const names = Object.keys(presets).sort();
+
+      select.innerHTML = '<option value="">-- Select Preset --</option>';
+      names.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        select.appendChild(opt);
+      });
+    }
+
+    // Populate built-in presets grid
+    function initBuiltInPresets() {
+      const grid = document.getElementById('builtin-presets');
+      grid.innerHTML = '';
+
+      Object.keys(BUILT_IN_PRESETS).forEach(name => {
+        const btn = document.createElement('button');
+        btn.className = 'preset-btn';
+        btn.textContent = name;
+        btn.title = name;
+        btn.addEventListener('click', () => {
+          applyConfig(BUILT_IN_PRESETS[name]);
+          // Visual feedback
+          document.querySelectorAll('.preset-btn').forEach(b => b.style.borderColor = '');
+          btn.style.borderColor = 'var(--accent)';
+        });
+        grid.appendChild(btn);
+      });
+    }
+
+    // Initialize built-in presets
+    initBuiltInPresets();
+
+    // Save preset button
+    document.getElementById('save-preset').addEventListener('click', () => {
+      const nameInput = document.getElementById('preset-name');
+      const name = nameInput.value.trim();
+      if (!name) {
+        alert('Please enter a preset name');
+        return;
+      }
+
+      const presets = loadPresets();
+      presets[name] = getCurrentConfig();
+      savePresets(presets);
+      updatePresetList();
+
+      nameInput.value = '';
+      document.getElementById('preset-list').value = name;
+
+      const btn = document.getElementById('save-preset');
+      btn.textContent = 'Saved!';
+      setTimeout(() => btn.textContent = 'Save', 1500);
+    });
+
+    // Load preset button
+    document.getElementById('load-preset').addEventListener('click', () => {
+      const name = document.getElementById('preset-list').value;
+      if (!name) {
+        alert('Please select a preset');
+        return;
+      }
+
+      const presets = loadPresets();
+      const config = presets[name];
+      if (config) {
+        applyConfig(config);
+        const btn = document.getElementById('load-preset');
         btn.textContent = 'Loaded!';
-        setTimeout(() => btn.textContent = 'Load Config', 1500);
-      } catch (e) {
-        alert('Failed to load config. Make sure valid JSON is in clipboard.');
+        setTimeout(() => btn.textContent = 'Load', 1500);
       }
     });
+
+    // Delete preset button
+    document.getElementById('delete-preset').addEventListener('click', () => {
+      const name = document.getElementById('preset-list').value;
+      if (!name) {
+        alert('Please select a preset to delete');
+        return;
+      }
+
+      if (!confirm(`Delete preset "${name}"?`)) return;
+
+      const presets = loadPresets();
+      delete presets[name];
+      savePresets(presets);
+      updatePresetList();
+
+      const btn = document.getElementById('delete-preset');
+      btn.textContent = 'Deleted!';
+      setTimeout(() => btn.textContent = 'Delete', 1500);
+    });
+
+    // Initialize preset list on load
+    updatePresetList();
+
+    // URL preset parameter mapping
+    const PRESET_URL_MAP = {
+      'cosmic-bloom': '🌌 Cosmic Bloom',
+      'liquid-glass': '🌊 Liquid Glass',
+      'infinite-tunnel': '🌀 Infinite Tunnel',
+      'crystal-pulse': '💎 Crystal Pulse',
+      'kaleidoscope': '🔮 Kaleidoscope',
+      'bass-reactor': '⚡ Bass Reactor',
+      'solar-flare': '☀️ Solar Flare',
+      'dreamscape': '🌙 Dreamscape'
+    };
+
+    // Check for preset in URL and load it
+    const urlParams = new URLSearchParams(window.location.search);
+    const presetParam = urlParams.get('preset');
+    if (presetParam && PRESET_URL_MAP[presetParam]) {
+      const presetName = PRESET_URL_MAP[presetParam];
+      if (BUILT_IN_PRESETS[presetName]) {
+        applyConfig(BUILT_IN_PRESETS[presetName]);
+        // Highlight the loaded preset button
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+          if (btn.textContent === presetName) {
+            btn.style.borderColor = 'var(--accent)';
+          }
+        });
+      }
+    }
 
     // Initial render
     updateColorPreview();

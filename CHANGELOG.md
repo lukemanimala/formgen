@@ -2,9 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2026-06-28
+## [Unreleased] - 2026-07-03
 
 ### Added
+- **Multi-Target LFOs**: Each LFO can now control multiple parameters simultaneously via checkbox multi-select
+- **Built-in Presets**: 8 curated presets (Cosmic Bloom, Liquid Glass, Infinite Tunnel, Crystal Pulse, Kaleidoscope, Bass Reactor, Solar Flare, Dreamscape)
+- **Landing Page**: New `start.html` with preset gallery for quick starts
+- **Recording Quality Settings**: Configurable resolution (720p-4K), FPS (30/60), and bitrate (Standard/High/Max)
+- **Preset Management**: Save, load, and delete custom presets with localStorage persistence
+- **Config Export/Import**: Download and import JSON configuration files
 - **Bloom Post-Processing**: UnrealBloomPass effect with adjustable strength (0-3)
 - **Bloom LFO Target**: Bloom strength can be animated via any of the 4 LFOs
 - **Background Color Picker**: Change background color via color picker in Color section
@@ -20,9 +26,10 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - **Video Recording**: Fixed black frames by enabling WebGL preserveDrawingBuffer
-- **Video Resolution**: Fixed H.264 codec limits by scaling down large canvases to fit AVC level 4.0
+- **High-Res Recording**: Dynamic AVC level selection (4.0 for 1080p, 5.1 for 4K) enables recording up to 4K resolution
 
 ### Changed
+- **LFO Target Selection**: Changed from single-select dropdown to multi-select checkboxes
 - **UI Layout**: Geometry, Color, and Animation sections collapsed by default
 - **LFO Bias → Center**: Renamed for clarity (describes oscillation midpoint)
 - **Mirror Labels**: Radial → Kaleid, Copies → Ring (more intuitive)

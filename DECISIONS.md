@@ -296,3 +296,56 @@
 - AAC for MP4 ensures broad compatibility
 - Opus for WebM provides good quality at low bitrate
 - Audio only included when user has loaded an audio file
+
+---
+
+## ADR-019: Multi-Target LFO System
+
+**Date**: 2026-07-03
+
+**Context**: Users wanted one LFO to drive multiple parameters simultaneously for synced animations (e.g., rotation AND scale moving together). Single-target LFOs required dedicating multiple LFOs to achieve this.
+
+**Decision**: Change LFO target selection from single-select dropdown to multi-select checkboxes. Each LFO stores an array of targets instead of a single target string.
+
+**Consequences**:
+- One LFO can now animate any combination of the 19 available parameters
+- Synced animations without "wasting" multiple LFOs
+- UI shows "X targets" when multiple selected, or parameter name for single target
+- Backwards compatible: config loading handles both old single-target and new array formats
+- Slightly more complex animation loop (iterates over target array)
+
+---
+
+## ADR-020: Dynamic AVC Level Selection for Recording
+
+**Date**: 2026-07-03
+
+**Context**: ADR-015 capped recording at AVC level 4.0 (~1080p) for compatibility, but users with 1440p or 4K displays wanted higher resolution exports.
+
+**Decision**: Dynamically select AVC level based on resolution:
+- **Level 4.0** (`avc1.640028`): For resolutions ≤2M pixels (~1080p)
+- **Level 5.1** (`avc1.640033`): For resolutions up to 9.4M pixels (~4K)
+- Auto-scale down if resolution exceeds even level 5.1 limits
+
+**Consequences**:
+- 1440p and 4K recording now works
+- Fallback scaling ensures never exceeds codec limits
+- Level 5.1 has broad device support (all modern browsers/devices)
+- Console logging shows actual recording resolution and level used
+
+---
+
+## ADR-021: Built-in Preset System
+
+**Date**: 2026-07-03
+
+**Context**: New users faced a blank canvas with many parameters. Presets provide starting points and demonstrate the tool's capabilities.
+
+**Decision**: Ship 8 curated built-in presets with evocative names and distinct visual styles. Presets stored as JavaScript constant, separate from user presets in localStorage.
+
+**Consequences**:
+- Immediate value for new users - click and see impressive results
+- Landing page (`start.html`) showcases presets as entry points
+- Built-in presets cannot be modified/deleted (immutable)
+- User presets stored separately in localStorage
+- URL parameters enable deep-linking to presets (e.g., `?preset=cosmic-bloom`)
