@@ -506,6 +506,23 @@
       accent-color: var(--accent);
     }
 
+    .lfo-group-label {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 8px 12px 4px;
+      border-top: 1px solid var(--border);
+      margin-top: 4px;
+    }
+
+    .lfo-group-label:first-child {
+      border-top: none;
+      margin-top: 0;
+      padding-top: 4px;
+    }
+
     .lfo-multiselect-option.checked {
       color: var(--text-primary);
     }
@@ -868,6 +885,33 @@
         </div>
       </div>
 
+      <!-- Presets -->
+      <div class="control-section">
+        <div class="section-header">
+          <div class="section-label">Presets</div>
+          <span class="section-arrow">▼</span>
+        </div>
+        <div class="section-content">
+        <div class="preset-grid" id="builtin-presets">
+          <!-- Built-in presets loaded via JS -->
+        </div>
+        <div class="section-label" style="margin-top: 12px; font-size: 9px;">Custom</div>
+        <div class="slider-row">
+          <input type="text" id="preset-name" placeholder="Preset name..." style="flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 8px; color: var(--text-primary); font-family: inherit; font-size: 12px;">
+          <button class="export-btn" id="save-preset" style="width: 60px; margin-left: 8px;">Save</button>
+        </div>
+        <div class="slider-row" style="margin-top: 8px;">
+          <select id="preset-list" class="lfo-select" style="flex: 1;">
+            <option value="">-- Select Preset --</option>
+          </select>
+        </div>
+        <div class="export-row" style="margin-top: 8px;">
+          <button class="export-btn" id="load-preset">Load</button>
+          <button class="export-btn" id="delete-preset" style="background: rgba(255,100,100,0.1);">Delete</button>
+        </div>
+        </div>
+      </div>
+
       <!-- Macro Controls -->
       <div class="control-section">
         <div class="section-header">
@@ -1046,12 +1090,13 @@
               <span style="font-size: 10px;">▼</span>
             </button>
             <div class="lfo-multiselect-dropdown">
+              <div class="lfo-group-label">Macro</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="dimension"> Depth</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="energy"> Energy</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="energyShift"> Energy Shift</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
+              <div class="lfo-group-label">Geometry</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="petals"> Petals</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="concavity"> Concavity</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="pointiness"> Pointiness</label>
@@ -1059,11 +1104,14 @@
               <label class="lfo-multiselect-option"><input type="checkbox" value="innerRadius"> Inner Radius</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="rotation"> Rotation</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="height"> Height</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="thickness"> Thickness</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="mandalaAlign"> Mandala Align</label>
+              <div class="lfo-group-label">Color</div>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="colorShift"> Color Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
+              <div class="lfo-group-label">Effects</div>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="bloom"> Bloom</label>
             </div>
           </div>
@@ -1108,12 +1156,13 @@
               <span style="font-size: 10px;">▼</span>
             </button>
             <div class="lfo-multiselect-dropdown">
+              <div class="lfo-group-label">Macro</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="dimension"> Depth</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="energy"> Energy</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="energyShift"> Energy Shift</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
+              <div class="lfo-group-label">Geometry</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="petals"> Petals</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="concavity"> Concavity</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="pointiness"> Pointiness</label>
@@ -1121,11 +1170,14 @@
               <label class="lfo-multiselect-option"><input type="checkbox" value="innerRadius"> Inner Radius</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="rotation"> Rotation</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="height"> Height</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="thickness"> Thickness</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="mandalaAlign"> Mandala Align</label>
+              <div class="lfo-group-label">Color</div>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="colorShift"> Color Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
+              <div class="lfo-group-label">Effects</div>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="bloom"> Bloom</label>
             </div>
           </div>
@@ -1170,12 +1222,13 @@
               <span style="font-size: 10px;">▼</span>
             </button>
             <div class="lfo-multiselect-dropdown">
+              <div class="lfo-group-label">Macro</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="dimension"> Depth</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="energy"> Energy</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="energyShift"> Energy Shift</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
+              <div class="lfo-group-label">Geometry</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="petals"> Petals</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="concavity"> Concavity</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="pointiness"> Pointiness</label>
@@ -1183,11 +1236,14 @@
               <label class="lfo-multiselect-option"><input type="checkbox" value="innerRadius"> Inner Radius</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="rotation"> Rotation</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="height"> Height</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="thickness"> Thickness</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="mandalaAlign"> Mandala Align</label>
+              <div class="lfo-group-label">Color</div>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="colorShift"> Color Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
+              <div class="lfo-group-label">Effects</div>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="bloom"> Bloom</label>
             </div>
           </div>
@@ -1232,12 +1288,13 @@
               <span style="font-size: 10px;">▼</span>
             </button>
             <div class="lfo-multiselect-dropdown">
+              <div class="lfo-group-label">Macro</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="dimension"> Depth</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="energy"> Energy</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="energyShift"> Energy Shift</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
+              <div class="lfo-group-label">Geometry</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="petals"> Petals</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="concavity"> Concavity</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="pointiness"> Pointiness</label>
@@ -1245,11 +1302,14 @@
               <label class="lfo-multiselect-option"><input type="checkbox" value="innerRadius"> Inner Radius</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="rotation"> Rotation</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="height"> Height</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
-              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="thickness"> Thickness</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="mandalaAlign"> Mandala Align</label>
+              <div class="lfo-group-label">Color</div>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="hue"> Hue</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="colorShift"> Color Shift</label>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="opacity"> Opacity</label>
+              <div class="lfo-group-label">Effects</div>
+              <label class="lfo-multiselect-option"><input type="checkbox" value="shadow"> Shadow</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="bloom"> Bloom</label>
             </div>
           </div>
@@ -1333,33 +1393,6 @@
             <option value="12">12</option>
             <option value="16">16</option>
           </select>
-        </div>
-        </div>
-      </div>
-
-      <!-- Presets -->
-      <div class="control-section">
-        <div class="section-header">
-          <div class="section-label">Presets</div>
-          <span class="section-arrow">▼</span>
-        </div>
-        <div class="section-content">
-        <div class="preset-grid" id="builtin-presets">
-          <!-- Built-in presets loaded via JS -->
-        </div>
-        <div class="section-label" style="margin-top: 12px; font-size: 9px;">Custom</div>
-        <div class="slider-row">
-          <input type="text" id="preset-name" placeholder="Preset name..." style="flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 8px; color: var(--text-primary); font-family: inherit; font-size: 12px;">
-          <button class="export-btn" id="save-preset" style="width: 60px; margin-left: 8px;">Save</button>
-        </div>
-        <div class="slider-row" style="margin-top: 8px;">
-          <select id="preset-list" class="lfo-select" style="flex: 1;">
-            <option value="">-- Select Preset --</option>
-          </select>
-        </div>
-        <div class="export-row" style="margin-top: 8px;">
-          <button class="export-btn" id="load-preset">Load</button>
-          <button class="export-btn" id="delete-preset" style="background: rgba(255,100,100,0.1);">Delete</button>
         </div>
         </div>
       </div>
@@ -3405,6 +3438,22 @@
       header.addEventListener('click', () => {
         header.parentElement.classList.toggle('collapsed');
       });
+    });
+
+    // Keyboard shortcuts for panels
+    document.addEventListener('keydown', (e) => {
+      // Skip if typing in an input
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      const sections = document.querySelectorAll('.control-section');
+
+      if (e.key === '[') {
+        // Collapse all
+        sections.forEach(s => s.classList.add('collapsed'));
+      } else if (e.key === ']') {
+        // Expand all
+        sections.forEach(s => s.classList.remove('collapsed'));
+      }
     });
 
     // Pattern buttons

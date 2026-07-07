@@ -349,3 +349,37 @@
 - Built-in presets cannot be modified/deleted (immutable)
 - User presets stored separately in localStorage
 - URL parameters enable deep-linking to presets (e.g., `?preset=cosmic-bloom`)
+
+---
+
+## ADR-022: Presets as Discovery (Position 2)
+
+**Date**: 2026-07-07
+
+**Context**: Presets section was positioned 7th of 9 in the left panel, treating it as a "save your work" utility. North Star critique revealed this failed the "Fast" test: new users had to scroll past everything to discover what the tool could do.
+
+**Decision**: Move Presets to position 2 (after Pattern, before Macros). Reframe presets from "save" to "discover."
+
+**Consequences**:
+- New users see presets immediately after selecting a pattern type
+- Faster path to value: pick preset → instant delight → then tweak
+- Users who know what they want can skip past presets
+- Presets become an onboarding ramp, not just a utility
+- Custom preset save/load functionality remains unchanged
+
+---
+
+## ADR-023: LFO Target Parameter Grouping
+
+**Date**: 2026-07-07
+
+**Context**: LFO target dropdown listed 19 parameters in a flat list. Order followed code structure (Macros → Geometry → Color → Effects) but wasn't obvious to users. North Star critique scored 8/15 — "Kill or rethink."
+
+**Decision**: Group parameters by section with visual separators matching the main panel organization. Groups: Macro (5), Geometry (9), Color (3), Effects (2).
+
+**Consequences**:
+- Users can scan by category instead of reading all 19 items
+- Mental model matches the main control panel sections
+- Visual separators (dividers + labels) make groups obvious
+- No search needed — structure makes scanning fast enough
+- Same grouping applied to all 4 LFO dropdowns

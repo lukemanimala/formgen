@@ -2,7 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2026-07-03
+## [Unreleased] - 2026-07-07
+
+### Added
+- **Keyboard Shortcuts**: `[` to collapse all panels, `]` to expand all panels
+- **LFO Target Grouping**: Parameters organized by category (Macro, Geometry, Color, Effects) with visual separators
+
+### Changed
+- **Presets Position**: Moved to position 2 (after Pattern) for faster discovery and onboarding
+
+---
+
+## [0.5.0] - 2026-07-03
 
 ### Added
 - **Multi-Target LFOs**: Each LFO can now control multiple parameters simultaneously via checkbox multi-select

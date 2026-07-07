@@ -15,6 +15,7 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 - **Effects**: Bloom post-processing, mirror/kaleidoscope modes, background color picker
 - **Mirror modes**: Radial (shader-based kaleidoscope) or Copies (geometry duplication)
 - **Collapsible UI**: Accordion sections for easier navigation
+- **Keyboard shortcuts**: `[` collapse all, `]` expand all panels
 
 ### Animation
 - **4 LFO system**: Four independent oscillators with Speed, Amplitude, and Center controls
