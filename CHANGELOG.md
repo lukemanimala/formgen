@@ -2,14 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2026-07-07
+## [Unreleased] - 2026-07-15
 
 ### Added
+- **Timeline System**: Full keyframe animation with audio sync
+  - Bottom timeline bar with waveform visualization
+  - Add keyframes at any point in time
+  - Click keyframes to select and edit
+  - Delete keyframes with visible button
+  - Smooth interpolation between keyframes
+  - Timeline persists in localStorage
+- **Waveform Display**: Audio waveform rendered in bottom timeline with played portion highlighting
+- **Audio Scrubbing**: Click anywhere on waveform to seek
+- **Spacebar Play/Pause**: Quick audio control with keyboard
 - **Keyboard Shortcuts**: `[` to collapse all panels, `]` to expand all panels
 - **LFO Target Grouping**: Parameters organized by category (Macro, Geometry, Color, Effects) with visual separators
 
 ### Changed
 - **Presets Position**: Moved to position 2 (after Pattern) for faster discovery and onboarding
+- **Bloom Defaults**: Reduced default strength (0.4), increased threshold (0.6) to prevent washout
+- **Timeline Auto-Enable**: Timeline mode activates automatically when audio loads
+
+### Fixed
+- **LFO Audio-Reactive Values**: Audio-reactive LFO enabled states now save/restore in keyframes
+- **LFO During Playback**: Audio-reactive LFOs no longer get overwritten by timeline interpolation
 
 ---
 

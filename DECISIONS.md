@@ -383,3 +383,53 @@
 - Visual separators (dividers + labels) make groups obvious
 - No search needed — structure makes scanning fast enough
 - Same grouping applied to all 4 LFO dropdowns
+
+---
+
+## ADR-024: Timeline/Keyframe System
+
+**Date**: 2026-07-15
+
+**Context**: Phase 0 gate requires creating one compelling 3-minute demo. Without a timeline, users could only create real-time animations (LFOs), not sequenced content that evolves throughout a song.
+
+**Decision**: Implement keyframe system with full config snapshots. Each keyframe stores the complete output of `getCurrentConfig()`. Interpolation uses linear lerp for numeric values, snap-to-previous for discrete values (pattern, LFO shapes).
+
+**Consequences**:
+- Full-song animations now possible
+- Config snapshots are simple but large (entire state per keyframe)
+- Linear interpolation provides smooth transitions
+- Discrete values snap at keyframe boundaries (no pattern morphing)
+- Future enhancement: per-parameter keyframes for finer control
+
+---
+
+## ADR-025: Bottom Timeline with Waveform
+
+**Date**: 2026-07-15
+
+**Context**: Timeline scrubber in Animation section wasn't visible enough and lacked audio context. Users couldn't see where they were in the song.
+
+**Decision**: Add fixed bottom timeline bar (64px) with canvas-rendered waveform. Use Web Audio `decodeAudioData` to extract samples, draw waveform with played portion highlighted.
+
+**Consequences**:
+- Always-visible timeline regardless of scroll position
+- Waveform provides audio context for keyframe placement
+- Click-to-seek on waveform for quick navigation
+- Keyframes displayed as dots on waveform
+- Minimal performance impact (waveform generated once on load)
+
+---
+
+## ADR-026: Audio-Reactive LFO Priority
+
+**Date**: 2026-07-15
+
+**Context**: Timeline interpolation was overwriting audio-reactive LFO values during playback, causing bass/mid/treble-driven macros to reset when the song started.
+
+**Decision**: Skip timeline interpolation when any audio-reactive LFO is active. Check all 4 LFOs for bass/mid/treble shapes; if any are active, let LFO system control those parameters instead of timeline.
+
+**Consequences**:
+- Audio-reactive animations work during playback
+- Keyframes still define baseline state
+- Trade-off: keyframed changes to audio-reactive parameters won't apply during playback
+- User expectation: audio-reactive LFOs "win" over timeline interpolation

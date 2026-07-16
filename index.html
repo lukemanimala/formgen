@@ -477,7 +477,8 @@
       border: 1px solid var(--border);
       border-radius: 6px;
       margin-top: 4px;
-      max-height: 200px;
+      max-height: 250px;
+      overflow-x: hidden;
       overflow-y: auto;
       z-index: 100;
     }
@@ -506,6 +507,78 @@
       accent-color: var(--accent);
     }
 
+    .lfo-dropdown-header {
+      display: flex;
+      gap: 4px;
+      padding: 6px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg-secondary);
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    .lfo-search {
+      flex: 1;
+      min-width: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 6px;
+      color: var(--text-primary);
+      font-size: 11px;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+
+    .lfo-search:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .lfo-clear-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 10px;
+      padding: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .lfo-clear-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text-primary);
+    }
+
+    .lfo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .lfo-toggle-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 10px;
+      padding: 2px 6px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.15s ease;
+    }
+
+    .lfo-toggle-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text-primary);
+    }
+
+    .lfo-toggle-btn.active {
+      color: var(--accent);
+    }
+
     .lfo-group-label {
       font-size: 9px;
       font-weight: 600;
@@ -517,10 +590,15 @@
       margin-top: 4px;
     }
 
-    .lfo-group-label:first-child {
+    .lfo-group-label:first-of-type {
       border-top: none;
       margin-top: 0;
       padding-top: 4px;
+    }
+
+    .lfo-multiselect-option.hidden,
+    .lfo-group-label.hidden {
+      display: none;
     }
 
     .lfo-multiselect-option.checked {
@@ -855,6 +933,310 @@
     .drag-hint.visible {
       opacity: 1;
     }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Command Palette */
+    .cmd-palette {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 9999;
+      justify-content: center;
+      padding-top: 15vh;
+    }
+
+    .cmd-palette.open {
+      display: flex;
+    }
+
+    .cmd-container {
+      width: 400px;
+      max-width: 90vw;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      max-height: 60vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cmd-input {
+      width: 100%;
+      padding: 16px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-primary);
+      font-size: 16px;
+      font-family: inherit;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .cmd-input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .cmd-results {
+      overflow-y: auto;
+      max-height: 300px;
+    }
+
+    .cmd-result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.1s ease;
+    }
+
+    .cmd-result:hover,
+    .cmd-result.selected {
+      background: var(--surface-hover);
+    }
+
+    .cmd-result-name {
+      color: var(--text-primary);
+      font-size: 14px;
+    }
+
+    .cmd-result-type {
+      color: var(--text-tertiary);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cmd-highlight {
+      animation: cmd-pulse 1.5s ease-out;
+    }
+
+    @keyframes cmd-pulse {
+      0% { box-shadow: 0 0 0 0 var(--accent); }
+      30% { box-shadow: 0 0 0 4px var(--accent); }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+
+    /* Timeline */
+    .timeline-container {
+      margin-top: 12px;
+      padding: 8px;
+      background: var(--surface);
+      border-radius: 6px;
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .timeline-track {
+      height: 32px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .timeline-progress {
+      height: 100%;
+      background: var(--accent);
+      opacity: 0.2;
+      border-radius: 4px;
+      width: 0%;
+      pointer-events: none;
+    }
+
+    .timeline-playhead {
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background: var(--accent);
+      left: 0%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .timeline-keyframe {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background: var(--text-primary);
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1;
+      transition: transform 0.1s ease, background 0.1s ease;
+    }
+
+    .timeline-keyframe:hover {
+      transform: translate(-50%, -50%) scale(1.3);
+      background: var(--accent);
+    }
+
+    .timeline-keyframe.active {
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255, 120, 50, 0.4);
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    .timeline-time {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timeline-btn {
+      padding: 4px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .timeline-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text-primary);
+    }
+
+    .timeline-btn.active {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Bottom Timeline Bar */
+    .bottom-timeline {
+      position: fixed;
+      bottom: 0;
+      left: 320px;
+      right: 0;
+      height: 64px;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      display: none;
+      z-index: 100;
+    }
+
+    .bottom-timeline.visible {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .waveform-container {
+      flex: 1;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .waveform-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .waveform-playhead {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      pointer-events: none;
+      z-index: 2;
+      box-shadow: 0 0 4px var(--accent);
+    }
+
+    .waveform-keyframe {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      width: 3px;
+      background: var(--text-primary);
+      border-radius: 1px;
+      cursor: pointer;
+      z-index: 1;
+      opacity: 0.8;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .waveform-keyframe:hover {
+      opacity: 1;
+      transform: scaleX(1.5);
+    }
+
+    .waveform-keyframe.active {
+      background: var(--accent);
+      opacity: 1;
+    }
+
+    .waveform-time {
+      position: absolute;
+      bottom: 4px;
+      left: 8px;
+      font-size: 10px;
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+      pointer-events: none;
+      z-index: 3;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    }
+
+    .waveform-duration {
+      position: absolute;
+      bottom: 4px;
+      right: 8px;
+      font-size: 10px;
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+      pointer-events: none;
+      z-index: 3;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    }
+
+    /* Adjust canvas area when timeline is visible */
+    .canvas-container.timeline-active {
+      height: calc(100vh - 64px);
+    }
   </style>
 </head>
 <body>
@@ -864,25 +1246,6 @@
         <h1>FormGen</h1>
         <p>Procedural geometry for creators</p>
         <a href="roadmap.html" target="_blank" class="roadmap-link">Roadmap</a>
-      </div>
-
-      <!-- Pattern Selection -->
-      <div class="control-section">
-        <div class="section-header">
-          <div class="section-label">Pattern</div>
-          <span class="section-arrow">▼</span>
-        </div>
-        <div class="section-content">
-          <div class="pattern-grid">
-            <button class="pattern-btn" data-pattern="spiral">Spiral</button>
-            <button class="pattern-btn active" data-pattern="mandala">Mandala</button>
-            <button class="pattern-btn" data-pattern="star">Star</button>
-            <button class="pattern-btn" data-pattern="polygon">Polygon</button>
-            <button class="pattern-btn" data-pattern="rosette">Rosette</button>
-            <button class="pattern-btn" data-pattern="flower">Flower</button>
-            <button class="pattern-btn" data-pattern="spirograph">Spirograph</button>
-          </div>
-        </div>
       </div>
 
       <!-- Presets -->
@@ -909,6 +1272,25 @@
           <button class="export-btn" id="load-preset">Load</button>
           <button class="export-btn" id="delete-preset" style="background: rgba(255,100,100,0.1);">Delete</button>
         </div>
+        </div>
+      </div>
+
+      <!-- Pattern Selection -->
+      <div class="control-section">
+        <div class="section-header">
+          <div class="section-label">Pattern</div>
+          <span class="section-arrow">▼</span>
+        </div>
+        <div class="section-content">
+          <div class="pattern-grid">
+            <button class="pattern-btn" data-pattern="spiral">Spiral</button>
+            <button class="pattern-btn active" data-pattern="mandala">Mandala</button>
+            <button class="pattern-btn" data-pattern="star">Star</button>
+            <button class="pattern-btn" data-pattern="polygon">Polygon</button>
+            <button class="pattern-btn" data-pattern="rosette">Rosette</button>
+            <button class="pattern-btn" data-pattern="flower">Flower</button>
+            <button class="pattern-btn" data-pattern="spirograph">Spirograph</button>
+          </div>
         </div>
       </div>
 
@@ -1081,8 +1463,29 @@
           </div>
         </div>
 
+        <!-- Timeline -->
+        <div class="section-label" style="margin-top: 12px; font-size: 9px;">Timeline</div>
+        <div class="animation-row" style="margin-bottom: 8px;">
+          <button class="timeline-btn" id="timeline-toggle">Enable</button>
+          <button class="timeline-btn" id="add-keyframe" style="flex: 1;">+ Keyframe</button>
+          <button class="timeline-btn" id="delete-keyframe" style="display: none; background: rgba(255,80,80,0.15); color: #ff6b6b;">Delete</button>
+        </div>
+        <div class="timeline-container" id="timeline-container" style="display: none;">
+          <div class="timeline-track" id="timeline-track">
+            <div class="timeline-progress" id="timeline-progress"></div>
+            <div class="timeline-playhead" id="timeline-playhead"></div>
+          </div>
+          <div class="timeline-time">
+            <span id="timeline-current">0:00</span>
+            <span id="timeline-total">0:00</span>
+          </div>
+        </div>
+
         <!-- LFO 1 -->
-        <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 1</div>
+        <div class="lfo-header" style="margin-top: 12px;">
+          <span class="section-label" style="font-size: 9px;">LFO 1</span>
+          <button type="button" class="lfo-toggle-btn" id="lfo1-toggle" title="Toggle LFO">▶</button>
+        </div>
         <div class="lfo-control">
           <div class="lfo-multiselect" id="lfo1-multiselect">
             <button class="lfo-multiselect-btn" type="button">
@@ -1090,6 +1493,10 @@
               <span style="font-size: 10px;">▼</span>
             </button>
             <div class="lfo-multiselect-dropdown">
+              <div class="lfo-dropdown-header">
+                <input type="text" class="lfo-search" placeholder="Search...">
+                <button type="button" class="lfo-clear-btn" title="Clear all">×</button>
+              </div>
               <div class="lfo-group-label">Macro</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
@@ -1148,7 +1555,10 @@
         </div>
 
         <!-- LFO 2 -->
-        <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 2</div>
+        <div class="lfo-header" style="margin-top: 12px;">
+          <span class="section-label" style="font-size: 9px;">LFO 2</span>
+          <button type="button" class="lfo-toggle-btn" id="lfo2-toggle" title="Toggle LFO">▶</button>
+        </div>
         <div class="lfo-control">
           <div class="lfo-multiselect" id="lfo2-multiselect">
             <button class="lfo-multiselect-btn" type="button">
@@ -1156,6 +1566,10 @@
               <span style="font-size: 10px;">▼</span>
             </button>
             <div class="lfo-multiselect-dropdown">
+              <div class="lfo-dropdown-header">
+                <input type="text" class="lfo-search" placeholder="Search...">
+                <button type="button" class="lfo-clear-btn" title="Clear all">×</button>
+              </div>
               <div class="lfo-group-label">Macro</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
@@ -1214,7 +1628,10 @@
         </div>
 
         <!-- LFO 3 -->
-        <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 3</div>
+        <div class="lfo-header" style="margin-top: 12px;">
+          <span class="section-label" style="font-size: 9px;">LFO 3</span>
+          <button type="button" class="lfo-toggle-btn" id="lfo3-toggle" title="Toggle LFO">▶</button>
+        </div>
         <div class="lfo-control">
           <div class="lfo-multiselect" id="lfo3-multiselect">
             <button class="lfo-multiselect-btn" type="button">
@@ -1222,6 +1639,10 @@
               <span style="font-size: 10px;">▼</span>
             </button>
             <div class="lfo-multiselect-dropdown">
+              <div class="lfo-dropdown-header">
+                <input type="text" class="lfo-search" placeholder="Search...">
+                <button type="button" class="lfo-clear-btn" title="Clear all">×</button>
+              </div>
               <div class="lfo-group-label">Macro</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
@@ -1280,7 +1701,10 @@
         </div>
 
         <!-- LFO 4 -->
-        <div class="section-label" style="margin-top: 12px; font-size: 9px;">LFO 4</div>
+        <div class="lfo-header" style="margin-top: 12px;">
+          <span class="section-label" style="font-size: 9px;">LFO 4</span>
+          <button type="button" class="lfo-toggle-btn" id="lfo4-toggle" title="Toggle LFO">▶</button>
+        </div>
         <div class="lfo-control">
           <div class="lfo-multiselect" id="lfo4-multiselect">
             <button class="lfo-multiselect-btn" type="button">
@@ -1288,6 +1712,10 @@
               <span style="font-size: 10px;">▼</span>
             </button>
             <div class="lfo-multiselect-dropdown">
+              <div class="lfo-dropdown-header">
+                <input type="text" class="lfo-search" placeholder="Search...">
+                <button type="button" class="lfo-clear-btn" title="Clear all">×</button>
+              </div>
               <div class="lfo-group-label">Macro</div>
               <label class="lfo-multiselect-option"><input type="checkbox" value="complexity"> Layers</label>
               <label class="lfo-multiselect-option"><input type="checkbox" value="evolution"> Twist</label>
@@ -1376,8 +1804,8 @@
         <div class="section-content">
         <div class="slider-row">
           <label style="font-size: 10px; color: var(--text-secondary);">Bloom</label>
-          <input type="range" id="bloom-strength" min="0" max="3" step="0.1" value="1.5" style="flex: 1;">
-          <span id="bloom-value" style="font-size: 10px; color: var(--text-secondary); width: 30px; text-align: right;">1.5</span>
+          <input type="range" id="bloom-strength" min="0" max="3" step="0.1" value="0.4" style="flex: 1;">
+          <span id="bloom-value" style="font-size: 10px; color: var(--text-secondary); width: 30px; text-align: right;">0.4</span>
         </div>
         <div class="slider-row" style="margin-top: 8px;">
           <label style="font-size: 10px; color: var(--text-secondary);">Mirror</label>
@@ -1508,6 +1936,14 @@
     let currentPattern = 'mandala';
     let isAnimating = false;
 
+    // Timeline state
+    let timelineMode = false;
+    let timelineTime = 0;
+    let timelineDuration = 60; // Default 60 seconds if no audio
+    let timelineKeyframes = [];
+    let activeKeyframeIndex = -1; // Currently selected keyframe for editing
+    let waveformData = null; // Waveform visualization data
+
     // LFO 1 state
     let lfoTargets = [];  // Array of targets for multi-select
     let lfoShape = 'sine';
@@ -1535,6 +1971,12 @@
     let lfo4Speed = 0.1;
     let lfo4Amp = 1.0;
     let lfo4Offset = 0.5;
+
+    // LFO enabled states
+    let lfo1Enabled = true;
+    let lfo2Enabled = true;
+    let lfo3Enabled = true;
+    let lfo4Enabled = true;
 
     // Recording state
     let mediaRecorder = null;
@@ -2194,9 +2636,9 @@
 
         this.bloomPass = new UnrealBloomPass(
           new THREE.Vector2(this.width, this.height),
-          1.5,   // strength
-          0.8,   // radius
-          0.2    // threshold - higher so dark bg doesn't bloom
+          0.4,   // strength - subtle default
+          0.6,   // radius
+          0.6    // threshold - only bright areas bloom, prevents washout
         );
         this.composer.addPass(this.bloomPass);
 
@@ -2735,7 +3177,36 @@
       }
 
       animate(timestamp) {
-        this.time = timestamp * 0.001;
+        // Timeline mode: sync to audio time
+        if (timelineMode && audioElement && !audioElement.paused) {
+          this.time = audioElement.currentTime;
+        } else if (timelineMode) {
+          this.time = timelineTime;
+        } else {
+          this.time = timestamp * 0.001;
+        }
+
+        // Update timeline UI and track if regeneration needed
+        let timelineNeedsRegenerate = false;
+        if (timelineMode) {
+          updateTimelineUI(this.time);
+          // Update waveform playhead
+          if (typeof updateWaveformPlayhead === 'function') {
+            updateWaveformPlayhead(this.time);
+          }
+          // Only apply interpolated keyframe state during audio playback
+          // Skip if a keyframe is selected for editing - let user make changes
+          // Skip if any audio-reactive LFOs are active - let them drive values
+          const isPlaying = audioElement && !audioElement.paused;
+          const isEditing = activeKeyframeIndex >= 0;
+          const hasAudioLfo = (lfo1Enabled && ['bass', 'mid', 'treble'].includes(lfoShape)) ||
+                              (lfo2Enabled && ['bass', 'mid', 'treble'].includes(lfo2Shape)) ||
+                              (lfo3Enabled && ['bass', 'mid', 'treble'].includes(lfo3Shape)) ||
+                              (lfo4Enabled && ['bass', 'mid', 'treble'].includes(lfo4Shape));
+          if (timelineKeyframes.length > 0 && isPlaying && !isEditing && !hasAudioLfo) {
+            timelineNeedsRegenerate = applyTimelineState(this.time);
+          }
+        }
 
         // Smooth rotation interpolation (orbit controls)
         const lerpFactor = 0.1;
@@ -2884,7 +3355,7 @@
           // Update audio levels for audio-reactive LFOs
           updateAudioLevels();
           // LFO 1 - at full amp, use full range (0-1); offset shifts center when amp < 1
-          if (lfoTargets.length > 0) {
+          if (lfo1Enabled && lfoTargets.length > 0) {
             const { value, phase } = calcLfoValue(this.time, lfo1Speed, lfoShape);
             const center = 0.5 + (lfo1Offset - 0.5) * (1 - lfo1Amp);
             const scaledValue = center + (value - 0.5) * lfo1Amp;
@@ -2895,7 +3366,7 @@
           }
 
           // LFO 2
-          if (lfo2Targets.length > 0) {
+          if (lfo2Enabled && lfo2Targets.length > 0) {
             const { value, phase } = calcLfoValue(this.time, lfo2Speed, lfo2Shape);
             const center = 0.5 + (lfo2Offset - 0.5) * (1 - lfo2Amp);
             const scaledValue = center + (value - 0.5) * lfo2Amp;
@@ -2906,7 +3377,7 @@
           }
 
           // LFO 3
-          if (lfo3Targets.length > 0) {
+          if (lfo3Enabled && lfo3Targets.length > 0) {
             const { value, phase } = calcLfoValue(this.time, lfo3Speed, lfo3Shape);
             const center = 0.5 + (lfo3Offset - 0.5) * (1 - lfo3Amp);
             const scaledValue = center + (value - 0.5) * lfo3Amp;
@@ -2917,7 +3388,7 @@
           }
 
           // LFO 4
-          if (lfo4Targets.length > 0) {
+          if (lfo4Enabled && lfo4Targets.length > 0) {
             const { value, phase } = calcLfoValue(this.time, lfo4Speed, lfo4Shape);
             const center = 0.5 + (lfo4Offset - 0.5) * (1 - lfo4Amp);
             const scaledValue = center + (value - 0.5) * lfo4Amp;
@@ -2927,9 +3398,16 @@
             drawLfoViz(lfo4VizCanvas, lfo4VizCtx, phase, scaledValue, lfo4Shape, lfo4Amp);
           }
 
-          if (needsRegenerate) {
+          if (needsRegenerate && !timelineNeedsRegenerate) {
+            // Only regenerate here if timeline isn't also regenerating
             this.generate();
           }
+        }
+
+        // Handle timeline regeneration (outside of isAnimating since timeline may drive independently)
+        if (timelineNeedsRegenerate) {
+          this.generate();
+          this.updateColors();
         }
 
         this.renderWithBloom();
@@ -3298,6 +3776,11 @@
             geometry[param] = value;
             renderer.generate();
           }
+          autosave();
+          // Update active keyframe if one is selected
+          if (activeKeyframeIndex >= 0) {
+            updateActiveKeyframe();
+          }
         });
 
         knobs[param] = knob;
@@ -3453,6 +3936,29 @@
       } else if (e.key === ']') {
         // Expand all
         sections.forEach(s => s.classList.remove('collapsed'));
+      } else if (e.key === ' ') {
+        // Spacebar: play/pause audio
+        e.preventDefault();
+        if (audioElement) {
+          if (audioElement.paused) {
+            audioContext.resume();
+            audioElement.play();
+            audioPlayBtn.textContent = 'Pause';
+            audioPlayBtn.classList.add('playing');
+            isAnimating = true;
+            document.getElementById('play-btn').classList.add('active');
+            document.getElementById('stop-btn').classList.remove('active');
+            // Deselect keyframe when playing
+            if (activeKeyframeIndex >= 0) {
+              activeKeyframeIndex = -1;
+              renderKeyframeMarkers();
+            }
+          } else {
+            audioElement.pause();
+            audioPlayBtn.textContent = 'Play';
+            audioPlayBtn.classList.remove('playing');
+          }
+        }
       }
     });
 
@@ -3463,6 +3969,8 @@
         btn.classList.add('active');
         currentPattern = btn.dataset.pattern;
         renderer.generate();
+        autosave();
+        if (activeKeyframeIndex >= 0) updateActiveKeyframe();
       });
     });
 
@@ -3471,6 +3979,8 @@
       currentHue = parseInt(e.target.value);
       updateColorPreview();
       renderer.updateColors();
+      autosave();
+      if (activeKeyframeIndex >= 0) updateActiveKeyframe();
     });
 
     // Bloom control
@@ -3478,6 +3988,8 @@
       const value = parseFloat(e.target.value);
       renderer.bloomPass.strength = value;
       document.getElementById('bloom-value').textContent = value.toFixed(1);
+      autosave();
+      if (activeKeyframeIndex >= 0) updateActiveKeyframe();
     });
 
     // Kaleidoscope control
@@ -3489,6 +4001,7 @@
       const mode = mirrorModeSelect.value;
       const count = parseInt(mirrorCountSelect.value);
       renderer.setMirror(mode, count);
+      autosave();
     }
 
     mirrorModeSelect.addEventListener('change', updateMirror);
@@ -3500,6 +4013,8 @@
       document.getElementById('lightness-value').textContent = currentLightness + '%';
       updateColorPreview();
       renderer.updateColors();
+      autosave();
+      if (activeKeyframeIndex >= 0) updateActiveKeyframe();
     });
 
     // Background color control
@@ -3507,6 +4022,8 @@
       const color = e.target.value;
       renderer.bgColor.set(color);
       renderer.renderer.setClearColor(renderer.bgColor);
+      autosave();
+      if (activeKeyframeIndex >= 0) updateActiveKeyframe();
     });
 
     // Animation controls
@@ -3553,9 +4070,33 @@
         }
       }
 
+      // Generate waveform data from file
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        try {
+          const arrayBuffer = evt.target.result;
+          const audioBuffer = await audioContext.decodeAudioData(arrayBuffer.slice(0));
+          await generateWaveformData(audioBuffer);
+          showBottomTimeline();
+          waveformDurationEl.textContent = formatTimelineTime(audioBuffer.duration);
+        } catch (err) {
+          console.warn('Failed to generate waveform:', err);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+
       // Create audio element from file
       audioElement = new Audio(URL.createObjectURL(file));
       audioElement.crossOrigin = 'anonymous';
+
+      // Capture audio duration for timeline
+      audioElement.addEventListener('loadedmetadata', () => {
+        timelineDuration = audioElement.duration;
+        document.getElementById('timeline-total').textContent = formatTimelineTime(timelineDuration);
+        waveformDurationEl.textContent = formatTimelineTime(timelineDuration);
+        renderKeyframeMarkers();
+        renderWaveformKeyframes();
+      }, { once: true });
 
       audioElement.addEventListener('canplaythrough', () => {
         // Connect to analyser
@@ -3567,6 +4108,14 @@
         audioNameSpan.textContent = file.name.substring(0, 20) + (file.name.length > 20 ? '...' : '');
         audioInfo.style.display = 'flex';
         audioUploadBtn.style.display = 'none';
+
+        // Auto-enable timeline mode
+        if (!timelineMode) {
+          timelineMode = true;
+          document.getElementById('timeline-container').style.display = 'block';
+          document.getElementById('timeline-toggle').classList.add('active');
+          document.getElementById('timeline-toggle').textContent = 'Disable';
+        }
       }, { once: true });
     });
 
@@ -3582,6 +4131,11 @@
         isAnimating = true;
         document.getElementById('play-btn').classList.add('active');
         document.getElementById('stop-btn').classList.remove('active');
+        // Deselect active keyframe when playing - timeline takes over
+        if (activeKeyframeIndex >= 0) {
+          activeKeyframeIndex = -1;
+          renderKeyframeMarkers();
+        }
       } else {
         audioElement.pause();
         audioPlayBtn.textContent = 'Play';
@@ -3611,6 +4165,107 @@
 
       // Reset audio levels
       audioLevels = { bass: 0, mid: 0, treble: 0 };
+
+      // Hide bottom timeline and clear waveform
+      waveformData = null;
+      hideBottomTimeline();
+
+      // Reset timeline duration when audio is removed
+      timelineDuration = 60;
+      document.getElementById('timeline-total').textContent = formatTimelineTime(timelineDuration);
+      renderKeyframeMarkers();
+    });
+
+    // Timeline toggle
+    document.getElementById('timeline-toggle').addEventListener('click', () => {
+      timelineMode = !timelineMode;
+      document.getElementById('timeline-container').style.display = timelineMode ? 'block' : 'none';
+      document.getElementById('timeline-toggle').classList.toggle('active', timelineMode);
+      document.getElementById('timeline-toggle').textContent = timelineMode ? 'Disable' : 'Enable';
+
+      if (timelineMode) {
+        // Update duration from audio if available
+        if (audioElement && audioElement.duration) {
+          timelineDuration = audioElement.duration;
+        }
+        document.getElementById('timeline-total').textContent = formatTimelineTime(timelineDuration);
+        renderKeyframeMarkers();
+        // Show bottom timeline if we have waveform data
+        if (waveformData) {
+          showBottomTimeline();
+          renderWaveformKeyframes();
+        }
+      } else {
+        // Hide bottom timeline when disabling
+        hideBottomTimeline();
+      }
+    });
+
+    // Delete selected keyframe
+    document.getElementById('delete-keyframe').addEventListener('click', () => {
+      if (activeKeyframeIndex >= 0 && activeKeyframeIndex < timelineKeyframes.length) {
+        const kf = timelineKeyframes[activeKeyframeIndex];
+        timelineKeyframes.splice(activeKeyframeIndex, 1);
+        showToast(`Deleted keyframe: ${kf.label}`);
+        activeKeyframeIndex = -1;
+        renderKeyframeMarkers();
+        renderWaveformKeyframes();
+        autosaveTimeline();
+      }
+    });
+
+    // Add keyframe
+    document.getElementById('add-keyframe').addEventListener('click', () => {
+      const currentTime = timelineMode ? (audioElement ? audioElement.currentTime : timelineTime) : 0;
+
+      const keyframe = {
+        time: currentTime,
+        config: getCurrentConfig(),
+        label: `Key ${timelineKeyframes.length + 1}`
+      };
+
+      timelineKeyframes.push(keyframe);
+      timelineKeyframes.sort((a, b) => a.time - b.time);
+
+      // Find the index of the newly added keyframe and select it
+      activeKeyframeIndex = timelineKeyframes.findIndex(kf => kf.time === currentTime);
+
+      renderKeyframeMarkers();
+      renderWaveformKeyframes();
+      autosaveTimeline();
+
+      showToast(`Added keyframe at ${formatTimelineTime(currentTime)} - adjust knobs to update`);
+    });
+
+    // Timeline scrubber click
+    document.getElementById('timeline-track').addEventListener('click', (e) => {
+      if (!timelineMode) return;
+
+      // Deselect active keyframe when clicking on track
+      if (activeKeyframeIndex >= 0) {
+        activeKeyframeIndex = -1;
+        renderKeyframeMarkers();
+      }
+
+      const track = e.currentTarget;
+      const rect = track.getBoundingClientRect();
+      const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const newTime = percent * timelineDuration;
+
+      if (audioElement) {
+        audioElement.currentTime = newTime;
+      }
+      timelineTime = newTime;
+      updateTimelineUI(newTime);
+
+      // Apply state at new time if we have keyframes
+      if (timelineKeyframes.length > 0) {
+        const needsRegen = applyTimelineState(newTime);
+        if (needsRegen) {
+          renderer.generate();
+          renderer.updateColors();
+        }
+      }
     });
 
     // Update audio levels from analyser
@@ -3656,6 +4311,10 @@
       const dropdown = container.querySelector('.lfo-multiselect-dropdown');
       const checkboxes = container.querySelectorAll('input[type="checkbox"]');
       const label = container.querySelector('.lfo-multiselect-label');
+      const searchInput = container.querySelector('.lfo-search');
+      const clearBtn = container.querySelector('.lfo-clear-btn');
+      const options = container.querySelectorAll('.lfo-multiselect-option');
+      const groupLabels = container.querySelectorAll('.lfo-group-label');
 
       // Toggle dropdown
       btn.addEventListener('click', (e) => {
@@ -3665,6 +4324,48 @@
           if (ms !== container) ms.classList.remove('open');
         });
         container.classList.toggle('open');
+        // Focus search when opening
+        if (container.classList.contains('open')) {
+          setTimeout(() => searchInput.focus(), 50);
+        }
+      });
+
+      // Search filtering
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const visibleGroups = new Set();
+
+        options.forEach(opt => {
+          const text = opt.textContent.toLowerCase();
+          const matches = query === '' || text.includes(query);
+          opt.classList.toggle('hidden', !matches);
+
+          // Track which groups have visible items
+          if (matches) {
+            let prev = opt.previousElementSibling;
+            while (prev && !prev.classList.contains('lfo-group-label')) {
+              prev = prev.previousElementSibling;
+            }
+            if (prev) visibleGroups.add(prev);
+          }
+        });
+
+        // Show/hide group labels based on whether they have visible items
+        groupLabels.forEach(gl => {
+          gl.classList.toggle('hidden', !visibleGroups.has(gl));
+        });
+      });
+
+      // Prevent search from closing dropdown
+      searchInput.addEventListener('click', (e) => e.stopPropagation());
+
+      // Clear all button
+      clearBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        checkboxes.forEach(cb => cb.checked = false);
+        const checked = [];
+        updateLabel(checked, label, btn);
+        updateLfoVizVisibility();
       });
 
       // Handle checkbox changes
@@ -3673,6 +4374,7 @@
           const checked = Array.from(checkboxes).filter(c => c.checked).map(c => c.value);
           updateLabel(checked, label, btn);
           updateLfoVizVisibility();
+          autosave();
         });
       });
 
@@ -3680,6 +4382,10 @@
       document.addEventListener('click', (e) => {
         if (!container.contains(e.target)) {
           container.classList.remove('open');
+          // Reset search when closing
+          searchInput.value = '';
+          options.forEach(opt => opt.classList.remove('hidden'));
+          groupLabels.forEach(gl => gl.classList.remove('hidden'));
         }
       });
 
@@ -3729,11 +4435,29 @@
       updateLfoLabel(checked, label, btn);
     });
 
+    // LFO toggle buttons
+    function setupLfoToggle(btnId, getLfoEnabled, setLfoEnabled) {
+      const btn = document.getElementById(btnId);
+      btn.addEventListener('click', () => {
+        const newState = !getLfoEnabled();
+        setLfoEnabled(newState);
+        btn.textContent = newState ? '▶' : '⏸';
+        btn.classList.toggle('active', newState);
+        btn.title = newState ? 'Pause LFO' : 'Play LFO';
+      });
+    }
+
+    setupLfoToggle('lfo1-toggle', () => lfo1Enabled, (v) => lfo1Enabled = v);
+    setupLfoToggle('lfo2-toggle', () => lfo2Enabled, (v) => lfo2Enabled = v);
+    setupLfoToggle('lfo3-toggle', () => lfo3Enabled, (v) => lfo3Enabled = v);
+    setupLfoToggle('lfo4-toggle', () => lfo4Enabled, (v) => lfo4Enabled = v);
+
     document.getElementById('lfo-shape').addEventListener('change', (e) => {
       lfoShape = e.target.value;
       if (lfoTargets.length > 0) {
         drawLfoViz(lfo1VizCanvas, lfo1VizCtx, 0, 0.5, lfoShape, lfo1Amp);
       }
+      autosave();
     });
 
     document.getElementById('lfo2-shape').addEventListener('change', (e) => {
@@ -3741,6 +4465,7 @@
       if (lfo2Targets.length > 0) {
         drawLfoViz(lfo2VizCanvas, lfo2VizCtx, 0, 0.5, lfo2Shape, lfo2Amp);
       }
+      autosave();
     });
 
     document.getElementById('lfo3-shape').addEventListener('change', (e) => {
@@ -3748,6 +4473,7 @@
       if (lfo3Targets.length > 0) {
         drawLfoViz(lfo3VizCanvas, lfo3VizCtx, 0, 0.5, lfo3Shape, lfo3Amp);
       }
+      autosave();
     });
 
     document.getElementById('lfo4-shape').addEventListener('change', (e) => {
@@ -3755,12 +4481,14 @@
       if (lfo4Targets.length > 0) {
         drawLfoViz(lfo4VizCanvas, lfo4VizCtx, 0, 0.5, lfo4Shape, lfo4Amp);
       }
+      autosave();
     });
 
     // Camera path
     document.getElementById('camera-path').addEventListener('change', (e) => {
       cameraPath = e.target.value;
       cameraPathTime = 0;  // Reset camera path time when changing
+      autosave();
     });
 
     // Export
@@ -3840,11 +4568,20 @@
 
       console.log(`Recording at ${width}x${height}, AVC level ${avcLevel === '640033' ? '5.1' : '4.0'}`);
 
-      // Create offscreen canvas for scaled recording
-      const recordCanvas = new OffscreenCanvas(width, height);
-      const recordCtx = recordCanvas.getContext('2d');
-      window._recordCanvas = recordCanvas;
-      window._recordCtx = recordCtx;
+      // Store original dimensions and resize renderer to recording resolution
+      const originalWidth = canvas.width;
+      const originalHeight = canvas.height;
+      window._originalRecordDimensions = { width: originalWidth, height: originalHeight };
+
+      // Resize renderer to target recording resolution for native quality
+      renderer.renderer.setSize(width, height);
+      renderer.composer.setSize(width, height);
+      renderer.camera.aspect = width / height;
+      renderer.camera.updateProjectionMatrix();
+
+      // Force a render at new resolution
+      renderer.generate();
+      renderer.renderWithBloom();
 
       encodedChunks = [];
       frameCount = 0;
@@ -3947,17 +4684,13 @@
       recordingStartTime = Date.now();
       recordBtn.classList.add('recording');
 
-      // Capture frames at 30fps
+      // Capture frames at target fps
       const frameInterval = 1000 / fps;
       captureInterval = setInterval(async () => {
         if (!isRecording) return;
 
-        // Draw main canvas scaled onto recording canvas
-        const recordCanvas = window._recordCanvas;
-        const recordCtx = window._recordCtx;
-        recordCtx.drawImage(canvas, 0, 0, recordCanvas.width, recordCanvas.height);
-
-        const bitmap = await createImageBitmap(recordCanvas);
+        // Capture directly from canvas at native recording resolution
+        const bitmap = await createImageBitmap(canvas);
         const frame = new VideoFrame(bitmap, {
           timestamp: frameCount * (1_000_000 / fps), // microseconds
         });
@@ -3988,6 +4721,18 @@
       isRecording = false;
 
       recordBtn.textContent = 'Encoding...';
+
+      // Restore original canvas dimensions
+      if (window._originalRecordDimensions) {
+        const { width, height } = window._originalRecordDimensions;
+        renderer.renderer.setSize(width, height);
+        renderer.composer.setSize(width, height);
+        renderer.camera.aspect = width / height;
+        renderer.camera.updateProjectionMatrix();
+        renderer.generate();
+        renderer.renderWithBloom();
+        window._originalRecordDimensions = null;
+      }
 
       // Clean up audio processor
       if (window._audioProcessor) {
@@ -4027,6 +4772,24 @@
     function startRecordingWebM() {
       const canvas = document.getElementById('mandala-canvas');
       const fps = parseInt(document.getElementById('record-fps').value) || 30;
+
+      // Resize renderer to recording resolution
+      const resolutionSetting = parseInt(document.getElementById('record-resolution').value);
+      const aspectRatio = canvas.width / canvas.height;
+      const targetHeight = resolutionSetting;
+      const targetWidth = Math.round(targetHeight * aspectRatio);
+
+      // Store original dimensions
+      window._originalRecordDimensions = { width: canvas.width, height: canvas.height };
+
+      // Resize to target resolution
+      renderer.renderer.setSize(targetWidth, targetHeight);
+      renderer.composer.setSize(targetWidth, targetHeight);
+      renderer.camera.aspect = targetWidth / targetHeight;
+      renderer.camera.updateProjectionMatrix();
+      renderer.generate();
+      renderer.renderWithBloom();
+
       const videoStream = canvas.captureStream(fps);
 
       // Combine video with audio if available
@@ -4106,6 +4869,18 @@
       }
       isRecording = false;
       recordBtn.classList.remove('recording');
+
+      // Restore original canvas dimensions
+      if (window._originalRecordDimensions) {
+        const { width, height } = window._originalRecordDimensions;
+        renderer.renderer.setSize(width, height);
+        renderer.composer.setSize(width, height);
+        renderer.camera.aspect = width / height;
+        renderer.camera.updateProjectionMatrix();
+        renderer.generate();
+        renderer.renderWithBloom();
+        window._originalRecordDimensions = null;
+      }
     }
 
     // Use WebCodecs MP4 if available, otherwise WebM
@@ -4168,7 +4943,10 @@
       reader.onload = (event) => {
         try {
           const config = JSON.parse(event.target.result);
+          savePreviousState();
           applyConfig(config);
+          updatePresetList(); // Show "Previous" in dropdown
+          showToast('Previous state saved');
 
           const btn = document.getElementById('import-config');
           btn.textContent = 'Loaded!';
@@ -4188,6 +4966,43 @@
     // =====================
 
     const PRESETS_KEY = 'formgen_presets';
+    const PREVIOUS_KEY = 'formgen_previous';
+    const AUTOSAVE_KEY = 'formgen_autosave';
+
+    // Debounced autosave
+    let autosaveTimeout = null;
+    function autosave() {
+      clearTimeout(autosaveTimeout);
+      autosaveTimeout = setTimeout(() => {
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(getCurrentConfig()));
+      }, 500);
+    }
+
+    // Load autosave on init
+    function loadAutosave() {
+      const data = localStorage.getItem(AUTOSAVE_KEY);
+      if (data) {
+        try {
+          const config = JSON.parse(data);
+          applyConfig(config);
+          return true;
+        } catch (e) {
+          console.warn('Failed to load autosave:', e);
+        }
+      }
+      return false;
+    }
+
+    // Save current state before loading a new preset
+    function savePreviousState() {
+      localStorage.setItem(PREVIOUS_KEY, JSON.stringify(getCurrentConfig()));
+    }
+
+    // Load previous state
+    function loadPreviousState() {
+      const data = localStorage.getItem(PREVIOUS_KEY);
+      return data ? JSON.parse(data) : null;
+    }
 
     // Built-in presets
     const BUILT_IN_PRESETS = {
@@ -4324,6 +5139,7 @@
         macros: { ...macros },
         geometry: { ...geometry },
         lfo1: {
+          enabled: lfo1Enabled,
           targets: [...lfoTargets],  // Array of targets
           shape: document.getElementById('lfo-shape').value,
           speed: lfo1Speed,
@@ -4331,6 +5147,7 @@
           offset: lfo1Offset
         },
         lfo2: {
+          enabled: lfo2Enabled,
           targets: [...lfo2Targets],
           shape: document.getElementById('lfo2-shape').value,
           speed: lfo2Speed,
@@ -4338,6 +5155,7 @@
           offset: lfo2Offset
         },
         lfo3: {
+          enabled: lfo3Enabled,
           targets: [...lfo3Targets],
           shape: document.getElementById('lfo3-shape').value,
           speed: lfo3Speed,
@@ -4345,6 +5163,7 @@
           offset: lfo3Offset
         },
         lfo4: {
+          enabled: lfo4Enabled,
           targets: [...lfo4Targets],
           shape: document.getElementById('lfo4-shape').value,
           speed: lfo4Speed,
@@ -4361,7 +5180,7 @@
     }
 
     // Apply a config object to the UI and state
-    function applyConfig(config) {
+    function applyConfig(config, skipRegenerate = false) {
       // Pattern
       if (config.pattern) {
         currentPattern = config.pattern;
@@ -4427,6 +5246,15 @@
         }
       }
 
+      // Helper to update LFO toggle button UI
+      function updateLfoToggleUI(id, enabled) {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.textContent = enabled ? '⏸' : '▶';
+          btn.classList.toggle('active', enabled);
+        }
+      }
+
       // LFO 1
       if (config.lfo1) {
         // Support both old single target and new array format
@@ -4435,6 +5263,7 @@
         setLfoMultiselect('lfo1-multiselect', targets);
         lfoShape = config.lfo1.shape || 'sine';
         document.getElementById('lfo-shape').value = lfoShape;
+        if (config.lfo1.enabled !== undefined) { lfo1Enabled = config.lfo1.enabled; updateLfoToggleUI('lfo1-toggle', lfo1Enabled); }
         if (config.lfo1.speed !== undefined) { lfo1Speed = config.lfo1.speed; updateKnobValue('lfo1Speed', lfo1Speed); }
         if (config.lfo1.amp !== undefined) { lfo1Amp = config.lfo1.amp; updateKnobValue('lfo1Amp', lfo1Amp); }
         if (config.lfo1.offset !== undefined) { lfo1Offset = config.lfo1.offset; updateKnobValue('lfo1Offset', lfo1Offset); }
@@ -4447,6 +5276,7 @@
         setLfoMultiselect('lfo2-multiselect', targets);
         lfo2Shape = config.lfo2.shape || 'sine';
         document.getElementById('lfo2-shape').value = lfo2Shape;
+        if (config.lfo2.enabled !== undefined) { lfo2Enabled = config.lfo2.enabled; updateLfoToggleUI('lfo2-toggle', lfo2Enabled); }
         if (config.lfo2.speed !== undefined) { lfo2Speed = config.lfo2.speed; updateKnobValue('lfo2Speed', lfo2Speed); }
         if (config.lfo2.amp !== undefined) { lfo2Amp = config.lfo2.amp; updateKnobValue('lfo2Amp', lfo2Amp); }
         if (config.lfo2.offset !== undefined) { lfo2Offset = config.lfo2.offset; updateKnobValue('lfo2Offset', lfo2Offset); }
@@ -4459,6 +5289,7 @@
         setLfoMultiselect('lfo3-multiselect', targets);
         lfo3Shape = config.lfo3.shape || 'sine';
         document.getElementById('lfo3-shape').value = lfo3Shape;
+        if (config.lfo3.enabled !== undefined) { lfo3Enabled = config.lfo3.enabled; updateLfoToggleUI('lfo3-toggle', lfo3Enabled); }
         if (config.lfo3.speed !== undefined) { lfo3Speed = config.lfo3.speed; updateKnobValue('lfo3Speed', lfo3Speed); }
         if (config.lfo3.amp !== undefined) { lfo3Amp = config.lfo3.amp; updateKnobValue('lfo3Amp', lfo3Amp); }
         if (config.lfo3.offset !== undefined) { lfo3Offset = config.lfo3.offset; updateKnobValue('lfo3Offset', lfo3Offset); }
@@ -4471,6 +5302,7 @@
         setLfoMultiselect('lfo4-multiselect', targets);
         lfo4Shape = config.lfo4.shape || 'sine';
         document.getElementById('lfo4-shape').value = lfo4Shape;
+        if (config.lfo4.enabled !== undefined) { lfo4Enabled = config.lfo4.enabled; updateLfoToggleUI('lfo4-toggle', lfo4Enabled); }
         if (config.lfo4.speed !== undefined) { lfo4Speed = config.lfo4.speed; updateKnobValue('lfo4Speed', lfo4Speed); }
         if (config.lfo4.amp !== undefined) { lfo4Amp = config.lfo4.amp; updateKnobValue('lfo4Amp', lfo4Amp); }
         if (config.lfo4.offset !== undefined) { lfo4Offset = config.lfo4.offset; updateKnobValue('lfo4Offset', lfo4Offset); }
@@ -4500,10 +5332,444 @@
         document.getElementById('camera-path').value = config.camera;
       }
 
-      renderer.generate();
-      renderer.updateColors();
-      updateLfoVizVisibility();
+      if (!skipRegenerate) {
+        renderer.generate();
+        renderer.updateColors();
+        updateLfoVizVisibility();
+      }
     }
+
+    // ==================
+    // Timeline Functions
+    // ==================
+
+    const TIMELINE_KEY = 'formgen_timeline';
+
+    function formatTimelineTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function updateTimelineUI(currentTime) {
+      if (!timelineMode || !timelineDuration) return;
+
+      const progress = Math.min((currentTime / timelineDuration) * 100, 100);
+      document.getElementById('timeline-playhead').style.left = `${progress}%`;
+      document.getElementById('timeline-progress').style.width = `${progress}%`;
+      document.getElementById('timeline-current').textContent = formatTimelineTime(currentTime);
+    }
+
+    function renderKeyframeMarkers() {
+      const track = document.getElementById('timeline-track');
+      if (!track) return;
+
+      // Show/hide delete button based on selection
+      const deleteBtn = document.getElementById('delete-keyframe');
+      if (deleteBtn) {
+        deleteBtn.style.display = activeKeyframeIndex >= 0 ? 'block' : 'none';
+      }
+
+      // Remove existing markers
+      track.querySelectorAll('.timeline-keyframe').forEach(el => el.remove());
+
+      if (!timelineDuration) return;
+
+      timelineKeyframes.forEach((kf, i) => {
+        const marker = document.createElement('div');
+        marker.className = 'timeline-keyframe';
+        if (i === activeKeyframeIndex) {
+          marker.classList.add('active');
+        }
+        marker.style.left = `${(kf.time / timelineDuration) * 100}%`;
+        marker.title = `${kf.label} (${formatTimelineTime(kf.time)}) - Click to edit, double-click to delete`;
+
+        marker.addEventListener('click', (e) => {
+          e.stopPropagation();
+
+          // Toggle selection
+          if (activeKeyframeIndex === i) {
+            // Deselect
+            activeKeyframeIndex = -1;
+            showToast('Keyframe deselected');
+          } else {
+            // Select this keyframe
+            activeKeyframeIndex = i;
+            showToast(`Editing: ${kf.label} - adjust knobs to update`);
+          }
+
+          // Jump to keyframe time
+          if (audioElement) {
+            audioElement.currentTime = kf.time;
+          }
+          timelineTime = kf.time;
+          updateTimelineUI(kf.time);
+
+          // Apply the keyframe's config to show its state
+          applyConfig(kf.config, true);
+          renderer.generate();
+          renderer.updateColors();
+
+          renderKeyframeMarkers();
+        });
+
+        marker.addEventListener('dblclick', (e) => {
+          e.stopPropagation();
+          // Delete keyframe
+          if (activeKeyframeIndex === i) {
+            activeKeyframeIndex = -1;
+          } else if (activeKeyframeIndex > i) {
+            activeKeyframeIndex--;
+          }
+          timelineKeyframes.splice(i, 1);
+          renderKeyframeMarkers();
+          autosaveTimeline();
+          showToast(`Deleted keyframe: ${kf.label}`);
+        });
+
+        track.appendChild(marker);
+      });
+    }
+
+    function updateActiveKeyframe() {
+      if (activeKeyframeIndex >= 0 && activeKeyframeIndex < timelineKeyframes.length) {
+        timelineKeyframes[activeKeyframeIndex].config = getCurrentConfig();
+        autosaveTimeline();
+      }
+    }
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function interpolateConfigs(configA, configB, t) {
+      // Deep clone configA
+      const result = JSON.parse(JSON.stringify(configA));
+
+      // Interpolate macros
+      if (configA.macros && configB.macros) {
+        for (const key of Object.keys(configA.macros)) {
+          if (configB.macros[key] !== undefined) {
+            result.macros[key] = lerp(configA.macros[key], configB.macros[key], t);
+          }
+        }
+      }
+
+      // Interpolate geometry
+      if (configA.geometry && configB.geometry) {
+        for (const key of Object.keys(configA.geometry)) {
+          if (configB.geometry[key] !== undefined) {
+            result.geometry[key] = lerp(configA.geometry[key], configB.geometry[key], t);
+          }
+        }
+      }
+
+      // Interpolate simple numeric values
+      if (configA.hue !== undefined && configB.hue !== undefined) {
+        result.hue = lerp(configA.hue, configB.hue, t);
+      }
+      if (configA.lightness !== undefined && configB.lightness !== undefined) {
+        result.lightness = lerp(configA.lightness, configB.lightness, t);
+      }
+
+      // Interpolate effects
+      if (configA.effects && configB.effects) {
+        if (configA.effects.bloom !== undefined && configB.effects.bloom !== undefined) {
+          result.effects.bloom = lerp(configA.effects.bloom, configB.effects.bloom, t);
+        }
+      }
+
+      // Interpolate LFO numeric values (speed, amp, offset)
+      // Shape, targets, and enabled snap to previous keyframe (discrete values)
+      ['lfo1', 'lfo2', 'lfo3', 'lfo4'].forEach(lfo => {
+        if (configA[lfo] && configB[lfo]) {
+          if (configA[lfo].speed !== undefined && configB[lfo].speed !== undefined) {
+            result[lfo].speed = lerp(configA[lfo].speed, configB[lfo].speed, t);
+          }
+          if (configA[lfo].amp !== undefined && configB[lfo].amp !== undefined) {
+            result[lfo].amp = lerp(configA[lfo].amp, configB[lfo].amp, t);
+          }
+          if (configA[lfo].offset !== undefined && configB[lfo].offset !== undefined) {
+            result[lfo].offset = lerp(configA[lfo].offset, configB[lfo].offset, t);
+          }
+        }
+      });
+
+      // Discrete values (pattern, camera, LFO shape/targets/enabled) snap to configA (previous keyframe)
+      // They're already in result from the deep clone
+
+      return result;
+    }
+
+    function applyTimelineState(currentTime) {
+      if (timelineKeyframes.length === 0) return false;
+
+      // Find surrounding keyframes
+      let prevKf = timelineKeyframes[0];
+      let nextKf = timelineKeyframes[timelineKeyframes.length - 1];
+
+      for (let i = 0; i < timelineKeyframes.length - 1; i++) {
+        if (timelineKeyframes[i].time <= currentTime &&
+            timelineKeyframes[i + 1].time > currentTime) {
+          prevKf = timelineKeyframes[i];
+          nextKf = timelineKeyframes[i + 1];
+          break;
+        }
+      }
+
+      // If before first keyframe, use first
+      if (currentTime < timelineKeyframes[0].time) {
+        applyConfig(timelineKeyframes[0].config, true);
+        return true;
+      }
+
+      // If after last keyframe, use last
+      if (currentTime >= timelineKeyframes[timelineKeyframes.length - 1].time) {
+        applyConfig(timelineKeyframes[timelineKeyframes.length - 1].config, true);
+        return true;
+      }
+
+      // Interpolate between keyframes
+      const duration = nextKf.time - prevKf.time;
+      const progress = (currentTime - prevKf.time) / duration;
+      const interpolated = interpolateConfigs(prevKf.config, nextKf.config, progress);
+
+      applyConfig(interpolated, true);
+      return true;
+    }
+
+    function autosaveTimeline() {
+      localStorage.setItem(TIMELINE_KEY, JSON.stringify({
+        duration: timelineDuration,
+        keyframes: timelineKeyframes
+      }));
+    }
+
+    function loadTimeline() {
+      const data = localStorage.getItem(TIMELINE_KEY);
+      if (data) {
+        try {
+          const timeline = JSON.parse(data);
+          timelineDuration = timeline.duration || 60;
+          timelineKeyframes = timeline.keyframes || [];
+        } catch (e) {
+          console.warn('Failed to load timeline:', e);
+        }
+      }
+    }
+
+    // Load timeline on init
+    loadTimeline();
+    // Update timeline display after DOM is ready
+    document.getElementById('timeline-total').textContent = formatTimelineTime(timelineDuration);
+
+    // =======================
+    // Bottom Waveform Timeline
+    // =======================
+
+    const bottomTimeline = document.getElementById('bottom-timeline');
+    const waveformCanvas = document.getElementById('waveform-canvas');
+    const waveformCtx = waveformCanvas.getContext('2d');
+    const waveformPlayhead = document.getElementById('waveform-playhead');
+    const waveformTimeEl = document.getElementById('waveform-time');
+    const waveformDurationEl = document.getElementById('waveform-duration');
+    const waveformContainer = document.getElementById('waveform-container');
+
+    function showBottomTimeline() {
+      bottomTimeline.classList.add('visible');
+      // Resize canvas to match container
+      resizeWaveformCanvas();
+      drawWaveform();
+      renderWaveformKeyframes();
+    }
+
+    function hideBottomTimeline() {
+      bottomTimeline.classList.remove('visible');
+    }
+
+    function resizeWaveformCanvas() {
+      const rect = waveformContainer.getBoundingClientRect();
+      waveformCanvas.width = rect.width * window.devicePixelRatio;
+      waveformCanvas.height = rect.height * window.devicePixelRatio;
+      waveformCanvas.style.width = rect.width + 'px';
+      waveformCanvas.style.height = rect.height + 'px';
+      waveformCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+
+    async function generateWaveformData(audioBuffer) {
+      const rawData = audioBuffer.getChannelData(0);
+      const samples = 1000; // Number of bars in waveform
+      const blockSize = Math.floor(rawData.length / samples);
+      const filteredData = [];
+
+      for (let i = 0; i < samples; i++) {
+        let sum = 0;
+        for (let j = 0; j < blockSize; j++) {
+          sum += Math.abs(rawData[i * blockSize + j]);
+        }
+        filteredData.push(sum / blockSize);
+      }
+
+      // Normalize
+      const max = Math.max(...filteredData);
+      waveformData = filteredData.map(v => v / max);
+    }
+
+    function drawWaveform() {
+      if (!waveformData) return;
+
+      const width = waveformCanvas.width / window.devicePixelRatio;
+      const height = waveformCanvas.height / window.devicePixelRatio;
+
+      waveformCtx.clearRect(0, 0, width, height);
+
+      // Draw waveform bars
+      const barWidth = width / waveformData.length;
+      const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#ff7832';
+
+      waveformCtx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+
+      for (let i = 0; i < waveformData.length; i++) {
+        const x = i * barWidth;
+        const barHeight = waveformData[i] * (height - 16);
+        const y = (height - barHeight) / 2;
+
+        waveformCtx.fillRect(x, y, barWidth - 0.5, barHeight);
+      }
+
+      // Draw played portion with accent color
+      if (audioElement && timelineDuration > 0) {
+        const playedPercent = (audioElement.currentTime || 0) / timelineDuration;
+        const playedWidth = playedPercent * width;
+
+        waveformCtx.fillStyle = accent;
+        waveformCtx.globalAlpha = 0.4;
+
+        for (let i = 0; i < waveformData.length; i++) {
+          const x = i * barWidth;
+          if (x > playedWidth) break;
+
+          const barHeight = waveformData[i] * (height - 16);
+          const y = (height - barHeight) / 2;
+          const clipWidth = Math.min(barWidth - 0.5, playedWidth - x);
+
+          if (clipWidth > 0) {
+            waveformCtx.fillRect(x, y, clipWidth, barHeight);
+          }
+        }
+
+        waveformCtx.globalAlpha = 1;
+      }
+    }
+
+    function renderWaveformKeyframes() {
+      // Remove existing keyframe markers
+      waveformContainer.querySelectorAll('.waveform-keyframe').forEach(el => el.remove());
+
+      if (!timelineDuration) return;
+
+      timelineKeyframes.forEach((kf, i) => {
+        const marker = document.createElement('div');
+        marker.className = 'waveform-keyframe';
+        if (i === activeKeyframeIndex) {
+          marker.classList.add('active');
+        }
+        marker.style.left = `${(kf.time / timelineDuration) * 100}%`;
+        marker.title = `${kf.label} (${formatTimelineTime(kf.time)})`;
+
+        marker.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // Toggle selection
+          if (activeKeyframeIndex === i) {
+            activeKeyframeIndex = -1;
+            showToast('Keyframe deselected');
+          } else {
+            activeKeyframeIndex = i;
+            showToast(`Editing: ${kf.label}`);
+          }
+
+          // Jump to keyframe time
+          if (audioElement) {
+            audioElement.currentTime = kf.time;
+          }
+          timelineTime = kf.time;
+          updateWaveformPlayhead(kf.time);
+
+          // Apply the keyframe's config
+          applyConfig(kf.config, true);
+          renderer.generate();
+          renderer.updateColors();
+
+          renderWaveformKeyframes();
+          renderKeyframeMarkers(); // Also update left panel if visible
+        });
+
+        marker.addEventListener('dblclick', (e) => {
+          e.stopPropagation();
+          if (activeKeyframeIndex === i) {
+            activeKeyframeIndex = -1;
+          } else if (activeKeyframeIndex > i) {
+            activeKeyframeIndex--;
+          }
+          timelineKeyframes.splice(i, 1);
+          renderWaveformKeyframes();
+          renderKeyframeMarkers();
+          autosaveTimeline();
+          showToast(`Deleted: ${kf.label}`);
+        });
+
+        waveformContainer.appendChild(marker);
+      });
+    }
+
+    function updateWaveformPlayhead(currentTime) {
+      if (!timelineDuration) return;
+      const percent = Math.min((currentTime / timelineDuration) * 100, 100);
+      waveformPlayhead.style.left = `${percent}%`;
+      waveformTimeEl.textContent = formatTimelineTime(currentTime);
+
+      // Redraw waveform to show played portion
+      drawWaveform();
+    }
+
+    // Click to seek on waveform
+    waveformContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('waveform-keyframe')) return;
+
+      const rect = waveformContainer.getBoundingClientRect();
+      const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const newTime = percent * timelineDuration;
+
+      // Deselect keyframe when clicking on waveform track
+      if (activeKeyframeIndex >= 0) {
+        activeKeyframeIndex = -1;
+        renderWaveformKeyframes();
+        renderKeyframeMarkers();
+      }
+
+      if (audioElement) {
+        audioElement.currentTime = newTime;
+      }
+      timelineTime = newTime;
+      updateWaveformPlayhead(newTime);
+
+      // Apply timeline state
+      if (timelineKeyframes.length > 0) {
+        const needsRegen = applyTimelineState(newTime);
+        if (needsRegen) {
+          renderer.generate();
+          renderer.updateColors();
+        }
+      }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      if (bottomTimeline.classList.contains('visible')) {
+        resizeWaveformCanvas();
+        drawWaveform();
+      }
+    });
 
     // Load presets from localStorage
     function loadPresets() {
@@ -4523,12 +5789,39 @@
       const names = Object.keys(presets).sort();
 
       select.innerHTML = '<option value="">-- Select Preset --</option>';
+
+      // Add "Previous" option if it exists
+      if (loadPreviousState()) {
+        const prevOpt = document.createElement('option');
+        prevOpt.value = '__previous__';
+        prevOpt.textContent = '↩ Previous';
+        prevOpt.style.fontStyle = 'italic';
+        select.appendChild(prevOpt);
+      }
+
       names.forEach(name => {
         const opt = document.createElement('option');
         opt.value = name;
         opt.textContent = name;
         select.appendChild(opt);
       });
+    }
+
+    // Toast notification
+    function showToast(message) {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+
+      setTimeout(() => toast.classList.add('show'), 10);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 2000);
     }
 
     // Populate built-in presets grid
@@ -4542,10 +5835,13 @@
         btn.textContent = name;
         btn.title = name;
         btn.addEventListener('click', () => {
+          savePreviousState();
           applyConfig(BUILT_IN_PRESETS[name]);
+          updatePresetList(); // Show "Previous" in dropdown
           // Visual feedback
           document.querySelectorAll('.preset-btn').forEach(b => b.style.borderColor = '');
           btn.style.borderColor = 'var(--accent)';
+          showToast('Previous state saved');
         });
         grid.appendChild(btn);
       });
@@ -4584,10 +5880,23 @@
         return;
       }
 
+      // Handle "Previous" specially
+      if (name === '__previous__') {
+        const config = loadPreviousState();
+        if (config) {
+          applyConfig(config);
+          showToast('Previous state restored');
+        }
+        return;
+      }
+
       const presets = loadPresets();
       const config = presets[name];
       if (config) {
+        savePreviousState();
         applyConfig(config);
+        updatePresetList(); // Show "Previous" in dropdown
+        showToast('Previous state saved');
         const btn = document.getElementById('load-preset');
         btn.textContent = 'Loaded!';
         setTimeout(() => btn.textContent = 'Load', 1500);
@@ -4629,7 +5938,7 @@
       'dreamscape': '🌙 Dreamscape'
     };
 
-    // Check for preset in URL and load it
+    // Check for preset in URL, otherwise load autosave
     const urlParams = new URLSearchParams(window.location.search);
     const presetParam = urlParams.get('preset');
     if (presetParam && PRESET_URL_MAP[presetParam]) {
@@ -4643,12 +5952,197 @@
           }
         });
       }
+    } else {
+      // Load autosaved state if no URL preset
+      loadAutosave();
     }
 
     // Initial render
     updateColorPreview();
     renderer.generate();
     renderer.animate(0);
+
+    // =====================
+    // COMMAND PALETTE (Cmd+K)
+    // =====================
+    const cmdPalette = document.getElementById('cmd-palette');
+    const cmdInput = document.getElementById('cmd-input');
+    const cmdResults = document.getElementById('cmd-results');
+
+    // Index all searchable parameters
+    const paramIndex = [];
+
+    // Add knob controls
+    document.querySelectorAll('.knob-control').forEach(knob => {
+      const name = knob.querySelector('.knob-name')?.textContent;
+      const param = knob.dataset.param;
+      if (name && param) {
+        paramIndex.push({
+          name,
+          param,
+          element: knob,
+          section: knob.closest('.control-section'),
+          type: 'knob'
+        });
+      }
+    });
+
+    // Add pattern buttons
+    document.querySelectorAll('.pattern-btn').forEach(btn => {
+      paramIndex.push({
+        name: btn.textContent,
+        param: btn.dataset.pattern,
+        element: btn,
+        section: btn.closest('.control-section'),
+        type: 'pattern'
+      });
+    });
+
+    // Add preset buttons
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      paramIndex.push({
+        name: `Preset: ${btn.textContent}`,
+        param: btn.textContent,
+        element: btn,
+        section: btn.closest('.control-section'),
+        type: 'preset'
+      });
+    });
+
+    // Add sliders
+    const sliderMap = {
+      'hue': 'Hue',
+      'lightness': 'Lightness',
+      'bloom-strength': 'Bloom'
+    };
+    Object.entries(sliderMap).forEach(([id, name]) => {
+      const el = document.getElementById(id);
+      if (el) {
+        paramIndex.push({
+          name,
+          param: id,
+          element: el,
+          section: el.closest('.control-section'),
+          type: 'slider'
+        });
+      }
+    });
+
+    function openCmdPalette() {
+      cmdPalette.classList.add('open');
+      cmdInput.value = '';
+      cmdInput.focus();
+      renderCmdResults('');
+    }
+
+    function closeCmdPalette() {
+      cmdPalette.classList.remove('open');
+      cmdInput.value = '';
+    }
+
+    function renderCmdResults(query) {
+      const q = query.toLowerCase();
+      const matches = q === ''
+        ? paramIndex.slice(0, 10)
+        : paramIndex.filter(p => p.name.toLowerCase().includes(q)).slice(0, 10);
+
+      cmdResults.innerHTML = matches.map((p, i) => `
+        <div class="cmd-result ${i === 0 ? 'selected' : ''}" data-index="${paramIndex.indexOf(p)}">
+          <span class="cmd-result-name">${p.name}</span>
+          <span class="cmd-result-type">${p.type}</span>
+        </div>
+      `).join('');
+
+      // Add click handlers
+      cmdResults.querySelectorAll('.cmd-result').forEach(el => {
+        el.addEventListener('click', () => selectCmdResult(parseInt(el.dataset.index)));
+      });
+    }
+
+    function selectCmdResult(index) {
+      const item = paramIndex[index];
+      if (!item) return;
+
+      closeCmdPalette();
+
+      // Expand section if collapsed
+      if (item.section && item.section.classList.contains('collapsed')) {
+        item.section.classList.remove('collapsed');
+      }
+
+      // Scroll to and highlight element
+      setTimeout(() => {
+        item.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        item.element.classList.add('cmd-highlight');
+        setTimeout(() => item.element.classList.remove('cmd-highlight'), 1500);
+
+        // Click if it's a button
+        if (item.type === 'pattern' || item.type === 'preset') {
+          item.element.click();
+        }
+      }, 100);
+    }
+
+    let selectedResultIndex = 0;
+
+    cmdInput.addEventListener('input', (e) => {
+      renderCmdResults(e.target.value);
+      selectedResultIndex = 0;
+    });
+
+    cmdInput.addEventListener('keydown', (e) => {
+      const results = cmdResults.querySelectorAll('.cmd-result');
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedResultIndex = Math.min(selectedResultIndex + 1, results.length - 1);
+        results.forEach((r, i) => r.classList.toggle('selected', i === selectedResultIndex));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedResultIndex = Math.max(selectedResultIndex - 1, 0);
+        results.forEach((r, i) => r.classList.toggle('selected', i === selectedResultIndex));
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        const selected = results[selectedResultIndex];
+        if (selected) selectCmdResult(parseInt(selected.dataset.index));
+      } else if (e.key === 'Escape') {
+        closeCmdPalette();
+      }
+    });
+
+    cmdPalette.addEventListener('click', (e) => {
+      if (e.target === cmdPalette) closeCmdPalette();
+    });
+
+    // Global keyboard shortcut
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        if (cmdPalette.classList.contains('open')) {
+          closeCmdPalette();
+        } else {
+          openCmdPalette();
+        }
+      }
+    });
   </script>
+
+  <!-- Command Palette -->
+  <div id="cmd-palette" class="cmd-palette">
+    <div class="cmd-container">
+      <input type="text" id="cmd-input" class="cmd-input" placeholder="Search parameters...">
+      <div id="cmd-results" class="cmd-results"></div>
+    </div>
+  </div>
+
+  <!-- Bottom Timeline with Waveform -->
+  <div class="bottom-timeline" id="bottom-timeline">
+    <div class="waveform-container" id="waveform-container">
+      <canvas class="waveform-canvas" id="waveform-canvas"></canvas>
+      <div class="waveform-playhead" id="waveform-playhead" style="left: 0%;"></div>
+      <span class="waveform-time" id="waveform-time">0:00</span>
+      <span class="waveform-duration" id="waveform-duration">0:00</span>
+    </div>
+  </div>
 </body>
 </html>

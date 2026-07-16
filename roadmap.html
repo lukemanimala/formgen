@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FormGen - Roadmap</title>
+  <title>Formgen - Roadmap</title>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -27,7 +27,7 @@
       font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg-primary);
       color: var(--text-primary);
-      line-height: 1.6;
+      line-height: 1.7;
       padding: 48px 24px;
       max-width: 720px;
       margin: 0 auto;
@@ -100,7 +100,7 @@
 
     li {
       color: var(--text-secondary);
-      padding: 8px 0;
+      padding: 6px 0;
       padding-left: 20px;
       position: relative;
     }
@@ -109,11 +109,19 @@
       content: '';
       position: absolute;
       left: 0;
-      top: 14px;
+      top: 12px;
       width: 6px;
       height: 6px;
       background: var(--accent);
       border-radius: 50%;
+    }
+
+    li.done::before {
+      background: #4ade80;
+    }
+
+    li.done {
+      color: var(--text-tertiary);
     }
 
     .phase {
@@ -129,8 +137,20 @@
       color: var(--text-primary);
     }
 
+    .phase .gate {
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
     .phase ul {
       margin-bottom: 0;
+    }
+
+    .phase.current {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(255, 100, 50, 0.1);
     }
 
     .insight {
@@ -144,16 +164,48 @@
     .insight p {
       margin: 0;
       color: var(--text-primary);
+      font-style: italic;
     }
 
-    .users {
+    .philosophy {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .philosophy-item {
+      color: var(--text-secondary);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .philosophy-item::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .architecture {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-family: monospace;
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin: 16px 0;
+      line-height: 1.8;
+    }
+
+    .hardware-list {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 24px;
     }
 
-    .user-tag {
+    .hardware-tag {
       background: var(--surface);
       border: 1px solid var(--border);
       padding: 6px 12px;
@@ -162,7 +214,12 @@
       color: var(--text-secondary);
     }
 
-    .validation {
+    .hardware-tag.owned {
+      border-color: #4ade80;
+      color: #4ade80;
+    }
+
+    .success {
       background: var(--bg-secondary);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -171,107 +228,168 @@
       text-align: center;
     }
 
-    .validation p {
+    .success p {
       font-size: 18px;
       color: var(--text-primary);
-      margin-bottom: 8px;
+      margin-bottom: 0;
     }
 
-    .validation .steps {
+    .updated {
+      margin-top: 48px;
+      font-size: 12px;
       color: var(--text-tertiary);
-      font-size: 14px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-link">← Back to FormGen</a>
+  <a href="index.html" class="back-link">← Back to Formgen</a>
 
-  <h1>FormGen</h1>
-  <p class="tagline">The easiest way for creators to generate high-quality 3D music visuals without learning complex tools.</p>
+  <h1>Formgen</h1>
+  <p class="tagline">An environment engine — software that composes immersive spaces.</p>
 
-  <h2>Vision</h2>
+  <div class="insight">
+    <p>A single patch should be capable of transforming an ordinary room into an immersive experience.</p>
+  </div>
 
-  <h3>Upload</h3>
+  <h2>Philosophy</h2>
+  <div class="philosophy">
+    <div class="philosophy-item">The room is the canvas</div>
+    <div class="philosophy-item">Software isn't the final product — the experience is</div>
+    <div class="philosophy-item">Users compose atmosphere, not program devices</div>
+    <div class="philosophy-item">Figma for immersive environments: powerful yet approachable</div>
+  </div>
+
+  <h2>Current State</h2>
+  <p>Browser engine functional:</p>
   <ul>
-    <li>3D model</li>
-    <li>Song</li>
-    <li>Style reference</li>
-    <li>Desired mood</li>
-    <li>Duration and format</li>
+    <li class="done">7 pattern generators</li>
+    <li class="done">5 macro controls with 4-LFO modulation</li>
+    <li class="done">Audio-reactive (Bass, Mid, Treble)</li>
+    <li class="done">Video export (MP4/WebM, up to 4K)</li>
+    <li class="done">Timeline with waveform visualization</li>
+    <li class="done">Keyframe animation system</li>
+    <li class="done">Presets + autosave</li>
   </ul>
-
-  <h3>Generate</h3>
-  <ul>
-    <li>Interactive browser preview</li>
-    <li>Audio-reactive motion</li>
-    <li>Camera paths</li>
-    <li>Particles, lighting, and effects</li>
-    <li>Final render using cloud GPUs</li>
-  </ul>
-
-  <h2>Why This Matters</h2>
-  <p>Web graphics continue to improve through WebGPU. Cloud GPUs are becoming accessible and affordable.</p>
-  <p>Most creators don't want to learn Blender, TouchDesigner, Notch, Unreal, shaders, or rendering pipelines. <span class="highlight">They want results.</span></p>
 
   <h2>Roadmap</h2>
 
-  <div class="phase">
-    <h3>Phase 1: Browser Preview</h3>
+  <div class="phase current">
+    <h3>Phase 0: Prove the Core</h3>
+    <div class="gate">Gate: Create one 3-minute patch that makes people say "holy shit"</div>
+    <p>This is the prerequisite for everything else. Physical outputs won't fix weak visuals — they'll just distribute them across more surfaces.</p>
     <ul>
-      <li>Upload GLB model</li>
-      <li>Upload audio</li>
-      <li>Auto-generate camera movement</li>
-      <li>Bass, mid, and treble-driven animations</li>
-      <li>Basic particles, bloom, and trails</li>
-      <li>Export short clips</li>
+      <li class="done">Fix recording resolution</li>
+      <li class="done">Timeline with keyframes</li>
+      <li class="done">Audio-synced scrubbing</li>
+      <li>Create ONE compelling demo (film it, post it)</li>
     </ul>
   </div>
 
   <div class="phase">
-    <h3>Phase 2: AI Director</h3>
+    <h3>Phase 1: Browser Foundation</h3>
+    <div class="gate">Gate: 10 people use it without explanation</div>
     <ul>
-      <li>Prompt-based styling</li>
-      <li>Multiple visual treatments</li>
-      <li>Automatic camera choreography</li>
-      <li>Beat-aware transitions</li>
-      <li>Genre-specific presets</li>
+      <li>Beat grid overlay (manual BPM input)</li>
+      <li>Landing page with live demo</li>
+      <li>More pattern generators</li>
+      <li>SVG export for print/laser</li>
     </ul>
   </div>
 
   <div class="phase">
-    <h3>Phase 3: Cloud Rendering</h3>
+    <h3>Phase 2: Physical Lighting</h3>
+    <div class="gate">Gate: Phase 0 validated — core visuals are compelling</div>
+    <p>Hardware acquired:</p>
+    <div class="hardware-list">
+      <span class="hardware-tag owned">Chauvet DMX-AN 2</span>
+    </div>
+    <div class="architecture">
+Browser UI<br>
+&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+Local Formgen Agent<br>
+&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+Art-Net<br>
+&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+Chauvet Node<br>
+&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+DMX PARs
+    </div>
     <ul>
-      <li>Real-time browser previews</li>
-      <li>High-quality cloud rendering</li>
-      <li>1080p, 4K, and beyond</li>
-      <li>Advanced simulations and effects</li>
-      <li>Blender, Unreal, or custom pipelines</li>
+      <li>Connect to node</li>
+      <li>Control brightness + RGB</li>
+      <li>Map microphone loudness to intensity</li>
     </ul>
   </div>
 
-  <div class="insight">
-    <p>The goal is not to compete with professional tools.<br>
-    <strong>The goal is to compete with the friction of professional tools.</strong></p>
+  <div class="phase">
+    <h3>Phase 3: Projection</h3>
+    <div class="gate">Gate: DMX control proven</div>
+    <p>Single patch now drives: browser visuals, projected visuals, physical lighting.</p>
+    <p>The projector becomes another canvas. The lights become another brush.</p>
   </div>
 
-  <p>Creators should achieve <span class="highlight">80% of the visual impact</span> with <span class="highlight">20% of the effort</span>.</p>
-
-  <h2>Target Users</h2>
-  <div class="users">
-    <span class="user-tag">Musicians</span>
-    <span class="user-tag">DJs</span>
-    <span class="user-tag">Independent artists</span>
-    <span class="user-tag">Event promoters</span>
-    <span class="user-tag">Content creators</span>
-    <span class="user-tag">Brands</span>
-    <span class="user-tag">Agencies</span>
+  <div class="phase">
+    <h3>Phase 4: Atmosphere</h3>
+    <div class="gate">Gate: Projection integrated</div>
+    <p>Add compact DMX hazer. This may be the biggest leap in immersion.</p>
+    <p><span class="highlight">Without haze:</span> light hits surfaces.<br>
+    <span class="highlight">With haze:</span> light occupies space.</p>
+    <p>The air becomes part of the sculpture.</p>
   </div>
 
-  <div class="validation">
-    <p><strong>Initial Validation</strong></p>
-    <p class="steps">Upload a model → Upload a song → Receive a beautiful 15-second music-reactive visual</p>
-    <p style="margin-top: 16px; font-size: 14px;">If that feels magical, the larger vision is worth exploring.</p>
+  <div class="phase">
+    <h3>Phase 5: Geometry</h3>
+    <div class="gate">Gate: Atmosphere proven</div>
+    <p>Introduce RGB laser.</p>
+    <ul>
+      <li>Projected visuals create surfaces</li>
+      <li>PARs create illumination</li>
+      <li>Lasers create floating geometry</li>
+    </ul>
+    <p>The experience shifts from lighting toward spatial sculpture.</p>
   </div>
 
+  <div class="phase">
+    <h3>Phase 6: Ambient Architecture</h3>
+    <div class="gate">Gate: Core installation complete</div>
+    <p>Integrate Philips Hue for wall washes, room ambience, transitions, extending scenes beyond the installation.</p>
+    <p>Fast effects → DMX. Ambient effects → Hue.</p>
+  </div>
+
+  <div class="phase">
+    <h3>Phase 7: Spatial Computing</h3>
+    <div class="gate">Gate: As AR hardware matures</div>
+    <p>Formgen patches gain optional AR outputs. Physical installation remains primary — AR reveals another layer. Nobody wearing glasses required.</p>
+  </div>
+
+  <h2>Hardware Philosophy</h2>
+  <p>Every purchase should noticeably increase immersion. Priority:</p>
+  <div class="hardware-list">
+    <span class="hardware-tag owned">Browser visuals</span>
+    <span class="hardware-tag">Projector</span>
+    <span class="hardware-tag">DMX PARs</span>
+    <span class="hardware-tag">Hazer</span>
+    <span class="hardware-tag">Laser</span>
+    <span class="hardware-tag">Hue</span>
+    <span class="hardware-tag">AR</span>
+  </div>
+  <p>Each expands the same patch format rather than creating another workflow.</p>
+
+  <h2>What Formgen Is Not</h2>
+  <ul>
+    <li>Not replacing lighting consoles (MA, ETC, Chamsys)</li>
+    <li>Not replacing TouchDesigner/Notch</li>
+    <li>Not another VJ application</li>
+  </ul>
+  <p>Instead: <span class="highlight">the simplest way to compose immersive environments</span>.</p>
+  <p>A musician should be able to create a room. A designer should be able to create an installation. An educator should be able to transform a classroom. An artist should be able to build an exhibit.</p>
+  <p>Without becoming a DMX expert. Without becoming a creative coder.</p>
+
+  <div class="success">
+    <p>Can someone walk into an ordinary room, press Play, and watch it transform into something unforgettable?</p>
+  </div>
+
+  <p class="updated">Last updated: July 2026</p>
 </body>
 </html>

@@ -1,8 +1,8 @@
-# FormGen
+# Formgen
 
-**Procedural geometry generator for creative tools**
+**An environment engine — software that composes immersive spaces.**
 
-Generate complex mandala-like patterns with simple controls, then export to professional tools like Notch, TouchDesigner, or any 3D software.
+Generate complex mandala-like patterns with intuitive controls, animate them to music, and export polished visuals. The browser is the creative interface; outputs extend beyond the screen.
 
 ## Features
 
@@ -18,6 +18,10 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 - **Keyboard shortcuts**: `[` collapse all, `]` expand all panels
 
 ### Animation
+- **Timeline with Keyframes**: Scrub through audio, add keyframes, create full-song animations
+- **Waveform Visualization**: Audio waveform display in bottom timeline bar
+- **Keyframe Editing**: Click keyframes to select and edit, with visual active state
+- **Audio Sync**: Animation time syncs to audio playback
 - **4 LFO system**: Four independent oscillators with Speed, Amplitude, and Center controls
 - **Multi-target LFOs**: Each LFO can control multiple parameters simultaneously
 - **LFO shapes**: Sine, Triangle, Saw
@@ -25,6 +29,7 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 - **Audio smoothing**: Adjustable smoothing for calm or punchy audio response
 - **Camera paths**: Orbit, Flyover, Spiral, Zoom, Tilt
 - **Animatable parameters**: All geometry, macro, and effect controls (including bloom)
+- **Keyboard shortcuts**: Spacebar to play/pause audio
 
 ### Export
 - **PNG**: 4x resolution render
@@ -63,9 +68,11 @@ Generate complex mandala-like patterns with simple controls, then export to prof
 
 ## Vision
 
-FormGen is the first step toward **the easiest way for creators to generate high-quality 3D music visuals without learning complex tools**.
+Formgen is **the simplest way to compose immersive environments**.
 
-See [STRATEGY.md](STRATEGY.md) for the full product vision and roadmap.
+A musician should be able to create a room. A designer should be able to create an installation. Without becoming a DMX expert. Without becoming a creative coder.
+
+See [ROADMAP.md](ROADMAP.md) for the full vision and roadmap.
 
 ## Live
 
@@ -73,9 +80,10 @@ See [STRATEGY.md](STRATEGY.md) for the full product vision and roadmap.
 
 ## Documentation
 
-- [STRATEGY.md](STRATEGY.md) - Product vision and roadmap
+- [ROADMAP.md](ROADMAP.md) - Product vision and phased roadmap
 - [DECISIONS.md](DECISIONS.md) - Architecture decision records
 - [CHANGELOG.md](CHANGELOG.md) - Version history
+- [ARCHITECTURE.md](ARCHITECTURE.md) - Technical architecture
 
 ---
 
