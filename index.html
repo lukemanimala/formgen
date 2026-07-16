@@ -560,14 +560,17 @@
     }
 
     .lfo-toggle-btn {
-      background: transparent;
-      border: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
       color: var(--text-secondary);
-      font-size: 10px;
-      padding: 2px 6px;
+      font-size: 9px;
+      font-weight: 500;
+      padding: 2px 8px;
       cursor: pointer;
       border-radius: 3px;
       transition: all 0.15s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .lfo-toggle-btn:hover {
@@ -576,7 +579,9 @@
     }
 
     .lfo-toggle-btn.active {
-      color: var(--accent);
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
     }
 
     .lfo-group-label {
@@ -1275,6 +1280,89 @@
         </div>
       </div>
 
+      <!-- Background 2D Layer -->
+      <div class="control-section collapsed">
+        <div class="section-header">
+          <div class="section-label">Background</div>
+          <span class="section-arrow">▶</span>
+        </div>
+        <div class="section-content">
+          <!-- Noise Field Settings -->
+          <div class="lfo-header" style="margin-bottom: 8px;">
+            <span class="section-label" style="font-size: 9px;">Noise Field</span>
+            <button type="button" class="lfo-toggle-btn" id="bg-noise-toggle" title="Enable noise field">Off</button>
+          </div>
+          <div class="knob-row" id="bg-noise-controls">
+            <div class="knob-control" data-param="bgFrequency" data-min="5" data-max="500" data-value="20" data-step="1" data-format="int">
+              <div class="knob-container"></div>
+              <div class="knob-name">Scale</div>
+              <div class="knob-value">20</div>
+            </div>
+            <div class="knob-control" data-param="bgDistort" data-min="0" data-max="2" data-value="0.8">
+              <div class="knob-container"></div>
+              <div class="knob-name">Contrast</div>
+              <div class="knob-value">0.80</div>
+            </div>
+            <div class="knob-control" data-param="bgSpeed" data-min="0" data-max="2" data-value="0.5">
+              <div class="knob-container"></div>
+              <div class="knob-name">Speed</div>
+              <div class="knob-value">0.50</div>
+            </div>
+            <div class="knob-control" data-param="bgOpacity" data-min="0" data-max="1" data-value="0.8">
+              <div class="knob-container"></div>
+              <div class="knob-name">Opacity</div>
+              <div class="knob-value">0.80</div>
+            </div>
+            <div class="knob-control" data-param="bgGlow" data-min="0" data-max="2" data-value="0.5">
+              <div class="knob-container"></div>
+              <div class="knob-name">Glow</div>
+              <div class="knob-value">0.50</div>
+            </div>
+            <div class="knob-control bipolar" data-param="bgHueOffset" data-min="-180" data-max="180" data-value="0" data-step="1" data-format="int">
+              <div class="knob-container"></div>
+              <div class="knob-name">Hue</div>
+              <div class="knob-value">0</div>
+            </div>
+          </div>
+
+          <!-- Mask Settings - Columns (vertical lines) -->
+          <div class="lfo-header" style="margin-top: 16px; margin-bottom: 8px;">
+            <span class="section-label" style="font-size: 9px;">Columns</span>
+            <button type="button" class="lfo-toggle-btn" id="bg-cols-toggle" title="Enable vertical lines">Off</button>
+          </div>
+          <div class="knob-row" id="bg-cols-controls">
+            <div class="knob-control" data-param="bgColsFreq" data-min="20" data-max="2000" data-value="150" data-step="1" data-format="int">
+              <div class="knob-container"></div>
+              <div class="knob-name">Count</div>
+              <div class="knob-value">150</div>
+            </div>
+            <div class="knob-control" data-param="bgColsWidth" data-min="0.1" data-max="0.9" data-value="0.7">
+              <div class="knob-container"></div>
+              <div class="knob-name">Width</div>
+              <div class="knob-value">0.70</div>
+            </div>
+          </div>
+
+          <!-- Mask Settings - Rows (horizontal lines) -->
+          <div class="lfo-header" style="margin-top: 12px; margin-bottom: 8px;">
+            <span class="section-label" style="font-size: 9px;">Rows</span>
+            <button type="button" class="lfo-toggle-btn" id="bg-rows-toggle" title="Enable horizontal lines">Off</button>
+          </div>
+          <div class="knob-row" id="bg-rows-controls">
+            <div class="knob-control" data-param="bgRowsFreq" data-min="20" data-max="2000" data-value="100" data-step="1" data-format="int">
+              <div class="knob-container"></div>
+              <div class="knob-name">Count</div>
+              <div class="knob-value">100</div>
+            </div>
+            <div class="knob-control" data-param="bgRowsWidth" data-min="0.1" data-max="0.9" data-value="0.7">
+              <div class="knob-container"></div>
+              <div class="knob-name">Width</div>
+              <div class="knob-value">0.70</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Pattern Selection -->
       <div class="control-section">
         <div class="section-header">
@@ -1484,7 +1572,7 @@
         <!-- LFO 1 -->
         <div class="lfo-header" style="margin-top: 12px;">
           <span class="section-label" style="font-size: 9px;">LFO 1</span>
-          <button type="button" class="lfo-toggle-btn" id="lfo1-toggle" title="Toggle LFO">▶</button>
+          <button type="button" class="lfo-toggle-btn" id="lfo1-toggle" title="LFO disabled">Off</button>
         </div>
         <div class="lfo-control">
           <div class="lfo-multiselect" id="lfo1-multiselect">
@@ -1557,7 +1645,7 @@
         <!-- LFO 2 -->
         <div class="lfo-header" style="margin-top: 12px;">
           <span class="section-label" style="font-size: 9px;">LFO 2</span>
-          <button type="button" class="lfo-toggle-btn" id="lfo2-toggle" title="Toggle LFO">▶</button>
+          <button type="button" class="lfo-toggle-btn" id="lfo2-toggle" title="LFO disabled">Off</button>
         </div>
         <div class="lfo-control">
           <div class="lfo-multiselect" id="lfo2-multiselect">
@@ -1630,7 +1718,7 @@
         <!-- LFO 3 -->
         <div class="lfo-header" style="margin-top: 12px;">
           <span class="section-label" style="font-size: 9px;">LFO 3</span>
-          <button type="button" class="lfo-toggle-btn" id="lfo3-toggle" title="Toggle LFO">▶</button>
+          <button type="button" class="lfo-toggle-btn" id="lfo3-toggle" title="LFO disabled">Off</button>
         </div>
         <div class="lfo-control">
           <div class="lfo-multiselect" id="lfo3-multiselect">
@@ -1703,7 +1791,7 @@
         <!-- LFO 4 -->
         <div class="lfo-header" style="margin-top: 12px;">
           <span class="section-label" style="font-size: 9px;">LFO 4</span>
-          <button type="button" class="lfo-toggle-btn" id="lfo4-toggle" title="Toggle LFO">▶</button>
+          <button type="button" class="lfo-toggle-btn" id="lfo4-toggle" title="LFO disabled">Off</button>
         </div>
         <div class="lfo-control">
           <div class="lfo-multiselect" id="lfo4-multiselect">
@@ -1933,6 +2021,7 @@
     };
 
     let currentHue = 15;
+    let bgHueOffset = 0;
     let currentPattern = 'mandala';
     let isAnimating = false;
 
@@ -2708,6 +2797,165 @@
         this.kaleidoscopePass = new ShaderPass(this.kaleidoscopeShader);
         this.composer.addPass(this.kaleidoscopePass);
 
+        // 2D Background Layer
+
+        // Background shader material
+        this.bgShader = {
+          uniforms: {
+            uTime: { value: 0 },
+            uResolution: { value: new THREE.Vector2(this.width, this.height) },
+            uNoiseEnabled: { value: 0 },
+            uColsEnabled: { value: 0 },
+            uRowsEnabled: { value: 0 },
+            uFrequency: { value: 20.0 },
+            uDistort: { value: 0.8 },
+            uSpeed: { value: 0.5 },
+            uOpacity: { value: 0.8 },
+            uGlow: { value: 0.5 },
+            uColsFreq: { value: 150.0 },
+            uColsWidth: { value: 0.7 },
+            uRowsFreq: { value: 100.0 },
+            uRowsWidth: { value: 0.7 },
+            uColor: { value: new THREE.Color(0x00ff66) }
+          },
+          vertexShader: `
+            varying vec2 vUv;
+            void main() {
+              vUv = uv;
+              gl_Position = vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            uniform float uTime;
+            uniform vec2 uResolution;
+            uniform int uNoiseEnabled;
+            uniform int uColsEnabled;
+            uniform int uRowsEnabled;
+            uniform float uFrequency;
+            uniform float uDistort;
+            uniform float uSpeed;
+            uniform float uOpacity;
+            uniform float uGlow;
+            uniform float uColsFreq;
+            uniform float uColsWidth;
+            uniform float uRowsFreq;
+            uniform float uRowsWidth;
+            uniform vec3 uColor;
+
+            varying vec2 vUv;
+
+            // Simplex noise function
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+
+            float snoise(vec2 v) {
+              const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                                  -0.577350269189626, 0.024390243902439);
+              vec2 i  = floor(v + dot(v, C.yy));
+              vec2 x0 = v - i + dot(i, C.xx);
+              vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+              vec4 x12 = x0.xyxy + C.xxzz;
+              x12.xy -= i1;
+              i = mod289(i);
+              vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0))
+                              + i.x + vec3(0.0, i1.x, 1.0));
+              vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+                                      dot(x12.zw,x12.zw)), 0.0);
+              m = m*m; m = m*m;
+              vec3 x = 2.0 * fract(p * C.www) - 1.0;
+              vec3 h = abs(x) - 0.5;
+              vec3 ox = floor(x + 0.5);
+              vec3 a0 = x - ox;
+              m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
+              vec3 g;
+              g.x = a0.x * x0.x + h.x * x0.y;
+              g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+              return 130.0 * dot(m, g);
+            }
+
+            void main() {
+              if (uNoiseEnabled == 0) {
+                gl_FragColor = vec4(0.0);
+                return;
+              }
+
+              vec2 uv = vUv;
+              float t = uTime * uSpeed;
+
+              // Softness based on glow (affects mask edge transitions)
+              float softness = 0.05 + uGlow * 0.15;
+
+              // === NOISE FIELD (light source) ===
+              float n = snoise(uv * uFrequency * 0.1 + t);
+              n += snoise(uv * uFrequency * 0.2 - t * 0.5) * 0.5;
+              n += snoise(uv * uFrequency * 0.4 + t * 0.3) * 0.25;
+              float value = n * 0.5 + 0.5;
+              value = smoothstep(0.3 - uDistort * 0.3, 0.7 + uDistort * 0.3, value);
+
+              // === COLUMN MASK (vertical lines) ===
+              if (uColsEnabled == 1) {
+                float colPhase = fract(uv.x * uColsFreq);
+                float colEdge = (1.0 - uColsWidth) * 0.5;
+                // Soft rounded edges using sine-based falloff
+                float colDist = abs(colPhase - 0.5) * 2.0; // 0 at center, 1 at edges
+                float cols = smoothstep(1.0, 1.0 - uColsWidth - softness, colDist);
+                value *= cols;
+              }
+
+              // === ROW MASK (horizontal lines) ===
+              if (uRowsEnabled == 1) {
+                float rowPhase = fract(uv.y * uRowsFreq);
+                float rowEdge = (1.0 - uRowsWidth) * 0.5;
+                // Soft rounded edges using sine-based falloff
+                float rowDist = abs(rowPhase - 0.5) * 2.0; // 0 at center, 1 at edges
+                float rows = smoothstep(1.0, 1.0 - uRowsWidth - softness, rowDist);
+                value *= rows;
+              }
+
+              // Apply color
+              vec3 color = uColor * value;
+
+              // === GLOW EFFECT ===
+              // Add bloom-like glow by boosting bright areas
+              float glowAmount = uGlow * 0.8;
+              color += uColor * pow(value, 0.5) * glowAmount;
+
+              // Add subtle glow
+              color += uColor * value * value * 0.3;
+
+              gl_FragColor = vec4(color, value * uOpacity);
+            }
+          `
+        };
+
+        this.bgMaterial = new THREE.ShaderMaterial({
+          uniforms: this.bgShader.uniforms,
+          vertexShader: this.bgShader.vertexShader,
+          fragmentShader: this.bgShader.fragmentShader,
+          transparent: true,
+          depthWrite: false,
+          depthTest: false,
+          blending: THREE.AdditiveBlending
+        });
+
+        // Create a large plane that sits behind the 3D geometry
+        this.bgQuad = new THREE.Mesh(
+          new THREE.PlaneGeometry(30, 30),  // Large enough to fill view
+          this.bgMaterial
+        );
+        this.bgQuad.position.z = -10;  // Behind the mandalas
+        this.bgQuad.renderOrder = -1;  // Render first
+        this.bgQuad.visible = false;   // Start hidden
+
+        // Add to main scene (not separate scene)
+        this.scene.add(this.bgQuad);
+
+        // Background layer state
+        this.bgNoiseEnabled = false;
+        this.bgColsEnabled = false;
+        this.bgRowsEnabled = false;
+
         // Stage holds everything and receives orbit rotation
         this.stage = new THREE.Group();
         this.scene.add(this.stage);
@@ -2898,13 +3146,73 @@
         this.bloomPass.resolution.set(this.width, this.height);
         this.kaleidoscopePass.uniforms.aspectRatio.value = this.width / this.height;
 
+        // Update 2D background resolution
+        if (this.bgShader) {
+          this.bgShader.uniforms.uResolution.value.set(this.width, this.height);
+        }
+
         this.layers.forEach(layer => {
           layer.lineMaterial.resolution.set(this.width, this.height);
         });
       }
 
       renderWithBloom() {
+        // Update 2D background shader time
+        if (this.bgNoiseEnabled && this.bgMaterial) {
+          this.bgShader.uniforms.uTime.value = this.time;
+        }
+
+        // Render 3D scene with post-processing
         this.composer.render();
+      }
+
+      setBgNoise(enabled) {
+        this.bgNoiseEnabled = enabled;
+        this.bgShader.uniforms.uNoiseEnabled.value = enabled ? 1 : 0;
+        this.bgQuad.visible = enabled;
+      }
+
+      setBgCols(enabled) {
+        this.bgColsEnabled = enabled;
+        this.bgShader.uniforms.uColsEnabled.value = enabled ? 1 : 0;
+      }
+
+      setBgRows(enabled) {
+        this.bgRowsEnabled = enabled;
+        this.bgShader.uniforms.uRowsEnabled.value = enabled ? 1 : 0;
+      }
+
+      setBgUniforms(params) {
+        if (params.frequency !== undefined) {
+          this.bgShader.uniforms.uFrequency.value = params.frequency;
+        }
+        if (params.distort !== undefined) {
+          this.bgShader.uniforms.uDistort.value = params.distort;
+        }
+        if (params.speed !== undefined) {
+          this.bgShader.uniforms.uSpeed.value = params.speed;
+        }
+        if (params.opacity !== undefined) {
+          this.bgShader.uniforms.uOpacity.value = params.opacity;
+        }
+        if (params.glow !== undefined) {
+          this.bgShader.uniforms.uGlow.value = params.glow;
+        }
+        if (params.color !== undefined) {
+          this.bgShader.uniforms.uColor.value.set(params.color);
+        }
+        if (params.colsFreq !== undefined) {
+          this.bgShader.uniforms.uColsFreq.value = params.colsFreq;
+        }
+        if (params.colsWidth !== undefined) {
+          this.bgShader.uniforms.uColsWidth.value = params.colsWidth;
+        }
+        if (params.rowsFreq !== undefined) {
+          this.bgShader.uniforms.uRowsFreq.value = params.rowsFreq;
+        }
+        if (params.rowsWidth !== undefined) {
+          this.bgShader.uniforms.uRowsWidth.value = params.rowsWidth;
+        }
       }
 
       setMirror(mode, count) {
@@ -3203,6 +3511,7 @@
                               (lfo2Enabled && ['bass', 'mid', 'treble'].includes(lfo2Shape)) ||
                               (lfo3Enabled && ['bass', 'mid', 'treble'].includes(lfo3Shape)) ||
                               (lfo4Enabled && ['bass', 'mid', 'treble'].includes(lfo4Shape));
+
           if (timelineKeyframes.length > 0 && isPlaying && !isEditing && !hasAudioLfo) {
             timelineNeedsRegenerate = applyTimelineState(this.time);
           }
@@ -3276,6 +3585,7 @@
             currentHue = actualValue;
             document.getElementById('hue').value = actualValue;
             updateColorPreview();
+            updateBgColor();
             this.updateColors();
             needsRegenerate = false;
           } else if (target === 'bloom') {
@@ -3526,6 +3836,31 @@
       document.documentElement.style.setProperty('--accent-hue', currentHue);
     }
 
+    function updateBgColor() {
+      // Calculate background hue from main hue + offset
+      let bgHue = (currentHue + bgHueOffset + 360) % 360;
+      // Convert HSL to hex for the shader
+      const h = bgHue / 360;
+      const s = 0.85;
+      const l = 0.55;
+      // HSL to RGB conversion
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q - p) * 6 * t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+      };
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      const r = Math.round(hue2rgb(p, q, h + 1/3) * 255);
+      const g = Math.round(hue2rgb(p, q, h) * 255);
+      const b = Math.round(hue2rgb(p, q, h - 1/3) * 255);
+      const hex = '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+      renderer.setBgUniforms({ color: hex });
+    }
+
     // ===================
     // KNOB COMPONENT
     // ===================
@@ -3772,6 +4107,27 @@
             cameraSpeed = value;
           } else if (param === 'audioSmooth') {
             audioSmooth = value;
+          } else if (param === 'bgFrequency') {
+            renderer.setBgUniforms({ frequency: value });
+          } else if (param === 'bgDistort') {
+            renderer.setBgUniforms({ distort: value });
+          } else if (param === 'bgSpeed') {
+            renderer.setBgUniforms({ speed: value });
+          } else if (param === 'bgOpacity') {
+            renderer.setBgUniforms({ opacity: value });
+          } else if (param === 'bgGlow') {
+            renderer.setBgUniforms({ glow: value });
+          } else if (param === 'bgHueOffset') {
+            bgHueOffset = value;
+            updateBgColor();
+          } else if (param === 'bgColsFreq') {
+            renderer.setBgUniforms({ colsFreq: value });
+          } else if (param === 'bgColsWidth') {
+            renderer.setBgUniforms({ colsWidth: value });
+          } else if (param === 'bgRowsFreq') {
+            renderer.setBgUniforms({ rowsFreq: value });
+          } else if (param === 'bgRowsWidth') {
+            renderer.setBgUniforms({ rowsWidth: value });
           } else if (param in geometry) {
             geometry[param] = value;
             renderer.generate();
@@ -3978,6 +4334,7 @@
     document.getElementById('hue').addEventListener('input', (e) => {
       currentHue = parseInt(e.target.value);
       updateColorPreview();
+      updateBgColor();
       renderer.updateColors();
       autosave();
       if (activeKeyframeIndex >= 0) updateActiveKeyframe();
@@ -4025,6 +4382,40 @@
       autosave();
       if (activeKeyframeIndex >= 0) updateActiveKeyframe();
     });
+
+    // 2D Background Layer controls
+    const bgNoiseToggle = document.getElementById('bg-noise-toggle');
+    bgNoiseToggle.addEventListener('click', () => {
+      const newState = !renderer.bgNoiseEnabled;
+      renderer.setBgNoise(newState);
+      bgNoiseToggle.textContent = newState ? 'On' : 'Off';
+      bgNoiseToggle.classList.toggle('active', newState);
+      bgNoiseToggle.title = newState ? 'Noise field active' : 'Enable noise field';
+      autosave();
+    });
+
+    const bgColsToggle = document.getElementById('bg-cols-toggle');
+    bgColsToggle.addEventListener('click', () => {
+      const newState = !renderer.bgColsEnabled;
+      renderer.setBgCols(newState);
+      bgColsToggle.textContent = newState ? 'On' : 'Off';
+      bgColsToggle.classList.toggle('active', newState);
+      bgColsToggle.title = newState ? 'Columns active' : 'Enable columns';
+      autosave();
+    });
+
+    const bgRowsToggle = document.getElementById('bg-rows-toggle');
+    bgRowsToggle.addEventListener('click', () => {
+      const newState = !renderer.bgRowsEnabled;
+      renderer.setBgRows(newState);
+      bgRowsToggle.textContent = newState ? 'On' : 'Off';
+      bgRowsToggle.classList.toggle('active', newState);
+      bgRowsToggle.title = newState ? 'Rows active' : 'Enable rows';
+      autosave();
+    });
+
+    // Initialize background color based on main hue
+    updateBgColor();
 
     // Animation controls
     document.getElementById('play-btn').addEventListener('click', () => {
@@ -4218,9 +4609,11 @@
     document.getElementById('add-keyframe').addEventListener('click', () => {
       const currentTime = timelineMode ? (audioElement ? audioElement.currentTime : timelineTime) : 0;
 
+      const config = getCurrentConfig();
+
       const keyframe = {
         time: currentTime,
-        config: getCurrentConfig(),
+        config: config,
         label: `Key ${timelineKeyframes.length + 1}`
       };
 
@@ -4441,9 +4834,9 @@
       btn.addEventListener('click', () => {
         const newState = !getLfoEnabled();
         setLfoEnabled(newState);
-        btn.textContent = newState ? '▶' : '⏸';
+        btn.textContent = newState ? 'On' : 'Off';
         btn.classList.toggle('active', newState);
-        btn.title = newState ? 'Pause LFO' : 'Play LFO';
+        btn.title = newState ? 'LFO active' : 'LFO disabled';
       });
     }
 
@@ -5130,46 +5523,53 @@
 
     // Gather all current settings into a config object
     function getCurrentConfig() {
+      const lfo1Config = {
+        enabled: lfo1Enabled,
+        targets: [...lfoTargets],  // Array of targets
+        shape: document.getElementById('lfo-shape').value,
+        speed: lfo1Speed,
+        amp: lfo1Amp,
+        offset: lfo1Offset
+      };
+      const lfo2Config = {
+        enabled: lfo2Enabled,
+        targets: [...lfo2Targets],
+        shape: document.getElementById('lfo2-shape').value,
+        speed: lfo2Speed,
+        amp: lfo2Amp,
+        offset: lfo2Offset
+      };
+      const lfo3Config = {
+        enabled: lfo3Enabled,
+        targets: [...lfo3Targets],
+        shape: document.getElementById('lfo3-shape').value,
+        speed: lfo3Speed,
+        amp: lfo3Amp,
+        offset: lfo3Offset
+      };
+      const lfo4Config = {
+        enabled: lfo4Enabled,
+        targets: [...lfo4Targets],
+        shape: document.getElementById('lfo4-shape').value,
+        speed: lfo4Speed,
+        amp: lfo4Amp,
+        offset: lfo4Offset
+      };
+
+
       return {
         version: 1,
         pattern: currentPattern,
         hue: currentHue,
+        bgHueOffset: bgHueOffset,
         lightness: parseInt(document.getElementById('lightness').value),
         bgColor: document.getElementById('bg-color').value,
         macros: { ...macros },
         geometry: { ...geometry },
-        lfo1: {
-          enabled: lfo1Enabled,
-          targets: [...lfoTargets],  // Array of targets
-          shape: document.getElementById('lfo-shape').value,
-          speed: lfo1Speed,
-          amp: lfo1Amp,
-          offset: lfo1Offset
-        },
-        lfo2: {
-          enabled: lfo2Enabled,
-          targets: [...lfo2Targets],
-          shape: document.getElementById('lfo2-shape').value,
-          speed: lfo2Speed,
-          amp: lfo2Amp,
-          offset: lfo2Offset
-        },
-        lfo3: {
-          enabled: lfo3Enabled,
-          targets: [...lfo3Targets],
-          shape: document.getElementById('lfo3-shape').value,
-          speed: lfo3Speed,
-          amp: lfo3Amp,
-          offset: lfo3Offset
-        },
-        lfo4: {
-          enabled: lfo4Enabled,
-          targets: [...lfo4Targets],
-          shape: document.getElementById('lfo4-shape').value,
-          speed: lfo4Speed,
-          amp: lfo4Amp,
-          offset: lfo4Offset
-        },
+        lfo1: lfo1Config,
+        lfo2: lfo2Config,
+        lfo3: lfo3Config,
+        lfo4: lfo4Config,
         effects: {
           bloom: parseFloat(document.getElementById('bloom-strength').value),
           mirrorMode: document.getElementById('mirror-mode').value,
@@ -5195,6 +5595,12 @@
         document.getElementById('hue').value = currentHue;
         updateColorPreview();
       }
+      if (config.bgHueOffset !== undefined) {
+        bgHueOffset = config.bgHueOffset;
+        updateKnobValue('bgHueOffset', bgHueOffset);
+      }
+      // Update background color after hue and offset are set
+      updateBgColor();
       if (config.lightness !== undefined) {
         document.getElementById('lightness').value = config.lightness;
         document.getElementById('lightness-value').textContent = config.lightness + '%';
@@ -5250,7 +5656,7 @@
       function updateLfoToggleUI(id, enabled) {
         const btn = document.getElementById(id);
         if (btn) {
-          btn.textContent = enabled ? '⏸' : '▶';
+          btn.textContent = enabled ? 'On' : 'Off';
           btn.classList.toggle('active', enabled);
         }
       }

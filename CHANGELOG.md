@@ -17,15 +17,24 @@ All notable changes to this project will be documented in this file.
 - **Spacebar Play/Pause**: Quick audio control with keyboard
 - **Keyboard Shortcuts**: `[` to collapse all panels, `]` to expand all panels
 - **LFO Target Grouping**: Parameters organized by category (Macro, Geometry, Color, Effects) with visual separators
+- **2D Background Layer**: Shader-based background effects behind 3D geometry
+  - **Noise Field**: Organic flowing noise as light source (Scale, Contrast, Speed, Opacity, Glow)
+  - **Column Mask**: Vertical scanlines with adjustable Count and Width
+  - **Row Mask**: Horizontal lines with adjustable Count and Width (creates cell/grid effect when combined)
+  - **Glow Effect**: Softens mask edges for CRT phosphor-like bloom
+  - **Hue Offset**: Background color derived from main hue with adjustable offset (-180° to +180°)
 
 ### Changed
 - **Presets Position**: Moved to position 2 (after Pattern) for faster discovery and onboarding
 - **Bloom Defaults**: Reduced default strength (0.4), increased threshold (0.6) to prevent washout
 - **Timeline Auto-Enable**: Timeline mode activates automatically when audio loads
+- **LFO Toggle Labels**: Changed from ▶/⏸ icons to clear "On"/"Off" text labels
+- **Background Color**: Now uses hue offset from main color instead of separate color picker
 
 ### Fixed
 - **LFO Audio-Reactive Values**: Audio-reactive LFO enabled states now save/restore in keyframes
 - **LFO During Playback**: Audio-reactive LFOs no longer get overwritten by timeline interpolation
+- **Background Hue with LFO**: Background color now updates when main hue is animated by LFO
 
 ---
 

@@ -433,3 +433,41 @@
 - Keyframes still define baseline state
 - Trade-off: keyframed changes to audio-reactive parameters won't apply during playback
 - User expectation: audio-reactive LFOs "win" over timeline interpolation
+
+---
+
+## ADR-027: 2D Background Layer System
+
+**Date**: 2026-07-15
+
+**Context**: To achieve techno/CRT-style visuals like Matrix scanlines, the tool needed a 2D layer system separate from the 3D geometry. Reference images showed organic noise "blobs" revealed through vertical scanline masks with soft, glowing edges.
+
+**Decision**: Implement a shader-based 2D background layer with composable elements:
+- **Noise Field**: Organic flowing simplex noise as the "light source"
+- **Column Mask**: Optional vertical scanlines
+- **Row Mask**: Optional horizontal lines (combined creates cells/grid)
+- **Glow**: Softens mask edges and adds bloom-like brightness
+- **Hue Offset**: Color derived from main hue with adjustable offset
+
+**Consequences**:
+- Background visuals can complement or contrast 3D foreground
+- Noise field + masks follows "light source through mask" mental model
+- Hue offset keeps background in color harmony with main pattern
+- Background updates automatically when main hue is animated by LFO
+- Separate toggle controls for each element (noise, columns, rows)
+
+---
+
+## ADR-028: Background Hue as Offset
+
+**Date**: 2026-07-15
+
+**Context**: Initial implementation used a separate color picker for background. This created disconnect when animating main hue via LFO—background stayed static.
+
+**Decision**: Replace background color picker with hue offset control (-180° to +180°). Background hue = main hue + offset.
+
+**Consequences**:
+- Background maintains constant color relationship with main pattern
+- Works seamlessly with LFO-animated hue
+- Easy to create complementary (180°), triadic (120°), or monochromatic (0°) schemes
+- Less direct control over exact background color, but better system coherence
