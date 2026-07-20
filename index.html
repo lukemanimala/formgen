@@ -5575,6 +5575,20 @@
           mirrorMode: document.getElementById('mirror-mode').value,
           mirrorCount: parseInt(document.getElementById('mirror-count').value)
         },
+        background: {
+          noiseEnabled: renderer.bgNoiseEnabled,
+          colsEnabled: renderer.bgColsEnabled,
+          rowsEnabled: renderer.bgRowsEnabled,
+          frequency: renderer.bgShader.uniforms.uFrequency.value,
+          distort: renderer.bgShader.uniforms.uDistort.value,
+          speed: renderer.bgShader.uniforms.uSpeed.value,
+          opacity: renderer.bgShader.uniforms.uOpacity.value,
+          glow: renderer.bgShader.uniforms.uGlow.value,
+          colsFreq: renderer.bgShader.uniforms.uColsFreq.value,
+          colsWidth: renderer.bgShader.uniforms.uColsWidth.value,
+          rowsFreq: renderer.bgShader.uniforms.uRowsFreq.value,
+          rowsWidth: renderer.bgShader.uniforms.uRowsWidth.value
+        },
         camera: document.getElementById('camera-path').value
       };
     }
@@ -5731,6 +5745,77 @@
           config.effects.mirrorMode || 'off',
           config.effects.mirrorCount || 4
         );
+      }
+
+      // Background 2D Layer
+      if (config.background) {
+        const bg = config.background;
+
+        // Noise field toggle
+        if (bg.noiseEnabled !== undefined) {
+          renderer.setBgNoise(bg.noiseEnabled);
+          const noiseBtn = document.getElementById('bg-noise-toggle');
+          noiseBtn.textContent = bg.noiseEnabled ? 'On' : 'Off';
+          noiseBtn.classList.toggle('active', bg.noiseEnabled);
+        }
+
+        // Columns toggle
+        if (bg.colsEnabled !== undefined) {
+          renderer.setBgCols(bg.colsEnabled);
+          const colsBtn = document.getElementById('bg-cols-toggle');
+          colsBtn.textContent = bg.colsEnabled ? 'On' : 'Off';
+          colsBtn.classList.toggle('active', bg.colsEnabled);
+        }
+
+        // Rows toggle
+        if (bg.rowsEnabled !== undefined) {
+          renderer.setBgRows(bg.rowsEnabled);
+          const rowsBtn = document.getElementById('bg-rows-toggle');
+          rowsBtn.textContent = bg.rowsEnabled ? 'On' : 'Off';
+          rowsBtn.classList.toggle('active', bg.rowsEnabled);
+        }
+
+        // Noise field parameters
+        if (bg.frequency !== undefined) {
+          renderer.setBgUniforms({ frequency: bg.frequency });
+          updateKnobValue('bgFrequency', bg.frequency);
+        }
+        if (bg.distort !== undefined) {
+          renderer.setBgUniforms({ distort: bg.distort });
+          updateKnobValue('bgDistort', bg.distort);
+        }
+        if (bg.speed !== undefined) {
+          renderer.setBgUniforms({ speed: bg.speed });
+          updateKnobValue('bgSpeed', bg.speed);
+        }
+        if (bg.opacity !== undefined) {
+          renderer.setBgUniforms({ opacity: bg.opacity });
+          updateKnobValue('bgOpacity', bg.opacity);
+        }
+        if (bg.glow !== undefined) {
+          renderer.setBgUniforms({ glow: bg.glow });
+          updateKnobValue('bgGlow', bg.glow);
+        }
+
+        // Column mask parameters
+        if (bg.colsFreq !== undefined) {
+          renderer.setBgUniforms({ colsFreq: bg.colsFreq });
+          updateKnobValue('bgColsFreq', bg.colsFreq);
+        }
+        if (bg.colsWidth !== undefined) {
+          renderer.setBgUniforms({ colsWidth: bg.colsWidth });
+          updateKnobValue('bgColsWidth', bg.colsWidth);
+        }
+
+        // Row mask parameters
+        if (bg.rowsFreq !== undefined) {
+          renderer.setBgUniforms({ rowsFreq: bg.rowsFreq });
+          updateKnobValue('bgRowsFreq', bg.rowsFreq);
+        }
+        if (bg.rowsWidth !== undefined) {
+          renderer.setBgUniforms({ rowsWidth: bg.rowsWidth });
+          updateKnobValue('bgRowsWidth', bg.rowsWidth);
+        }
       }
 
       // Camera
